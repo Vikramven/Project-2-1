@@ -2,10 +2,11 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Players.Player;
 
 import java.util.ArrayList;
 
-public abstract class Piece{
+public abstract class Piece implements PieceMove{
 
     protected boolean black;
 
@@ -71,5 +72,14 @@ public abstract class Piece{
      */
     protected boolean isBoardBounds(int x){
         return x < 0 || x > 7;
+    }
+
+    /**
+     * Check if player move with the correct piece
+     */
+    protected void checkPlayerMove(Board board, Spot spot, Player player){
+        if(spot.getPiece().isColor().equals(player.isColorSide())){
+            allLegalMoves(board, spot);
+        }
     }
 }

@@ -22,6 +22,7 @@ public class Pawn extends Piece{
      * @param spot The spot where is located the piece
      * @return all possible legal moves
      */
+    @Override
     public ArrayList<Spot> allLegalMoves(Board board, Spot spot) {
         ArrayList<Spot> legalMoves = new ArrayList<>();
 
