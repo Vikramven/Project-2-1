@@ -1,0 +1,83 @@
+/* LABEL CONFIGURATIONS */
+.introLabel {
+    -fx-font: 120px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#ff0000 20%, #ff8c00 65%, #0000ff 100%);
+    -fx-border-color: white;
+    -fx-border-width: 1 0 1 0;
+    /*-fx-background-color: rgba(255, 255, 255, .1);*/
+}
+
+.menuLabel {
+    -fx-font: 75px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#ff0000 20%, #ff8c00 65%, #0000ff 100%);
+    -fx-border-color: white;
+    -fx-border-width: 1 0 1 0;
+}
+
+/* BUTTON CONFIGURATIONS */
+.beginButton,.exitButton {
+    -fx-font: 30px SansSerifBold;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(from 13px 38px to 52px 52px, reflect,  #d2691e, #ffa500 100%);
+    -fx-background-radius: 50;
+}
+
+.beginButton:hover {
+    -fx-font: 35px SansSerifBold;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(from 13px 38px to 52px 52px, repeat,  #d2691e, #ffa500 100%);
+}
+
+.exitButton:hover {
+    -fx-font: 25px SansSerifBold;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    /*-fx-background-color: linear-gradient(from 13px 38px to 52px 52px, repeat,  #d2691e, #ffa500 100%);*/
+    -fx-background-image: url('exit.png');
+    -fx-background-size: 60px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+
+.passButton,.rollButton,.backButton {
+    -fx-font: 20px SansSerifBold;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(from 13px 38px to 52px 52px, reflect,  #d2691e, #ffa500 100%);
+    -fx-background-radius: 50;
+}
+
+.passButton:hover {
+    -fx-background-image: url('pass.png');
+    -fx-background-size: 90px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    /*-fx-background-size: cover;*/
+}
+
+.rollButton:hover {
+    -fx-background-image: url('buttonDice.png');
+    -fx-background-size: 70px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    /*-fx-background-size: cover;*/
+}
+
+.backButton:hover {
+    -fx-background-image: url('back.jpg');
+    -fx-background-size: 70px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    /*-fx-background-size: cover;*/
+}
+
+/* ROOT CONFIGURATION */
+.root {
+    -fx-background-image: url('bg.png');
+    -fx-background-size: cover;
+    /*-fx-background-color: black;*/
+}
