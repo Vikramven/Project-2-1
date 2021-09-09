@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class Rook extends Piece{
 
+
+    private boolean castling = true;
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -84,5 +86,13 @@ public class Rook extends Piece{
 
                 legalMoves.add(new Spot(newX, newY, null));
         }
+    }
+
+    public boolean isCastling() {
+        return castling;
+    }
+
+    public void setCastling(boolean castling) {
+        this.castling = castling;
     }
 }
