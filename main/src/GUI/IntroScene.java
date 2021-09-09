@@ -39,7 +39,6 @@ public class IntroScene extends GUIMain {
 
         introBox.getChildren().addAll(introLabel, beginButton, exitButton);
 
-        System.out.println(screenBounds.getWidth() + " " + screenBounds.getHeight());
         beginButton.setPrefSize(screenBounds.getWidth()/6.1, screenBounds.getHeight()/11.5);
         exitButton.setPrefSize(screenBounds.getWidth()/6.1,screenBounds.getHeight()/11.5);
 
