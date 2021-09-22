@@ -77,9 +77,10 @@ public abstract class Piece implements PieceMove{
     /**
      * Check if player move with the correct piece
      */
-    protected void checkPlayerMove(Board board, Spot spot, Player player){
+    protected ArrayList<Spot>  checkPlayerMove(Board board, Spot spot, Player player){
         if(spot.getPiece().isColor().equals(player.isColorSide())){
-            allLegalMoves(board, spot);
+            return allLegalMoves(board, spot);
         }
+        return null;
     }
 }
