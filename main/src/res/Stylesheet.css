@@ -1,4 +1,13 @@
-/* LABEL CONFIGURATIONS */
+/* PANE/LABEL CONFIGURATIONS */
+
+.scrollPane .viewport {
+   -fx-background-color: transparent;
+}
+
+.scrollPane {
+   -fx-background-color: transparent;
+}
+
 .introLabel {
     -fx-font: 120px SansSerifBold;
     -fx-font-weight: bold;
@@ -10,6 +19,22 @@
 
 .menuLabel {
     -fx-font: 75px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#ff0000 20%, #ff8c00 65%, #0000ff 100%);
+    -fx-border-color: white;
+    -fx-border-width: 1 0 1 0;
+}
+
+/*
+.histLabel {
+    -fx-font: 25px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+*/
+
+.histTitleLabel {
+    -fx-font: 65px SansSerifBold;
     -fx-font-weight: bold;
     -fx-text-fill: linear-gradient(#ff0000 20%, #ff8c00 65%, #0000ff 100%);
     -fx-border-color: white;
@@ -81,3 +106,4 @@
     -fx-background-size: cover;
     /*-fx-background-color: black;*/
 }
+
