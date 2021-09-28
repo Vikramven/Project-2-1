@@ -8,21 +8,20 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import java.util.Stack;
 
 public class IntroScene extends GUIMain {
 
-    private static Scene introScene;
-    private static Label introLabel;
-    private static StackPane beginPane;
-    private static VBox introBox;
-    private static Button beginButton, exitButton;
+    private Scene introScene;
+    private Label introLabel;
+    private StackPane beginPane;
+    private VBox introBox;
+    private Button beginButton, exitButton;
 
     public IntroScene() {
         // Empty.
     }
 
-    public static void setIntroScene() {
+    public void setIntroScene() {
 
         beginPane = new StackPane();
         introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
@@ -48,10 +47,10 @@ public class IntroScene extends GUIMain {
         beginPane.getChildren().add(introBox);
     }
 
-    private static void setIntroButtonsActions() {
+    private void setIntroButtonsActions() {
 
         beginButton.setOnAction(e -> {
-            mainStage.setScene(GameScene.getGameScene());
+            mainStage.setScene(gameSc.getGameScene());
             mainStage.setFullScreen(true);
             mainStage.setResizable(false);
             mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
@@ -60,6 +59,5 @@ public class IntroScene extends GUIMain {
         exitButton.setOnAction(e -> { System.exit(0);});
     }
 
-    public static Scene getIntroScene() { return introScene; }
+    public Scene getIntroScene() { return introScene; }
 }
-
