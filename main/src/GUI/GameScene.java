@@ -1,7 +1,5 @@
 package GUI;
 
-import Board.Board;
-import Board.Spot;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
