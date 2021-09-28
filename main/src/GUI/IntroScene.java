@@ -8,7 +8,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-
 public class IntroScene extends GUIMain {
 
     private Scene introScene;
