@@ -10,32 +10,27 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 
-import java.io.*;
-
-
 public class GameScene extends GUIMain {
 
-    private static Scene gameScene;
-    private static Label menuLabel, histTitleLabel, histLabel, playerLabel;
-    private static BorderPane gamePane;
-    private static StackPane menuPane, histPane, dicePane, playerPane;
-    private static GridPane boardPane;
-    private static ScrollPane scrollPane;
-    private static Board board;
-    private static VBox menuBox, histBox, scrollBox;
-    private static HBox diceBox, playerBox;
-    private static Image diceImgs[];
-    private static ImageView diceImgViews[];
-    private static Button passButton, rollButton, backButton;
-    private static boolean p1Turn;
+    private Scene gameScene;
+    private Label menuLabel, histTitleLabel, histLabel, playerLabel;
+    private BorderPane gamePane;
+    private StackPane menuPane, histPane, dicePane, playerPane;
+    private GridPane boardPane;
+    private ScrollPane scrollPane;
+    private VBox menuBox, histBox, scrollBox;
+    private HBox diceBox, playerBox;
+    private Image diceImgs[];
+    private ImageView diceImgViews[];
+    private Button passButton, rollButton, backButton;
+    private boolean p1Turn;
 
     public GameScene() {
         // Empty.
     }
 
-    public static void setGameScene() {
+    public void setGameScene() {
 
-        board = new Board();
         gamePane = new BorderPane();
         gameScene = new Scene(gamePane, screenBounds.getWidth(), screenBounds.getHeight());
         gameScene.getStylesheets().clear();
@@ -55,7 +50,7 @@ public class GameScene extends GUIMain {
         gamePane.setTop(playerPane);
     }
 
-    private static void setHistPane() {
+    private void setHistPane() {
 
         histPane = new StackPane();
         histBox = new VBox(screenBounds.getHeight()/28);
@@ -103,7 +98,7 @@ public class GameScene extends GUIMain {
         histPane.getChildren().add(histBox);
     }
 
-    private static void setBoardPane() {
+    private void setBoardPane() {
 
         boardPane = new GridPane();
         boardPane.setAlignment(Pos.CENTER);
@@ -127,7 +122,7 @@ public class GameScene extends GUIMain {
         }
     }
 
-    private static void setMenuPane() {
+    private void setMenuPane() {
 
         menuPane = new StackPane();
         menuBox = new VBox(screenBounds.getHeight()/28);
@@ -149,7 +144,7 @@ public class GameScene extends GUIMain {
         menuPane.getChildren().add(menuBox);
     }
 
-    private static void setDicePane() {
+    private void setDicePane() {
 
         dicePane = new StackPane();
         diceBox = new HBox(screenBounds.getWidth()/20.5);
@@ -168,7 +163,7 @@ public class GameScene extends GUIMain {
         dicePane.getChildren().add(diceBox);
     }
 
-    private static void setPlayerPane() {
+    private void setPlayerPane() {
 
         playerPane = new StackPane();
         playerBox = new HBox();
@@ -186,7 +181,7 @@ public class GameScene extends GUIMain {
         playerPane.getChildren().add(playerBox);
     }
 
-    private static void setGameButtonsActions() {
+    private void setGameButtonsActions() {
 
         // This works (visually) for PvP pre-set settings (names, String, etc) - need to update when we introduce AI
         passButton.setOnAction(e -> {
@@ -214,12 +209,12 @@ public class GameScene extends GUIMain {
         });
 
         backButton.setOnAction(e -> {
-            mainStage.setScene(IntroScene.getIntroScene());
+            mainStage.setScene(introSc.getIntroScene());
             mainStage.setFullScreen(true);
             mainStage.setResizable(false);
             mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         });
     }
 
-    public static Scene getGameScene() { return gameScene; }
+    public Scene getGameScene() { return gameScene; }
 }
