@@ -1,8 +1,5 @@
 import Board.Board;
 import GUI.GUIMain;
-import javafx.application.Application;
-
-import java.awt.desktop.AppForegroundListener;
 
 public class Game {
 
