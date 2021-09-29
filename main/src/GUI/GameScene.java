@@ -8,6 +8,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
+
 public class GameScene extends GUIMain {
 
     private Scene gameScene;
@@ -18,7 +20,7 @@ public class GameScene extends GUIMain {
     private ScrollPane scrollPane;
     private VBox menuBox, histBox, scrollBox;
     private HBox diceBox, playerBox;
-    private Image diceImgs[];
+    private ArrayList<Image> images;
     private ImageView diceImgViews[];
     private Button passButton, rollButton, backButton;
     private boolean p1Turn;
@@ -147,10 +149,15 @@ public class GameScene extends GUIMain {
         dicePane = new StackPane();
         diceBox = new HBox(screenBounds.getWidth()/20.5);
         diceImgViews = new ImageView[3];
-        diceImgs = new Image[3];
-        for(int i = 0; i < diceImgs.length; i++) {
-            diceImgs[i] = new Image(GameScene.class.getResourceAsStream("/res/white_pawn.png"));
-            diceImgViews[i] = new ImageView(diceImgs[i]);
+        images = new ArrayList<>();
+        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_bishop.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_horse.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_king.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_pawn.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_queen.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_rook.png")));
+        for(int i = 0; i < diceImgViews.length; i++) {
+            diceImgViews[i] = new ImageView(images.get(i));
             diceImgViews[i].setFitHeight(screenBounds.getHeight()/11.5);
             diceImgViews[i].setFitWidth(screenBounds.getWidth()/20.5);
         }
@@ -200,9 +207,9 @@ public class GameScene extends GUIMain {
 
         // Just to show it's working, need to implement randomness and individual swapping
         rollButton.setOnAction(e -> {
-            for(int i = 0; i < diceImgs.length; i++) {
-                diceImgs[i] = new Image(GameScene.class.getResourceAsStream("/res/white_rook.png"));
-                diceImgViews[i].setImage(diceImgs[i]);
+            for(int i = 0; i < diceImgViews.length; i++) {
+                int random = (int) ((Math.random() * (6 - 0)) + 0);
+                diceImgViews[i].setImage(images.get(random));
             }
         });
 
