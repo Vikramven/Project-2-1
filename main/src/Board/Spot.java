@@ -39,4 +39,8 @@ public class Spot {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
+
+    public Spot clone(){
+        return new Spot(x, y, piece);
+    }
 }

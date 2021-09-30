@@ -1,5 +1,7 @@
 package GUI;
 
+import Board.Board;
+import Board.Spot;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -100,27 +102,28 @@ public class GameScene extends GUIMain {
 
     private void setBoardPane() {
 
-        boardPane = new GridPane();
-        boardPane.setAlignment(Pos.CENTER);
+//        boardPane = new GridPane();
+//        boardPane.setAlignment(Pos.CENTER);
+//
+//        for (int row = 0; row < 8; row++) {
+//            for (int col = 0; col < 8; col ++) {
+//                StackPane square = new StackPane();
+//                String c;
+//                if ((row + col) % 2 != 0) {
+//                    c = "black";
+//                } else {
+//                    c = "white";
+//                }
+//                square.setStyle("-fx-background-color: " + c + ";");
+//                boardPane.add(square, col, row);
+//            }
+//        }
+//        for (int i = 0; i < 8; i++) {
+//            boardPane.getColumnConstraints().add(new ColumnConstraints(screenBounds.getWidth()/17.5));
+//            boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
+//        }
 
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col ++) {
-                StackPane square = new StackPane();
-                String c;
-                if ((row + col) % 2 != 0) {
-                    c = "black";
-                } else {
-                    c = "white";
-                }
-                square.setStyle("-fx-background-color: " + c + ";");
-                boardPane.add(square, col, row);
-            }
-        }
-        for (int i = 0; i < 8; i++) {
-            boardPane.getColumnConstraints().add(new ColumnConstraints(screenBounds.getWidth()/17.5));
-            boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
-        }
-    }
+     }
 
     private void setMenuPane() {
 

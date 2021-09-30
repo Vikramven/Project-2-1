@@ -17,7 +17,7 @@ public class Move {
      * @param x X coordinate which choose the player
      * @param y Y coordinate which choose the player
      */
-    public void movePiece(Board board, Spot spot, ArrayList<Spot> legalMoves, int x, int y){
+    public boolean movePiece(Board board, Spot spot, ArrayList<Spot> legalMoves, int x, int y){
 
         for (int i = 0; i < legalMoves.size(); i++) {
             if(x == legalMoves.get(i).getX() && y == legalMoves.get(i).getY()){
@@ -35,8 +35,10 @@ public class Move {
                 if(newSpot.getPiece().getName().equals("Pawn")){
                     checkEnPassant(newSpot);
                 }
+                return true;
             }
         }
+        return false;
     }
 
     /**

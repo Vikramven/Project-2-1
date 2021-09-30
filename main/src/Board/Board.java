@@ -28,6 +28,21 @@ public class Board {
         return board[x][y];
     }
 
+    /**
+     * Set the spot, if coordinates are wrong, it gives an error
+     * @param spot The spot
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return The Spot
+     */
+    public void setSpot(Spot spot, int x, int y){
+
+        if(x < 0 || x > 7 || y < 0 || y > 7){
+            throw new RuntimeException("Wrong coordinates of spot");
+        }
+        board[x][y] = spot;
+    }
+
 
     /**
      * Start the game
