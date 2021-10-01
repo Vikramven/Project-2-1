@@ -77,7 +77,7 @@ public class LogicGame {
             Spot spot = allLegalMoves.get(i);
             int x = spot.getX();
             int y = spot.getY();
-            buttonBoard[x][y].setStyle("-fx-background-color: green;");
+            buttonBoard[x][y].setStyle("-fx-background-color: green;"); // To be changed later, just to see if it's working.
         }
     }
 }
