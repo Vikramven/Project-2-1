@@ -1,7 +1,6 @@
 package GUI;
 
-import Board.Board;
-import Board.Spot;
+import Pieces.Piece;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,7 +23,7 @@ public class GameScene extends GUIMain {
     private HBox diceBox, playerBox;
     private ArrayList<Image> images;
     private ImageView diceImgViews[];
-    private Button passButton, rollButton, backButton;
+    private Button passButton, rollButton, backButton, buttonStateBoard[][];
     private boolean p1Turn;
 
     public GameScene() {
@@ -102,28 +101,39 @@ public class GameScene extends GUIMain {
 
     private void setBoardPane() {
 
-//        boardPane = new GridPane();
-//        boardPane.setAlignment(Pos.CENTER);
-//
-//        for (int row = 0; row < 8; row++) {
-//            for (int col = 0; col < 8; col ++) {
-//                StackPane square = new StackPane();
-//                String c;
-//                if ((row + col) % 2 != 0) {
-//                    c = "black";
-//                } else {
-//                    c = "white";
-//                }
-//                square.setStyle("-fx-background-color: " + c + ";");
-//                boardPane.add(square, col, row);
-//            }
-//        }
-//        for (int i = 0; i < 8; i++) {
-//            boardPane.getColumnConstraints().add(new ColumnConstraints(screenBounds.getWidth()/17.5));
-//            boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
-//        }
+        boardPane = new GridPane();
+        buttonStateBoard = new Button[8][8];
+        boardPane.setAlignment(Pos.CENTER);
 
-     }
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                StackPane square = new StackPane();
+                String c;
+                buttonStateBoard[x][y] = new Button();
+                square.getChildren().add(buttonStateBoard[x][y]);
+                if ((x + y) % 2 != 0) {
+                    c = "black";
+                } else {
+                    c = "white";
+                }
+                buttonStateBoard[x][y].setStyle("-fx-background-color: " + c + ";");
+                buttonStateBoard[x][y].setMaxWidth(Double.MAX_VALUE);
+                buttonStateBoard[x][y].setMaxHeight(Double.MAX_VALUE);
+                boardPane.setFillWidth(buttonStateBoard[x][y], true);
+                boardPane.setFillHeight(buttonStateBoard[x][y], true);
+
+                boardPane.add(square, y, x);
+            }
+        }
+
+        for (int i = 0; i < 8; i++) {
+            boardPane.getColumnConstraints().add(new ColumnConstraints(screenBounds.getWidth()/17.5));
+            boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
+        }
+
+        logicGame.setSpotAction(board,buttonStateBoard);
+
+    }
 
     private void setMenuPane() {
 
