@@ -11,39 +11,44 @@ import java.util.ArrayList;
 
 public class LogicGame {
 
-    Spot currentSpot = null;
-    Player player = new Human(false, true);
-    ArrayList<Spot> allLegalMoves = null;
-    Button buttonStateBoard[][] = new Button[8][8];
+    private Spot currentSpot = null;
+    private Player player = new Human(false, true);
+    private ArrayList<Spot> allLegalMoves = null;
 
-    public LogicGame(){
-
+    public LogicGame() {
+        // Empty.
     }
 
-    public void setButtons(){
-        Board board = new Board();
+    public void setSpotAction(Board board, Button[][] buttonBoard) {
+
         Move move = new Move();
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                buttonStateBoard[x][y] = new Button();
                 int finalX = x;
                 int finalY = y;
                 /*
-
-
-
                  */
-                buttonStateBoard[x][y].setOnAction(e -> {
-                    if(currentSpot == null){
-                        currentSpot = board.getSpot(finalX, finalY);
-                        Piece piece = currentSpot.getPiece();
-                        allLegalMoves = piece.checkPlayerMove(board, currentSpot, player);
+                buttonBoard[x][y].setOnAction(e -> {
+                    System.out.println("TEST " + finalX + " " + finalY);
+//                    currentSpot = board.getSpot(finalX,finalY);
+//                    System.out.println("TEST " + currentSpot.getX() + " " + currentSpot.getY());
 
-                        if (allLegalMoves == null) {
-                            currentSpot = null;
+                    if(currentSpot == null) {
+                        currentSpot = board.getSpot(finalX, finalY);
+                        if(currentSpot != null) {
+                            Piece piece = currentSpot.getPiece();
+                            System.out.println(piece.getName());
+                            allLegalMoves = piece.checkPlayerMove(board, currentSpot, player);
+
+                            if (allLegalMoves == null) {
+                                currentSpot = null;
+                            } else {
+                                System.out.println("NOT NULL");
+                                highlightButtons(buttonBoard);
+                            }
                         } else {
-                            lightButton();
+                            ; // Do nothing, just so we don't get the warning saying the spot we clicked in is null
                         }
                     } else if(currentSpot.getPiece().isColor().equals(player.isColorSide())) {
                         boolean flag = move.movePiece(board, currentSpot, allLegalMoves, finalX, finalY);
@@ -67,12 +72,12 @@ public class LogicGame {
         }
     }
 
-    private void lightButton(){
+    private void highlightButtons(Button[][] buttonBoard) {
         for (int i = 0; i < allLegalMoves.size(); i++) {
             Spot spot = allLegalMoves.get(i);
             int x = spot.getX();
             int y = spot.getY();
-            //buttonStateBoard[x][y] = qqqq
+            buttonBoard[x][y].setStyle("-fx-background-color: green;");
         }
     }
 }
