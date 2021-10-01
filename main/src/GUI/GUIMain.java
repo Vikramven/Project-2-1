@@ -12,6 +12,7 @@ public class GUIMain extends Application {
 
     protected static Rectangle2D screenBounds;
     protected static Stage mainStage;
+    protected static LogicGame logicGame;
     protected static IntroScene introSc;
     protected static GameScene gameSc;
     protected static Board board;
@@ -39,6 +40,7 @@ public class GUIMain extends Application {
     public void start(Stage primaryStage) {
 
         mainStage = primaryStage;
+        logicGame = new LogicGame();
 
         screenBounds = Screen.getPrimary().getBounds();
 
