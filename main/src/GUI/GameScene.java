@@ -201,7 +201,7 @@ public class GameScene extends GUIMain {
 
     private void setGameButtonsActions() {
 
-        // This works (visually) for PvP pre-set settings (names, String, etc) - need to update when we introduce AI
+        // This works (visually) for PvP pre-set settings (names, String, etc.) - need to update when we introduce AI
         passButton.setOnAction(e -> {
             if(p1Turn) {
                 playerLabel.setStyle(
@@ -220,9 +220,9 @@ public class GameScene extends GUIMain {
 
         // Just to show it's working, need to implement randomness and individual swapping
         rollButton.setOnAction(e -> {
-            for(int i = 0; i < diceImgViews.length; i++) {
-                int random = (int) ((Math.random() * (6 - 0)) + 0);
-                diceImgViews[i].setImage(images.get(random));
+            for (ImageView diceImgView : diceImgViews) {
+                int random = (int) (Math.random() * 6);
+                diceImgView.setImage(images.get(random));
             }
         });
 

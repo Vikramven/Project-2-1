@@ -73,8 +73,7 @@ public class LogicGame {
     }
 
     private void highlightButtons(Button[][] buttonBoard) {
-        for (int i = 0; i < allLegalMoves.size(); i++) {
-            Spot spot = allLegalMoves.get(i);
+        for (Spot spot : allLegalMoves) {
             int x = spot.getX();
             int y = spot.getY();
             buttonBoard[x][y].setStyle("-fx-background-color: green;"); // To be changed later, just to see if it's working.
