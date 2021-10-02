@@ -40,6 +40,7 @@ public class GUIMain extends Application {
     public void start(Stage primaryStage) {
 
         mainStage = primaryStage;
+        board = new Board();
         logicGame = new LogicGame();
 
         screenBounds = Screen.getPrimary().getBounds();

@@ -1,14 +1,15 @@
 package GUI;
 
 import Board.Board;
+import Board.Spot;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class GameScene extends GUIMain {
 
@@ -42,12 +43,6 @@ public class GameScene extends GUIMain {
         setDicePane();
         setPlayerPane();
         setGameButtonsActions();
-
-        gamePane.setLeft(histPane);
-        gamePane.setRight(menuPane);
-        gamePane.setCenter(boardPane);
-        gamePane.setBottom(dicePane);
-        gamePane.setTop(playerPane);
     }
 
     private void setHistPane() {
@@ -96,6 +91,8 @@ public class GameScene extends GUIMain {
         histBox.getChildren().addAll(histTitleLabel, scrollPane /*, b*/); // remove button afterwards, used for testing
 
         histPane.getChildren().add(histBox);
+
+        gamePane.setLeft(histPane);
     }
 
     private void setBoardPane() {
@@ -106,16 +103,24 @@ public class GameScene extends GUIMain {
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
+
                 StackPane square = new StackPane();
+                Spot spot = board.getSpot(x,y);
                 String c;
+
                 buttonStateBoard[x][y] = new Button();
                 square.getChildren().add(buttonStateBoard[x][y]);
-                if ((x + y) % 2 != 0) {
-                    c = "black";
-                } else {
-                    c = "white";
-                }
+                if ((x + y) % 2 != 0) { c = "green"; }
+                else { c = "white"; }
                 buttonStateBoard[x][y].setStyle("-fx-background-color: " + c + ";");
+                if(spot != null) {
+                    buttonStateBoard[x][y].setStyle(
+                            "-fx-background-color: " + c + ";" +
+                            "-fx-background-image: url('" + spot.getPiece().getImageURL()+ "');" +
+                            "-fx-background-size: 70px;" +
+                            "-fx-background-repeat: no-repeat;" +
+                            "-fx-background-position: 50%;");
+                }
                 buttonStateBoard[x][y].setMaxWidth(Double.MAX_VALUE);
                 buttonStateBoard[x][y].setMaxHeight(Double.MAX_VALUE);
                 boardPane.setFillWidth(buttonStateBoard[x][y], true);
@@ -130,10 +135,9 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
-        Board board = new Board();
-
         logicGame.setSpotAction(board,buttonStateBoard);
 
+        gamePane.setCenter(boardPane);
     }
 
     private void setMenuPane() {
@@ -156,6 +160,8 @@ public class GameScene extends GUIMain {
         menuBox.getChildren().addAll(menuLabel, passButton, rollButton, backButton);
 
         menuPane.getChildren().add(menuBox);
+
+        gamePane.setRight(menuPane);
     }
 
     private void setDicePane() {
@@ -165,7 +171,7 @@ public class GameScene extends GUIMain {
         diceImgViews = new ImageView[3];
         images = new ArrayList<>();
         images.add(new Image(GameScene.class.getResourceAsStream("/res/white_bishop.png")));
-        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_horse.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_knight.png")));
         images.add(new Image(GameScene.class.getResourceAsStream("/res/white_king.png")));
         images.add(new Image(GameScene.class.getResourceAsStream("/res/white_pawn.png")));
         images.add(new Image(GameScene.class.getResourceAsStream("/res/white_queen.png")));
@@ -180,6 +186,8 @@ public class GameScene extends GUIMain {
         diceBox.getChildren().addAll(diceImgViews);
 
         dicePane.getChildren().add(diceBox);
+
+        gamePane.setBottom(dicePane);
     }
 
     private void setPlayerPane() {
@@ -198,6 +206,8 @@ public class GameScene extends GUIMain {
         playerBox.getChildren().add(playerLabel);
 
         playerPane.getChildren().add(playerBox);
+
+        gamePane.setTop(playerPane);
     }
 
     private void setGameButtonsActions() {
@@ -228,10 +238,21 @@ public class GameScene extends GUIMain {
         });
 
         backButton.setOnAction(e -> {
-            mainStage.setScene(introSc.getIntroScene());
-            mainStage.setFullScreen(true);
-            mainStage.setResizable(false);
+            Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confAlert.setTitle("Restarting the game...");
+            confAlert.setHeaderText("Are you sure? Selecting OK will restart the game!");
+            confAlert.initOwner(mainStage);
 
+            Optional<ButtonType> result = confAlert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                board.restartGame();
+                setGameScene();
+                mainStage.setScene(introSc.getIntroScene());
+                mainStage.setFullScreen(true);
+                mainStage.setResizable(false);
+            } else {
+                ;
+            }
         });
     }
 

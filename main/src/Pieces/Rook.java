@@ -5,7 +5,7 @@ import Board.Spot;
 
 import java.util.ArrayList;
 
-public class Rook extends Piece{
+public class Rook extends Piece {
 
 
     private boolean castling = true;
@@ -16,6 +16,8 @@ public class Rook extends Piece{
     public Rook(boolean black) {
         super(black);
         name = "Rook";
+        if(black) { imageURL = "/res/black_rook.png"; }
+        else { imageURL = "/res/white_rook.png"; }
     }
 
     /**

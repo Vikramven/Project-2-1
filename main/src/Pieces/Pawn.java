@@ -5,7 +5,7 @@ import Board.Spot;
 
 import java.util.ArrayList;
 
-public class Pawn extends Piece{
+public class Pawn extends Piece {
 
     /**
      * Constructor
@@ -14,6 +14,8 @@ public class Pawn extends Piece{
     public Pawn(boolean black) {
         super(black);
         name = "Pawn";
+        if(black) { imageURL = "/res/black_pawn.png"; }
+        else { imageURL = "/res/white_pawn.png"; }
     }
 
     /**

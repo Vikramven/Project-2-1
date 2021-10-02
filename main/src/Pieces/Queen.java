@@ -5,7 +5,7 @@ import Board.Spot;
 
 import java.util.ArrayList;
 
-public class Queen extends Piece{
+public class Queen extends Piece {
 
     /**
      * Constructor
@@ -14,6 +14,8 @@ public class Queen extends Piece{
     public Queen(boolean black) {
         super(black);
         name = "Queen";
+        if(black) { imageURL = "/res/black_queen.png"; }
+        else { imageURL = "/res/white_queen.png"; }
     }
 
     /**

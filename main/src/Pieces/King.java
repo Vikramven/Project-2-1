@@ -17,6 +17,8 @@ public class King extends Piece {
     public King(boolean black) {
         super(black);
         name = "King";
+        if(black) { imageURL = "/res/black_king.png"; }
+        else { imageURL = "/res/white_king.png"; }
     }
 
     /**

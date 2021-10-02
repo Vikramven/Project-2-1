@@ -6,11 +6,11 @@ import Players.Player;
 
 import java.util.ArrayList;
 
-public abstract class Piece implements PieceMove{
+public abstract class Piece implements PieceMove {
 
     protected boolean black;
 
-    protected String name;
+    protected String name, imageURL;
 
     public Piece(boolean black) {
         this.black = black;
@@ -33,6 +33,8 @@ public abstract class Piece implements PieceMove{
     public String getName() {
         return name;
     }
+
+    public String getImageURL() { return imageURL; }
 
     /**
      * Define if piece have obstacles on their moves
