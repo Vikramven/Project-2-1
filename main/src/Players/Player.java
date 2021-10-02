@@ -12,8 +12,8 @@ public abstract class Player {
 
     public String isColorSide() {
         if(blackSide)
-            return "BlackSide";
-        return "WhiteSide";
+            return "Black";
+        return "White";
     }
 
     public void setColorSide(boolean colorSide) {

@@ -82,7 +82,7 @@ public class King extends Piece {
      */
     private void moveKing(Board board, ArrayList<Spot> legalMoves, int x, int y){
 
-        if(isBoardBounds(x) && isBoardBounds(y))
+        if(isBoardBounds(x) || isBoardBounds(y))
             return;
 
         if(isObstacle(board.getSpot(x, y), legalMoves))

@@ -29,44 +29,46 @@ public class Knight extends Piece{
         int x = spot.getX();
         int y = spot.getY();
 
-        //  - - - K
-        //  |
+
+        //    - -
+        //      |
+        //      |
+        //      K
         moveKnight(board, legalMoves, x, y, true, true, true, true);
 
-        //  K - - -
-        //        |
+        //      K
+        //      |
+        //      |
+        //    - -
         moveKnight(board, legalMoves, x, y, false, false, true, true);
 
-        //      K
-        //      |
-        //      |
-        //    - -
-        moveKnight(board, legalMoves, x, y, false, true, false, true) ;
-
-        //    - -
-        //      |
-        //      |
-        //      K
-        moveKnight(board, legalMoves, x, y, false, false, false, true);
 
         //  |
         //  - - - K
-        moveKnight(board, legalMoves, x, y, true, true, true, false);
+        moveKnight(board, legalMoves, x, y, false, true, false, true) ;
 
         //        |
         //  K - - -
+        moveKnight(board, legalMoves, x, y, false, false, false, true);
+
+        //      - -
+        //      |
+        //      |
+        //      K
+        moveKnight(board, legalMoves, x, y, true, true, true, false);
+
+        //      K
+        //      |
+        //      |
+        //      - -
         moveKnight(board, legalMoves, x, y, false, false, true, false);
 
-        //      K
-        //      |
-        //      |
-        //      - -
+        //  - - - K
+        //  |
         moveKnight(board, legalMoves, x, y, false, true, false, false) ;
 
-        //      - -
-        //      |
-        //      |
-        //      K
+        //  K - - -
+        //        |
         moveKnight(board, legalMoves, x, y, false, false, false, false);
 
 
@@ -91,33 +93,35 @@ public class Knight extends Piece{
 
         if(horizontal) {
             if (minusX)
-                newX = x - 3;
+                newX = x - 2;
             else
-                newX = x + 3;
+                newX = x + 2;
 
             if(rotation)
                 newY = y - 1;
             else
                 newY = y + 1;
 
-            if(isBoardBounds(newY) && isBoardBounds(newX))
+            if(isBoardBounds(newY) || isBoardBounds(newX))
                 return;
 
         } else {
             if (minusY)
-                newY = y - 3;
+                newY = y - 2;
             else
-                newY = y + 3;
+                newY = y + 2;
 
             if(rotation)
                 newX = x - 1;
             else
                 newX = x + 1;
 
-            if(isBoardBounds(newY) && isBoardBounds(newX))
+            if(isBoardBounds(newY) || isBoardBounds(newX))
                 return;
         }
 
+        if(isObstacle(board.getSpot(newX, newY), legalMoves))
+            return;
 
         legalMoves.add(new Spot(newX, newY, null));
     }

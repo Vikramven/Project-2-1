@@ -37,38 +37,52 @@ public class LogicGame {
                     if(currentSpot == null) {
                         currentSpot = board.getSpot(finalX, finalY);
                         if(currentSpot != null) {
-                            Piece piece = currentSpot.getPiece();
-                            System.out.println(piece.getName());
-                            allLegalMoves = piece.checkPlayerMove(board, currentSpot, player);
-
-                            if (allLegalMoves == null) {
-                                currentSpot = null;
-                            } else {
-                                System.out.println("NOT NULL");
-                                highlightButtons(buttonBoard);
-                            }
-                        } else {
-                            ; // Do nothing, just so we don't get the warning saying the spot we clicked in is null
+                            choicePiece(board, buttonBoard);
                         }
-                    } else if(currentSpot.getPiece().isColor().equals(player.isColorSide())) {
-                        boolean flag = move.movePiece(board, currentSpot, allLegalMoves, finalX, finalY);
-                        if(flag){
-                            int oldX = currentSpot.getX();
-                            int oldY = currentSpot.getY();
-                            board.setSpot(null, oldX, oldY);
-
-                            currentSpot.setX(finalX);
-                            currentSpot.setX(finalY);
-                            board.setSpot(currentSpot, finalX, finalY);
-
-                            //Change image of piece
-
-                            currentSpot = null;
-                            allLegalMoves = null;
+                    } else {
+                        Spot tmp_spot = board.getSpot(finalX, finalY);
+                        if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) {
+                            if (tmp_spot == null) {
+                                movePiece(move, board, finalX, finalY, buttonBoard);
+                            } else {
+                                if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
+                                    choicePiece(board, buttonBoard);
+                                } else {
+                                    movePiece(move, board, finalX, finalY, buttonBoard);
+                                }
+                            }
                         }
                     }
                 });
             }
+        }
+    }
+
+    private void choicePiece(Board board, Button[][] buttonBoard){
+        if(allLegalMoves != null) {
+            removeHighLightButtons(buttonBoard);
+            allLegalMoves = null;
+        }
+
+        Piece piece = currentSpot.getPiece();
+        System.out.println(piece.getName());
+        allLegalMoves = piece.checkPlayerMove(board, currentSpot, player);
+
+        if (allLegalMoves == null) {
+            currentSpot = null;
+        } else {
+            System.out.println("NOT NULL");
+            highlightButtons(buttonBoard);
+        }
+    }
+
+    private void movePiece(Move move, Board board, int finalX, int finalY, Button[][] buttonBoard){
+        boolean flag = move.movePiece(board, currentSpot, allLegalMoves, finalX, finalY);
+        if (flag) {
+            //Change image of piece
+            removeHighLightButtons(buttonBoard);
+            currentSpot = null;
+            allLegalMoves = null;
         }
     }
 
@@ -77,6 +91,20 @@ public class LogicGame {
             int x = spot.getX();
             int y = spot.getY();
             buttonBoard[x][y].setStyle("-fx-background-color: green;"); // To be changed later, just to see if it's working.
+        }
+    }
+
+    private void removeHighLightButtons(Button[][] buttonBoard){
+        String c;
+        for (Spot spot : allLegalMoves) {
+            int x = spot.getX();
+            int y = spot.getY();
+            if ((x + y) % 2 != 0) {
+                c = "black";
+            } else {
+                c = "white";
+            }
+            buttonBoard[x][y].setStyle("-fx-background-color: " + c + ";");
         }
     }
 }

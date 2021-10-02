@@ -1,13 +1,12 @@
 package GUI;
 
-import Pieces.Piece;
+import Board.Board;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
@@ -131,6 +130,8 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
+        Board board = new Board();
+
         logicGame.setSpotAction(board,buttonStateBoard);
 
     }
@@ -230,7 +231,7 @@ public class GameScene extends GUIMain {
             mainStage.setScene(introSc.getIntroScene());
             mainStage.setFullScreen(true);
             mainStage.setResizable(false);
-            mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+
         });
     }
 

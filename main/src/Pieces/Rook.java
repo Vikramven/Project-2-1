@@ -58,7 +58,7 @@ public class Rook extends Piece{
      * @param horizontal goes horizontal or not
      */
     protected void moveRook(Board board, ArrayList<Spot> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal){
-        for (int i = 0; i < 8; i++) {
+        for (int i = 1; i < 8; i++) {
 
                 int newX = x;
                 int newY = y;

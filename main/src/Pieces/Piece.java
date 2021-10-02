@@ -42,28 +42,16 @@ public abstract class Piece implements PieceMove{
      */
     protected boolean isObstacle(Spot spot, ArrayList<Spot> legalMoves){
 
-        if(!black && spot.getPiece() != null) {
-            isEnemy(spot, legalMoves, "Black");
-            return true;
-
-        } else if(black && spot.getPiece() != null) {
-            isEnemy(spot, legalMoves, "White");
+        if(spot != null) {
+            if (!spot.getPiece().isColor().equals(isColor())) {
+                legalMoves.add(new Spot(spot.getX(), spot.getY(), spot.getPiece()));
+            }
             return true;
         }
 
         return false;
     }
 
-    /**
-     * Define if the enemy piece on the spot
-     * @param spot The spot
-     * @param legalMoves Arraylist with all possible legal move
-     * @param name define the color name of the enemy
-     */
-    protected void isEnemy(Spot spot, ArrayList<Spot> legalMoves, String name){
-        if (spot.getPiece().name.equals(name))
-            legalMoves.add(new Spot(spot.getX(), spot.getY(), spot.getPiece()));
-    }
 
     /**
      * Check if the piece goes out of the board

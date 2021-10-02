@@ -21,19 +21,16 @@ public class Move {
 
         for (int i = 0; i < legalMoves.size(); i++) {
             if(x == legalMoves.get(i).getX() && y == legalMoves.get(i).getY()){
-                Spot newSpot = board.getSpot(x, y);
-                newSpot.setX(x);
-                newSpot.setY(y);
+                int oldX = spot.getX();
+                int oldY = spot.getY();
+                board.setSpot(null, oldX, oldY);
 
-                //Assert never happen, but....
-                assert spot != null;
-                newSpot.setPiece(spot.getPiece());
+                spot.setX(x);
+                spot.setY(y);
+                board.setSpot(spot, x, y);
 
-
-                spot = null;
-
-                if(newSpot.getPiece().getName().equals("Pawn")){
-                    checkEnPassant(newSpot);
+                if(spot.getPiece().getName().equals("Pawn")){
+                    checkEnPassant(spot);
                 }
                 return true;
             }

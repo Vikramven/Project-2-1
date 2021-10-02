@@ -93,14 +93,18 @@ public class Pawn extends Piece{
             return;
 
         int left = y - 1;
-        if(isBoardBounds(left))
-            return;
-        isObstacle(board.getSpot(newX, left),  legalMoves);
+        if(!isBoardBounds(left)) {
+            if(isObstacle(board.getSpot(newX, left), legalMoves)) {
+                legalMoves.add(new Spot(newX, left, null));
+            }
+        }
 
         int right = y + 1;
-        if(isBoardBounds(right))
-            return;
-        isObstacle(board.getSpot(newX, right),  legalMoves);
+        if(!isBoardBounds(right)) {
+            if(isObstacle(board.getSpot(newX, right),  legalMoves)){
+                legalMoves.add(new Spot(newX, right, null));
+            }
+        }
     }
 
     /**
@@ -111,7 +115,7 @@ public class Pawn extends Piece{
     private boolean checkInitialPosition(int x){
         boolean initialPosition = false;
 
-        if(!black && x == 2){
+        if(!black && x == 1){
             initialPosition = true;
         } else if(black && x == 6) {
             initialPosition = true;
@@ -126,6 +130,6 @@ public class Pawn extends Piece{
      * @return true = obstacle: false = no obstacle
      */
     private boolean isObstaclePawn(Spot spot){
-        return spot.getPiece() != null;
+        return spot != null;
     }
 }

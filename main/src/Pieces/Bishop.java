@@ -60,7 +60,7 @@ public class Bishop extends Piece{
      * @param minusY goes minus Y coordinate
      */
     protected void moveBishop(Board board, ArrayList<Spot> legalMoves, int x, int y, boolean minusX, boolean minusY){
-        for (int i = 0; i < 8; i++) {
+        for (int i = 1; i < 8; i++) {
                 int newX;
                 int newY;
 
@@ -74,7 +74,7 @@ public class Bishop extends Piece{
                 else
                     newY = y+i;
 
-                if(isBoardBounds(newX) && isBoardBounds(newY))
+                if(isBoardBounds(newX) || isBoardBounds(newY))
                     return;
 
                 if(isObstacle(board.getSpot(newX, newY), legalMoves))
