@@ -46,6 +46,7 @@ public class LogicGame {
                                 movePiece(move, board, finalX, finalY, buttonBoard);
                             } else {
                                 if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
+                                    currentSpot = board.getSpot(finalX, finalY);
                                     choicePiece(board, buttonBoard);
                                 } else {
                                     movePiece(move, board, finalX, finalY, buttonBoard);
