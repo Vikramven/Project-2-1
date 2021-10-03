@@ -96,16 +96,12 @@ public class Pawn extends Piece {
 
         int left = y - 1;
         if(!isBoardBounds(left)) {
-            if(isObstacle(board.getSpot(newX, left), legalMoves)) {
-                legalMoves.add(new Spot(newX, left, null));
-            }
+            isObstacle(board.getSpot(newX, left), legalMoves);
         }
 
         int right = y + 1;
         if(!isBoardBounds(right)) {
-            if(isObstacle(board.getSpot(newX, right),  legalMoves)){
-                legalMoves.add(new Spot(newX, right, null));
-            }
+            isObstacle(board.getSpot(newX, right),  legalMoves);
         }
     }
 

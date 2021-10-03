@@ -1,27 +1,24 @@
 package GUI;
 
 import Board.*;
-import Logic.Move;
+import Pieces.King;
 import Pieces.Piece;
-import Players.Human;
-import Players.Player;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LogicGame {
+public class LogicGame extends GameScene{
 
     private Spot currentSpot = null;
-    private Player player = new Human(false, true);
     private ArrayList<Spot> allLegalMoves = null;
 
     public LogicGame() {
         // Empty.
     }
 
-    public void setSpotAction(Board board, Button[][] buttonBoard) {
-        Move move = new Move();
+    public void setSpotAction(Board board, Button[][] buttonBoard, Label playerPass) {
         AtomicInteger iniX = new AtomicInteger();
         AtomicInteger iniY = new AtomicInteger();
         for (int x = 0; x < 8; x++) {
@@ -41,13 +38,17 @@ public class LogicGame {
                         Spot tmp_spot = board.getSpot(finalX, finalY);
                         if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) {
                             if (tmp_spot == null) {
-                                movePiece(move, board, iniX, iniY, finalX, finalY, buttonBoard);
+                                movePieceGUI(board, iniX, iniY, finalX, finalY, buttonBoard);
+
+                                changePlayer(buttonBoard, playerPass);
                             } else {
                                 if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
                                     currentSpot = board.getSpot(finalX, finalY);
                                     choicePiece(board, buttonBoard);
                                 } else {
-                                    movePiece(move, board, iniX, iniY, finalX, finalY, buttonBoard);
+                                    movePieceGUI(board, iniX, iniY, finalX, finalY, buttonBoard);
+
+                                    changePlayer(buttonBoard, playerPass);
                                 }
                             }
                         }
@@ -75,8 +76,8 @@ public class LogicGame {
         }
     }
 
-    private void movePiece(Move move, Board board, AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY, Button[][] buttonBoard) {
-        boolean flag = move.movePiece(board, currentSpot, allLegalMoves, finalX, finalY);
+    private void movePieceGUI(Board board, AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY, Button[][] buttonBoard) {
+        boolean flag = movePiece(board, currentSpot, allLegalMoves, finalX, finalY);
         if (flag) {
             Spot iniSpot = board.getSpot(iniX.intValue(),iniY.intValue());
             Spot finalSpot = board.getSpot(finalX,finalY);
@@ -108,25 +109,72 @@ public class LogicGame {
         }
     }
 
-    private void removeHighlightButtons(Board board, Button[][] buttonBoard) {
-        Spot spot;
-        String c;
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                spot = board.getSpot(x, y);
-                if ((x + y) % 2 != 0) { c = "green"; }
-                else { c = "white"; }
-                if(spot == null) {
-                    buttonBoard[x][y].setStyle("-fx-background-color: " + c + ";");
-                } else {
-                    buttonBoard[x][y].setStyle(
-                            "-fx-background-color: " + c + ";" +
-                            "-fx-background-image: url('" + spot.getPiece().getImageURL() + "');" +
-                            "-fx-background-size: 70px;" +
-                            "-fx-background-repeat: no-repeat;" +
-                            "-fx-background-position: 50%;");
+    /**
+     * Move the piece
+     * @param board Board
+     * @param spot Spot
+     * @param legalMoves all legal possible moves for the piece
+     * @param x X coordinate which choose the player
+     * @param y Y coordinate which choose the player
+     */
+    public boolean movePiece(Board board, Spot spot, ArrayList<Spot> legalMoves, int x, int y){
+
+        for (int i = 0; i < legalMoves.size(); i++) {
+            if(x == legalMoves.get(i).getX() && y == legalMoves.get(i).getY()){
+                int oldX = spot.getX();
+                int oldY = spot.getY();
+                board.setSpot(null, oldX, oldY);
+
+                spot.setX(x);
+                spot.setY(y);
+                board.setSpot(spot, x, y);
+
+                if(spot.getPiece().getName().equals("Pawn")){
+                    checkEnPassant(spot);
                 }
+
+                if(spot.getPiece().getName().equals("King")){
+                    King piece = (King) spot.getPiece();
+                    if(piece.isCastling()) {
+                        int longOrShort = spot.getY() - y;
+                        if (longOrShort == 2) {
+                            //TODO
+                        } else if(longOrShort == -2){
+                            //TODO
+                        }
+                    }
+                    piece.setCastling(false);
+                }
+                return true;
             }
         }
+        return false;
+    }
+
+    private boolean wasCastling(int longOrShort){
+        return longOrShort == -2 || longOrShort == 2;
+    }
+
+    /**
+     * Check on EnPassant
+     * @param spot Spot of the pawn
+     */
+    private void checkEnPassant(Spot spot){
+        Piece pawn = spot.getPiece();
+        if(pawn.isColor().equals("White")){
+            if(spot.getX() == 7)
+                enPassant(spot);
+        } else {
+            if(spot.getX() == 0)
+                enPassant(spot);
+        }
+    }
+
+    /**
+     * Do EnPassant
+     * @param spot The spot of the pawn
+     */
+    private void enPassant(Spot spot){
+        //TODO: CALL THE GUI and player choose which piece he/she wants
     }
 }

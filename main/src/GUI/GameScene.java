@@ -14,7 +14,7 @@ import java.util.Optional;
 public class GameScene extends GUIMain {
 
     private Scene gameScene;
-    private Label menuLabel, histTitleLabel, histLabel, playerLabel;
+    private Label menuLabel, histTitleLabel, histLabel;
     private BorderPane gamePane;
     private StackPane menuPane, histPane, dicePane, playerPane;
     private GridPane boardPane;
@@ -24,7 +24,7 @@ public class GameScene extends GUIMain {
     private ArrayList<Image> images;
     private ImageView diceImgViews[];
     private Button passButton, rollButton, backButton, buttonStateBoard[][];
-    private boolean p1Turn;
+    protected Label playerLabel = new Label("White" + " vs " + "Black");;
 
     public GameScene() {
         // Empty.
@@ -39,10 +39,10 @@ public class GameScene extends GUIMain {
 
         setMenuPane();
         setHistPane();
-        setBoardPane();
         setDicePane();
         setPlayerPane();
         setGameButtonsActions();
+        setBoardPane();
     }
 
     private void setHistPane() {
@@ -135,7 +135,7 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
-        logicGame.setSpotAction(board,buttonStateBoard);
+        logicGame.setSpotAction(board, buttonStateBoard, playerLabel);
 
         gamePane.setCenter(boardPane);
     }
@@ -194,9 +194,6 @@ public class GameScene extends GUIMain {
 
         playerPane = new StackPane();
         playerBox = new HBox();
-        String playerString = "Player1" + " vs " + "Player2";
-        p1Turn = true;
-        playerLabel = new Label(playerString);
         playerLabel.setStyle(
                 "-fx-font: 42px SansSerifBold;" +
                 "-fx-font-weight: bold;" +
@@ -214,19 +211,7 @@ public class GameScene extends GUIMain {
 
         // This works (visually) for PvP pre-set settings (names, String, etc.) - need to update when we introduce AI
         passButton.setOnAction(e -> {
-            if(p1Turn) {
-                playerLabel.setStyle(
-                        "-fx-font: 42px SansSerifBold;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
-                p1Turn = false;
-            } else {
-                playerLabel.setStyle(
-                        "-fx-font: 42px SansSerifBold;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-text-fill: linear-gradient(from 60px 60px to 100px 100px, #32cd32, #ff8000);");
-                p1Turn = true;
-            }
+            changePlayer(buttonStateBoard, playerLabel);
         });
 
         // Just to show it's working, need to implement randomness and individual swapping
@@ -250,10 +235,58 @@ public class GameScene extends GUIMain {
                 mainStage.setScene(introSc.getIntroScene());
                 mainStage.setFullScreen(true);
                 mainStage.setResizable(false);
-            } else {
-                ;
             }
         });
+    }
+
+    /**
+     * Remove all hints from the board
+     * @param board The state of the board
+     * @param buttonBoard buttons on the board
+     */
+    protected void removeHighlightButtons(Board board, Button[][] buttonBoard) {
+        Spot spot;
+        String c;
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                spot = board.getSpot(x, y);
+                if ((x + y) % 2 != 0) { c = "green"; }
+                else { c = "white"; }
+                if(spot == null) {
+                    buttonBoard[x][y].setStyle("-fx-background-color: " + c + ";");
+                } else {
+                    buttonBoard[x][y].setStyle(
+                            "-fx-background-color: " + c + ";" +
+                                    "-fx-background-image: url('" + spot.getPiece().getImageURL() + "');" +
+                                    "-fx-background-size: 70px;" +
+                                    "-fx-background-repeat: no-repeat;" +
+                                    "-fx-background-position: 50%;");
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Change the player move
+     * @param buttonBoard buttons on the board
+     * @param playerLabel Label which show who move
+     */
+    protected void changePlayer(Button[][] buttonBoard, Label playerLabel){
+        if(player.isColorSide().equals("White")) {
+            playerLabel.setStyle(
+                    "-fx-font: 42px SansSerifBold;" +
+                            "-fx-font-weight: bold;" +
+                            "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
+            player.setColorSide(true);
+        } else {
+            playerLabel.setStyle(
+                    "-fx-font: 42px SansSerifBold;" +
+                            "-fx-font-weight: bold;" +
+                            "-fx-text-fill: linear-gradient(from 60px 60px to 100px 100px, #32cd32, #ff8000);");
+            player.setColorSide(false);
+        }
+        removeHighlightButtons(board, buttonBoard);
     }
 
     public Scene getGameScene() { return gameScene; }

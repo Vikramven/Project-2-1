@@ -1,6 +1,8 @@
 package GUI;
 
 import Board.Board;
+import Players.Human;
+import Players.Player;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -16,6 +18,7 @@ public class GUIMain extends Application {
     protected static IntroScene introSc;
     protected static GameScene gameSc;
     protected static Board board;
+    protected Player player = new Human(false, true);
 
     /**
      * Constructor 1
