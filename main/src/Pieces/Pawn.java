@@ -14,6 +14,7 @@ public class Pawn extends Piece {
     public Pawn(boolean black) {
         super(black);
         name = "Pawn";
+        nameInt = 3;
         if(black) { imageURL = "/res/black_pawn.png"; }
         else { imageURL = "/res/white_pawn.png"; }
     }

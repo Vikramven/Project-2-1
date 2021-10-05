@@ -14,6 +14,7 @@ public class Queen extends Piece {
     public Queen(boolean black) {
         super(black);
         name = "Queen";
+        nameInt = 4;
         if(black) { imageURL = "/res/black_queen.png"; }
         else { imageURL = "/res/white_queen.png"; }
     }

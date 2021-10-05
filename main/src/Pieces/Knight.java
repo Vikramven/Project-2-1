@@ -14,6 +14,7 @@ public class Knight extends Piece {
     public Knight(boolean black) {
         super(black);
         name = "Knight";
+        nameInt = 1;
         if(black) { imageURL = "/res/black_knight.png"; }
         else { imageURL = "/res/white_knight.png"; }
     }

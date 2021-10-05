@@ -14,6 +14,7 @@ public class Bishop extends Piece {
     public Bishop(boolean black) {
         super(black);
         name = "Bishop";
+        nameInt = 0;
         if(black) { imageURL = "/res/black_bishop.png"; }
         else { imageURL = "/res/white_bishop.png"; }
     }

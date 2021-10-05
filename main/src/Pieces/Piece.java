@@ -12,6 +12,8 @@ public abstract class Piece implements PieceMove {
 
     protected String name, imageURL;
 
+    protected int nameInt;
+
     public Piece(boolean black) {
         this.black = black;
     }
@@ -35,6 +37,10 @@ public abstract class Piece implements PieceMove {
     }
 
     public String getImageURL() { return imageURL; }
+
+    public int getNameInt() {
+        return nameInt;
+    }
 
     /**
      * Define if piece have obstacles on their moves

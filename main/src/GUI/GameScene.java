@@ -24,7 +24,8 @@ public class GameScene extends GUIMain {
     private ArrayList<Image> images;
     private ImageView diceImgViews[];
     private Button passButton, rollButton, backButton, buttonStateBoard[][];
-    protected Label playerLabel = new Label("White" + " vs " + "Black");;
+    protected Label playerLabel = new Label("White" + " vs " + "Black");
+    private int[] dicePiece = new int[3];
 
     public GameScene() {
         // Empty.
@@ -135,7 +136,7 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
-        logicGame.setSpotAction(board, buttonStateBoard, playerLabel);
+        logicGame.setSpotAction(board, buttonStateBoard, playerLabel, dicePiece, diceImgViews, images);
 
         gamePane.setCenter(boardPane);
     }
@@ -181,6 +182,7 @@ public class GameScene extends GUIMain {
             diceImgViews[i].setFitHeight(screenBounds.getHeight()/11.5);
             diceImgViews[i].setFitWidth(screenBounds.getWidth()/20.5);
         }
+        rollDice(diceImgViews, images, dicePiece);
 
         diceBox.setAlignment(Pos.TOP_CENTER);
         diceBox.getChildren().addAll(diceImgViews);
@@ -212,15 +214,14 @@ public class GameScene extends GUIMain {
         // This works (visually) for PvP pre-set settings (names, String, etc.) - need to update when we introduce AI
         passButton.setOnAction(e -> {
             changePlayer(buttonStateBoard, playerLabel);
+            rollDice(diceImgViews, images, dicePiece);
         });
 
-        // Just to show it's working, need to implement randomness and individual swapping
-        rollButton.setOnAction(e -> {
-            for (ImageView diceImgView : diceImgViews) {
-                int random = (int) (Math.random() * 6);
-                diceImgView.setImage(images.get(random));
-            }
-        });
+        //TODO We do not need the button roll
+//        // Just to show it's working, need to implement randomness and individual swapping
+//        rollButton.setOnAction(e -> {
+//            rollDice(diceImgViews, images, dicePiece);
+//        });
 
         backButton.setOnAction(e -> {
             Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -287,6 +288,16 @@ public class GameScene extends GUIMain {
             player.setColorSide(false);
         }
         removeHighlightButtons(board, buttonBoard);
+    }
+
+    protected void rollDice(ImageView diceImgViews[], ArrayList<Image> images, int[] dicePiece){
+        int point = 0;
+        for (ImageView diceImgView : diceImgViews) {
+            int random = (int) (Math.random() * 6);
+            diceImgView.setImage(images.get(random));
+            dicePiece[point] = random;
+            point++;
+        }
     }
 
     public Scene getGameScene() { return gameScene; }

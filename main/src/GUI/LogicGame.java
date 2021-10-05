@@ -3,8 +3,11 @@ package GUI;
 import Board.*;
 import Pieces.King;
 import Pieces.Piece;
+import Players.Player;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,12 +16,14 @@ public class LogicGame extends GameScene{
 
     private Spot currentSpot = null;
     private ArrayList<Spot> allLegalMoves = null;
+    private int numberMoves = 3;
+    private String wasPlayer = "White";
 
     public LogicGame() {
         // Empty.
     }
 
-    public void setSpotAction(Board board, Button[][] buttonBoard, Label playerPass) {
+    public void setSpotAction(Board board, Button[][] buttonBoard, Label playerPass, int[] dicePiece, ImageView diceImgViews[], ArrayList<Image> images) {
         AtomicInteger iniX = new AtomicInteger();
         AtomicInteger iniY = new AtomicInteger();
         for (int x = 0; x < 8; x++) {
@@ -27,28 +32,41 @@ public class LogicGame extends GameScene{
                 int finalY = y;
 
                 buttonBoard[x][y].setOnAction(e -> {
+                    if(!player.isColorSide().equals(wasPlayer)){
+                        numberMoves = 3;
+                        if(wasPlayer.equals("White"))
+                            wasPlayer = "Black";
+                        else
+                            wasPlayer = "White";
+                    }
+
                     if(currentSpot == null) {
                         currentSpot = board.getSpot(finalX, finalY);
                         if(currentSpot != null) {
-                            iniX.set(currentSpot.getX());
-                            iniY.set(currentSpot.getY());
-                            choicePiece(board, buttonBoard);
+                            if(rightPiece(currentSpot.getPiece(), dicePiece)) {
+                                iniX.set(currentSpot.getX());
+                                iniY.set(currentSpot.getY());
+                                choicePiece(board, buttonBoard);
+                            } else {
+                                currentSpot = null;
+                            }
                         }
                     } else {
                         Spot tmp_spot = board.getSpot(finalX, finalY);
                         if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) {
                             if (tmp_spot == null) {
-                                movePieceGUI(board, iniX, iniY, finalX, finalY, buttonBoard);
-
-                                changePlayer(buttonBoard, playerPass);
+                                executeMove(dicePiece, iniX, iniY, finalX, finalY,
+                                        buttonBoard, playerPass, diceImgViews, images);
                             } else {
                                 if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
                                     currentSpot = board.getSpot(finalX, finalY);
-                                    choicePiece(board, buttonBoard);
+                                    if(rightPiece(currentSpot.getPiece(), dicePiece))
+                                        choicePiece(board, buttonBoard);
+                                    else
+                                        currentSpot = null;
                                 } else {
-                                    movePieceGUI(board, iniX, iniY, finalX, finalY, buttonBoard);
-
-                                    changePlayer(buttonBoard, playerPass);
+                                    executeMove(dicePiece, iniX, iniY, finalX, finalY,
+                                            buttonBoard, playerPass, diceImgViews, images);
                                 }
                             }
                         }
@@ -57,6 +75,28 @@ public class LogicGame extends GameScene{
                 });
             }
         }
+    }
+
+    private void executeMove(int[] dicePiece, AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY,
+                             Button[][] buttonBoard, Label playerPass, ImageView diceImgViews[], ArrayList<Image> images){
+        removeOneMove(dicePiece, currentSpot.getPiece());
+        movePieceGUI(board, iniX, iniY, finalX, finalY, buttonBoard);
+        numberMoves--;
+        if(numberMoves == 0) {
+            changePlayer(buttonBoard, playerPass);
+            numberMoves = 3;
+            rollDice(diceImgViews, images, dicePiece);
+        }
+    }
+
+    private boolean rightPiece(Piece piece, int[] dicePiece){
+        for (int j : dicePiece) {
+            System.out.println(j);
+            System.out.println(piece.getNameInt());
+            if (j == piece.getNameInt())
+                return true;
+        }
+        return false;
     }
 
     private void choicePiece(Board board, Button[][] buttonBoard){
@@ -73,6 +113,15 @@ public class LogicGame extends GameScene{
             currentSpot = null;
         } else {
             highlightButtons(buttonBoard);
+        }
+    }
+
+    private void removeOneMove(int[] dicePiece, Piece piece){
+        for (int i = 0; i < dicePiece.length; i++) {
+            if(dicePiece[i] == piece.getNameInt()) {
+                dicePiece[i] = 6;
+                return;
+            }
         }
     }
 

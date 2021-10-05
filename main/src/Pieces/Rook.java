@@ -16,6 +16,7 @@ public class Rook extends Piece {
     public Rook(boolean black) {
         super(black);
         name = "Rook";
+        nameInt = 5;
         if(black) { imageURL = "/res/black_rook.png"; }
         else { imageURL = "/res/white_rook.png"; }
     }
