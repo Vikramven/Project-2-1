@@ -23,7 +23,7 @@ public class GameScene extends GUIMain {
     private HBox diceBox, playerBox;
     private ArrayList<Image> images;
     private ImageView diceImgViews[];
-    private Button passButton, rollButton, backButton, buttonStateBoard[][];
+    private Button passButton, backButton, buttonStateBoard[][];
     protected Label playerLabel = new Label("White" + " vs " + "Black");
     private int[] dicePiece = new int[3];
 
@@ -150,15 +150,12 @@ public class GameScene extends GUIMain {
         passButton = new Button("Pass");
         passButton.getStyleClass().add("passButton");
         passButton.setPrefWidth(screenBounds.getWidth()/12.5);
-        rollButton = new Button("Roll!");
-        rollButton.getStyleClass().add("rollButton");
-        rollButton.setPrefWidth(screenBounds.getWidth()/12.5);
         backButton = new Button("Back");
         backButton.getStyleClass().add("backButton");
         backButton.setPrefWidth(screenBounds.getWidth()/12.5);
 
         menuBox.setAlignment(Pos.CENTER);
-        menuBox.getChildren().addAll(menuLabel, passButton, rollButton, backButton);
+        menuBox.getChildren().addAll(menuLabel, passButton, backButton);
 
         menuPane.getChildren().add(menuBox);
 
@@ -217,16 +214,10 @@ public class GameScene extends GUIMain {
             rollDice(diceImgViews, images, dicePiece);
         });
 
-        //TODO We do not need the button roll
-//        // Just to show it's working, need to implement randomness and individual swapping
-//        rollButton.setOnAction(e -> {
-//            rollDice(diceImgViews, images, dicePiece);
-//        });
-
         backButton.setOnAction(e -> {
             Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confAlert.setTitle("Restarting the game...");
-            confAlert.setHeaderText("Are you sure? Selecting OK will restart the game!");
+            confAlert.setHeaderText("Are you sure? Selecting OK will finish this game!");
             confAlert.initOwner(mainStage);
 
             Optional<ButtonType> result = confAlert.showAndWait();
