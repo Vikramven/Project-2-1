@@ -92,7 +92,6 @@ public class LogicGame{
         AtomicInteger iniX = new AtomicInteger();
         AtomicInteger iniY = new AtomicInteger();
 
-
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 int finalX = x;
@@ -100,45 +99,39 @@ public class LogicGame{
 
                 buttonBoard[x][y].setOnAction(e -> {
 
-                    if(currentSpot == null) { //currentSpot = null means that player does not choice the piece yet
-                        currentSpot = board.getSpot(finalX, finalY); //Get the spot from the board
-                        if(currentSpot != null) { //Check if it is not null
-
-                            if(rightPiece(currentSpot.getPiece())) { //if this piece from dice pieces
-
+                    if(currentSpot == null) { //currentSpot = null means that player did not choose the piece yet
+                        currentSpot = board.getSpot(finalX, finalY); // Get the spot from the board
+                        if(currentSpot != null) { // Check if it is not null
+                            // Check if this piece is from the dice pieces
+                            if(rightPiece(currentSpot.getPiece())) {
                                 iniX.set(currentSpot.getX());
                                 iniY.set(currentSpot.getY());
-                                choicePiece(); //Assign the choice of the player
+                                choicePiece(); // Assign the choice of the player
                             } else {
-
                                 currentSpot = null;
                             }
                         }
                     } else {
 
-                        Spot tmp_spot = board.getSpot(finalX, finalY); //Get the spot from the board
+                        Spot tmp_spot = board.getSpot(finalX, finalY); // Get the spot from the board
 
-                        if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) { //Check if it is not the same piece
-
-                            if (tmp_spot == null) { //tmp_spot = null means that spot is empty
-
-                                executeMove(iniX, iniY, finalX, finalY); //Execute the move of the player
-
+                        // Check if it is not the same piece
+                        if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) {
+                            if (tmp_spot == null) { // tmp_spot = null means that spot is empty
+                                executeMove(iniX, iniY, finalX, finalY); // Execute the move of the player
                             } else {
-
-                                if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {//Check if tmp_spot is the same color as player
-
-                                    currentSpot = board.getSpot(finalX, finalY);//Change the current piece to another piece
-
-                                    if(rightPiece(currentSpot.getPiece())) //if this piece from dice pieces
-
-                                        choicePiece(); //Assign the choice of the player
+                                // Check if tmp_spot has the same color as player
+                                if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
+                                    currentSpot = board.getSpot(finalX, finalY); //Change the current piece to another piece
+                                    // Check if this piece is from the dice pieces
+                                    if(rightPiece(currentSpot.getPiece()))
+                                        choicePiece(); // Assign the choice of the player
                                     else {
                                         currentSpot = null;
-                                        removeHighlightButtons(board, buttonBoard); //Remove Highlight buttons
+                                        removeHighlightButtons(board, buttonBoard); //Remove highlighted buttons
                                     }
-                                } else { //This condition works if the piece is enemy
-
+                                // This condition works if the piece is enemy
+                                } else {
                                     executeMove(iniX, iniY, finalX, finalY);
                                 }
                             }
@@ -149,7 +142,6 @@ public class LogicGame{
             }
         }
     }
-
 
     /**
      * Change the player in the logic and in the GUI
@@ -300,7 +292,6 @@ public class LogicGame{
     private void movePieceGUI(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY) {
         boolean flag = movePiece(finalX, finalY);
         if (flag) {
-            Spot iniSpot = board.getSpot(iniX.intValue(),iniY.intValue());
             Spot finalSpot = board.getSpot(finalX,finalY);
             String c;
 
@@ -311,10 +302,10 @@ public class LogicGame{
                 buttonBoard[iniX.intValue()][iniY.intValue()].setStyle("-fx-background-color: " + c + ";");
                 buttonBoard[finalX][finalY].setStyle(
                         "-fx-background-color: " + c + ";" +
-                                "-fx-background-image: url('" + finalSpot.getPiece().getImageURL() + "');" +
-                                "-fx-background-size: 70px;" +
-                                "-fx-background-repeat: no-repeat;" +
-                                "-fx-background-position: 50%;");
+                        "-fx-background-image: url('" + finalSpot.getPiece().getImageURL() + "');" +
+                        "-fx-background-size: 70px;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: 50%;");
             }
             removeHighlightButtons(board, buttonBoard);
             currentSpot = null;
@@ -345,17 +336,16 @@ public class LogicGame{
 
                 if(currentSpot.getPiece().getName().equals("King")){
                     King piece = (King) currentSpot.getPiece();
+                    int kingX = currentSpot.getX();
                     int kingY = currentSpot.getY();
-                    boolean black = kingY == 7;
+                    boolean black = (kingX == 7);
 
                     if(piece.isCastling()) {
-                        int longOrShort = kingY - y;
-                        if (longOrShort == 2) { //Long Castling
-                            changeRook(7, 4, kingY, black);
-                            //TODO CHANGE THE IMAGE OF THE ROOK
-                        } else if(longOrShort == -2){ //Short Castling
-                            changeRook(0, 2, kingY, black);
-                            //TODO CHANGE THE IMAGE OF THE ROOK
+                        int longOrShort = kingY - oldY;
+                        if (longOrShort == 2) { // Long Castling
+                            changeRook(7, 4, kingX, black);
+                        } else if(longOrShort == -2){ // Short Castling
+                            changeRook(0, 2, kingX, black);
                         }
                     }
                     piece.setCastling(false);
@@ -368,15 +358,15 @@ public class LogicGame{
 
     /**
      * Change the rook
-     * @param oldRookX old rook position X
-     * @param newRookX new rook position X
-     * @param kingY king position Y
+     * @param oldRookY old rook position Y
+     * @param newRookY new rook position Y
+     * @param kingX king position X
      * @param black color of the piece
      */
-    private void changeRook(int oldRookX, int newRookX, int kingY, boolean black){
-        board.setSpot(null, oldRookX, kingY);
-        Spot newRookSpot = new Spot(newRookX, kingY, new Rook(black));
-        board.setSpot(newRookSpot, newRookX, kingY);
+    private void changeRook(int oldRookY, int newRookY, int kingX, boolean black){
+        board.setSpot(null, kingX, oldRookY);
+        Spot newRookSpot = new Spot(kingX, newRookY, new Rook(black));
+        board.setSpot(newRookSpot, kingX, newRookY);
     }
 
     /**

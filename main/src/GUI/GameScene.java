@@ -211,7 +211,6 @@ public class GameScene extends GUIMain {
     private void setGameButtonsActions() {
 
         // This works (visually) for PvP pre-set settings (names, String, etc.) - need to update when we introduce AI
-
         backButton.setOnAction(e -> {
             Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confAlert.setTitle("Restarting the game...");
