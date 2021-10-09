@@ -47,7 +47,7 @@ public class Board {
     /**
      * Start the game
      */
-    public void restartGame() {
+    private void restartGame() {
 
         board = new Spot[8][8];
 

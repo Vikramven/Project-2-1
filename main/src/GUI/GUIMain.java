@@ -14,21 +14,8 @@ public class GUIMain extends Application {
 
     protected static Rectangle2D screenBounds;
     protected static Stage mainStage;
-    protected static LogicGame logicGame;
     protected static IntroScene introSc;
     protected static GameScene gameSc;
-    protected static Board board;
-    protected Player player = new Human(false, true);
-
-    /**
-     * Constructor 1
-     * @param b Loads the same board from the Game class into the GUI package
-     * @param args Arguments passed directly from Game.main()
-     */
-    public GUIMain(Board b, String[] args) {
-        this.board = b;
-        Application.launch(args);
-    }
 
     /**
      * Constructor 2
@@ -43,8 +30,6 @@ public class GUIMain extends Application {
     public void start(Stage primaryStage) {
 
         mainStage = primaryStage;
-        board = new Board();
-        logicGame = new LogicGame();
 
         screenBounds = Screen.getPrimary().getBounds();
 

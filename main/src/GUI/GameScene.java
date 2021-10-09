@@ -2,6 +2,7 @@ package GUI;
 
 import Board.Board;
 import Board.Spot;
+import Logic.LogicGame;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,8 +24,8 @@ public class GameScene extends GUIMain {
     private HBox diceBox, playerBox;
     private ArrayList<Image> images;
     private ImageView diceImgViews[];
-    private Button passButton, backButton, buttonStateBoard[][];
-    protected Label playerLabel = new Label("White" + " vs " + "Black");
+    private Button passButton, backButton;
+    private Label playerLabel = new Label("White" + " vs " + "Black");
     private int[] dicePiece = new int[3];
 
     public GameScene() {
@@ -99,8 +100,10 @@ public class GameScene extends GUIMain {
     private void setBoardPane() {
 
         boardPane = new GridPane();
-        buttonStateBoard = new Button[8][8];
+        Button[][] buttonStateBoard = new Button[8][8];
         boardPane.setAlignment(Pos.CENTER);
+
+        Board board = new Board();
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -136,7 +139,7 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
-        logicGame.setSpotAction(board, buttonStateBoard, playerLabel, dicePiece, diceImgViews, images);
+        new LogicGame(board, buttonStateBoard, playerLabel, dicePiece, diceImgViews, images, passButton);
 
         gamePane.setCenter(boardPane);
     }
@@ -179,7 +182,6 @@ public class GameScene extends GUIMain {
             diceImgViews[i].setFitHeight(screenBounds.getHeight()/11.5);
             diceImgViews[i].setFitWidth(screenBounds.getWidth()/20.5);
         }
-        rollDice(diceImgViews, images, dicePiece);
 
         diceBox.setAlignment(Pos.TOP_CENTER);
         diceBox.getChildren().addAll(diceImgViews);
@@ -209,10 +211,6 @@ public class GameScene extends GUIMain {
     private void setGameButtonsActions() {
 
         // This works (visually) for PvP pre-set settings (names, String, etc.) - need to update when we introduce AI
-        passButton.setOnAction(e -> {
-            changePlayer(buttonStateBoard, playerLabel);
-            rollDice(diceImgViews, images, dicePiece);
-        });
 
         backButton.setOnAction(e -> {
             Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -222,73 +220,12 @@ public class GameScene extends GUIMain {
 
             Optional<ButtonType> result = confAlert.showAndWait();
             if (result.get() == ButtonType.OK){
-                board.restartGame();
                 setGameScene();
                 mainStage.setScene(introSc.getIntroScene());
                 mainStage.setFullScreen(true);
                 mainStage.setResizable(false);
             }
         });
-    }
-
-    /**
-     * Remove all hints from the board
-     * @param board The state of the board
-     * @param buttonBoard buttons on the board
-     */
-    protected void removeHighlightButtons(Board board, Button[][] buttonBoard) {
-        Spot spot;
-        String c;
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                spot = board.getSpot(x, y);
-                if ((x + y) % 2 != 0) { c = "green"; }
-                else { c = "white"; }
-                if(spot == null) {
-                    buttonBoard[x][y].setStyle("-fx-background-color: " + c + ";");
-                } else {
-                    buttonBoard[x][y].setStyle(
-                            "-fx-background-color: " + c + ";" +
-                                    "-fx-background-image: url('" + spot.getPiece().getImageURL() + "');" +
-                                    "-fx-background-size: 70px;" +
-                                    "-fx-background-repeat: no-repeat;" +
-                                    "-fx-background-position: 50%;");
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Change the player move
-     * @param buttonBoard buttons on the board
-     * @param playerLabel Label which show who move
-     */
-    protected void changePlayer(Button[][] buttonBoard, Label playerLabel){
-        if(player.isColorSide().equals("White")) {
-            playerLabel.setStyle(
-                    "-fx-font: 42px SansSerifBold;" +
-                            "-fx-font-weight: bold;" +
-                            "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
-            player.setColorSide(true);
-        } else {
-            playerLabel.setStyle(
-                    "-fx-font: 42px SansSerifBold;" +
-                            "-fx-font-weight: bold;" +
-                            "-fx-text-fill: linear-gradient(from 60px 60px to 100px 100px, #32cd32, #ff8000);");
-            player.setColorSide(false);
-        }
-        removeHighlightButtons(board, buttonBoard);
-    }
-
-    protected void rollDice(ImageView diceImgViews[], ArrayList<Image> images, int[] dicePiece){
-        int point = 0;
-        for (ImageView diceImgView : diceImgViews) {
-            int random = (int) (Math.random() * 6);
-            diceImgView.setImage(images.get(random));
-            dicePiece[point] = random;
-            point++;
-        }
     }
 
     public Scene getGameScene() { return gameScene; }

@@ -2,7 +2,9 @@ package Board;
 
 import Pieces.Piece;
 
-public class Spot {
+import javafx.scene.control.*;
+
+public class Spot extends Button{
 
     private int x;
 
