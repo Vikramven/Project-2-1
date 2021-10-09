@@ -1,20 +1,22 @@
 package Logic;
 
 import Board.*;
-import Pieces.King;
-import Pieces.Piece;
-import Pieces.Rook;
+import GUI.GUIMain;
+import Pieces.*;
 import Players.Human;
 import Players.Player;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LogicGame{
+public class LogicGame extends GUIMain {
 
     //Current spot
     private Spot currentSpot = null;
@@ -168,7 +170,7 @@ public class LogicGame{
     }
 
     /**
-     * Rolling dice
+     * Randomly roll the dice
      */
     private void rollDice(){
         int point = 0;
@@ -377,21 +379,101 @@ public class LogicGame{
         Piece pawn = spot.getPiece();
         if(pawn.isColor().equals("White")){
             if(spot.getX() == 7)
-                enPassant(spot);
+                enPassant(spot,false);
         } else {
             if(spot.getX() == 0)
-                enPassant(spot);
+                enPassant(spot,true);
         }
     }
 
     /**
-     * Do EnPassant
+     * Perform EnPassant
      * @param spot The spot of the pawn
      */
-    private void enPassant(Spot spot){
-        //TODO: CALL THE GUI and player choose which piece he/she wants
-        //TODO: Depends on choice of the player, assign the piece
-        //TODO: commands to create piece (Player choice)-------> Queen queen = new Queen() OR Knight knight = new Knight() OR etc....
-        //TODO: command to assign piece -------> spot.setPiece(//Player choice//);
+    private void enPassant(Spot spot, boolean black) {
+
+        int random = (int) (Math.random() * 4);
+
+        // Shows an alert informing which piece the player got from the random dice roll.
+        if(random != 0) {
+            String result = promRoll(random);
+            Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
+            resAlert.setTitle("Random Roll Result");
+            resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
+            resAlert.initOwner(mainStage);
+            resAlert.showAndWait();
+
+            switch(result) {
+                case "Knight":
+                    Knight knight = new Knight(black);
+                    spot.setPiece(knight);
+                    break;
+                case "Bishop":
+                    Bishop bishop = new Bishop(black);
+                    spot.setPiece(bishop);
+                    break;
+                case "Queen":
+                    Queen queen = new Queen(black);
+                    spot.setPiece(queen);
+                    break;
+                case "Rook":
+                    Rook rook = new Rook(black);
+                    spot.setPiece(rook);
+                    break;
+            }
+        } else {
+            Alert selAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            selAlert.setTitle("Selecting a new piece...");
+            selAlert.setHeaderText("LUCKY ROLL! Choose the piece which your pawn will be transformed to.");
+            selAlert.initOwner(mainStage);
+
+            ButtonType kChoice = new ButtonType(promRoll(1));
+            ButtonType bChoice = new ButtonType(promRoll(2));
+            ButtonType qChoice = new ButtonType(promRoll(3));
+            ButtonType rChoice = new ButtonType(promRoll(4));
+
+            selAlert.getButtonTypes().setAll(kChoice, bChoice, qChoice, rChoice);
+
+            Optional<ButtonType> results = selAlert.showAndWait();
+            if (results.get() == kChoice) {
+                Knight knight = new Knight(black);
+                spot.setPiece(knight);
+            } else if (results.get() == bChoice) {
+                Bishop bishop = new Bishop(black);
+                spot.setPiece(bishop);
+            } else if (results.get() == qChoice) {
+                Queen queen = new Queen(black);
+                spot.setPiece(queen);
+            } else if (results.get() == rChoice) {
+                Rook rook = new Rook(black);
+                spot.setPiece(rook);
+            }
+        }
+    }
+
+    /**
+     * Determine a valid promotion roll result
+     * @param iterator The value gotten from a single dice roll
+     */
+    private String promRoll(int iterator) {
+        String pieceName = null;
+        switch(iterator) {
+            case 0:
+                pieceName = "Pawn: FREE CHOICE";
+                break;
+            case 1:
+                pieceName = "Knight";
+                break;
+            case 2:
+                pieceName = "Bishop";
+                break;
+            case 3:
+                pieceName = "Queen";
+                break;
+            case 4:
+                pieceName = "Rook";
+                break;
+        }
+        return pieceName;
     }
 }
