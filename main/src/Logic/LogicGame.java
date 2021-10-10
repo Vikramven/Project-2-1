@@ -2,6 +2,7 @@ package Logic;
 
 import Board.*;
 import GUI.GUIMain;
+import GUI.GameScene;
 import Pieces.*;
 import Players.Human;
 import Players.Player;
@@ -150,6 +151,8 @@ public class LogicGame extends GUIMain {
      */
     private void changePlayer(){
         numberMoves = 3; //Give to new move of the player 3 moves
+        currentSpot = null;
+        allLegalMoves = null;
 
         //Change the player in the logic and in the GUI
         if(player.isColorSide().equals("White")) {
@@ -274,13 +277,15 @@ public class LogicGame extends GUIMain {
      * @param finalY where player moves y coordinate
      */
     private void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY){
-        removeOneMove(currentSpot.getPiece());
-        movePieceGUI(iniX, iniY, finalX, finalY);
-        numberMoves--;
-        if(numberMoves == 0) {
-            changePlayer();
-            numberMoves = 3;
-            rollDice();
+        boolean flag = movePiece(finalX, finalY);
+        if(flag) {
+            movePieceGUI(iniX, iniY, finalX, finalY);
+            numberMoves--;
+            if (numberMoves == 0) {
+                changePlayer();
+                numberMoves = 3;
+                rollDice();
+            }
         }
     }
 
@@ -292,27 +297,27 @@ public class LogicGame extends GUIMain {
      * @param finalY where player moves y coordinate
      */
     private void movePieceGUI(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY) {
-        boolean flag = movePiece(finalX, finalY);
-        if (flag) {
-            Spot finalSpot = board.getSpot(finalX,finalY);
-            String c;
+        Spot finalSpot = board.getSpot(finalX,finalY);
+        String c;
 
-            if ((finalX + finalY) % 2 != 0) { c = "green"; }
-            else { c = "white"; }
+        if ((finalX + finalY) % 2 != 0) {
+            c = "green";
+        } else {
+            c = "white";
+        }
 
-            if(finalSpot != null) {
-                buttonBoard[iniX.intValue()][iniY.intValue()].setStyle("-fx-background-color: " + c + ";");
-                buttonBoard[finalX][finalY].setStyle(
+        if(finalSpot != null) {
+            buttonBoard[iniX.intValue()][iniY.intValue()].setStyle("-fx-background-color: " + c + ";");
+            buttonBoard[finalX][finalY].setStyle(
                         "-fx-background-color: " + c + ";" +
                         "-fx-background-image: url('" + finalSpot.getPiece().getImageURL() + "');" +
                         "-fx-background-size: 70px;" +
                         "-fx-background-repeat: no-repeat;" +
                         "-fx-background-position: 50%;");
             }
-            removeHighlightButtons(board, buttonBoard);
-            currentSpot = null;
-            allLegalMoves = null;
-        }
+        removeHighlightButtons(board, buttonBoard);
+        currentSpot = null;
+        allLegalMoves = null;
     }
 
     /**
@@ -324,9 +329,23 @@ public class LogicGame extends GUIMain {
 
         for (int i = 0; i < allLegalMoves.size(); i++) {
             if(x == allLegalMoves.get(i).getX() && y == allLegalMoves.get(i).getY()){
+
+                removeOneMove(currentSpot.getPiece()); //Remove piece from dice pieces
+
                 int oldX = currentSpot.getX();
                 int oldY = currentSpot.getY();
                 board.setSpot(null, oldX, oldY);
+
+                Spot win = board.getSpot(x, y);
+                if(win != null){
+                    Piece winPiece = win.getPiece();
+                    if(winPiece.getName().equals("King")){
+                        String colorWin = currentSpot.getPiece().isColor();
+                        System.out.println(colorWin + " WIN !!!!!!");
+                        //TODO: PUSH UP menu, where shows that PlayerColor Win and option restart the game
+
+                    }
+                }
 
                 currentSpot.setX(x);
                 currentSpot.setY(y);
@@ -352,6 +371,12 @@ public class LogicGame extends GUIMain {
                     }
                     piece.setCastling(false);
                 }
+
+                if(currentSpot.getPiece().getName().equals("Rook")){
+                    Rook rook = (Rook) currentSpot.getPiece();
+                    rook.setCastling(false);
+                }
+
                 return true;
             }
         }
