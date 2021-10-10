@@ -38,6 +38,7 @@ public class GameScene extends GUIMain {
         gameScene = new Scene(gamePane, screenBounds.getWidth(), screenBounds.getHeight());
         gameScene.getStylesheets().clear();
         gameScene.getStylesheets().add("/res/Stylesheet.css");
+        winFlag = false;
 
         setMenuPane();
         setHistPane();
@@ -218,11 +219,13 @@ public class GameScene extends GUIMain {
             confAlert.initOwner(mainStage);
 
             Optional<ButtonType> result = confAlert.showAndWait();
-            if (result.get() == ButtonType.OK){
-                setGameScene();
-                mainStage.setScene(introSc.getIntroScene());
-                mainStage.setFullScreen(true);
-                mainStage.setResizable(false);
+            if(result.isPresent()) {
+                if (result.get() == ButtonType.OK){
+                    setGameScene();
+                    mainStage.setScene(introSc.getIntroScene());
+                    mainStage.setFullScreen(true);
+                    mainStage.setResizable(false);
+                }
             }
         });
     }

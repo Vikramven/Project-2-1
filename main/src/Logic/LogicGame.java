@@ -2,7 +2,6 @@ package Logic;
 
 import Board.*;
 import GUI.GUIMain;
-import GUI.GameScene;
 import Pieces.*;
 import Players.Human;
 import Players.Player;
@@ -19,37 +18,36 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogicGame extends GUIMain {
 
-    //Current spot
+    // Current spot
     private Spot currentSpot = null;
 
-    //All legal possible moves
+    // All legal possible moves
     private ArrayList<Spot> allLegalMoves = null;
 
-    //Player
+    // Player
     private final Player player = new Human(false, true);
 
-    //Number of moves
+    // Number of moves
     private int numberMoves = 3;
 
-    //Variables from GUI
-
-    //State of the game
+    // Variables from the GUI
+    // State of the game
     private final Board board;
 
-    //Clickable spots on the board
+    // Clickable spots on the board
     private final Button[][] buttonBoard;
 
-    //Player label which shows who move
+    // Player label which shows who move
     private final Label playerPass;
 
-    //Pieces from rolling dice
+    // Pieces from rolling dice
     private final int[] dicePiece;
 
-    //Images of pieces
+    // Images of pieces
     private final ImageView[] diceImgViews;
     private final ArrayList<Image> images;
 
-    //Pass button (Change the player move)
+    // Pass button (Change the player move)
     private final Button passButton;
 
     /**
@@ -341,6 +339,7 @@ public class LogicGame extends GUIMain {
                 if(win != null){
                     Piece winPiece = win.getPiece();
                     if(winPiece.getName().equals("King")){
+                        winFlag = true;
                         String colorWin = currentSpot.getPiece().isColor();
 
                         Alert winAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -354,17 +353,19 @@ public class LogicGame extends GUIMain {
 
                         winAlert.getButtonTypes().setAll(playAgain,goBack);
 
-                        Optional<ButtonType> result = winAlert.showAndWait();
-                        if (result.get() == playAgain){
-                            gameSc.setGameScene();
-                            mainStage.setScene(gameSc.getGameScene());
-                            mainStage.setFullScreen(true);
-                            mainStage.setResizable(false);
-                        } else if(result.get() == goBack) {
-                            gameSc.setGameScene();
-                            mainStage.setScene(introSc.getIntroScene());
-                            mainStage.setFullScreen(true);
-                            mainStage.setResizable(false);
+                        Optional<ButtonType> results = winAlert.showAndWait();
+                        if(results.isPresent()) {
+                            if (results.get() == playAgain) {
+                                gameSc.setGameScene();
+                                mainStage.setScene(gameSc.getGameScene());
+                                mainStage.setFullScreen(true);
+                                mainStage.setResizable(false);
+                            } else if (results.get() == goBack) {
+                                gameSc.setGameScene();
+                                mainStage.setScene(introSc.getIntroScene());
+                                mainStage.setFullScreen(true);
+                                mainStage.setResizable(false);
+                            }
                         }
                     }
                 }
@@ -442,59 +443,63 @@ public class LogicGame extends GUIMain {
 
         int random = (int) (Math.random() * 4);
 
-        // Shows an alert informing which piece the player got from the random dice roll.
-        if(random != 0) {
-            String result = promRoll(random);
-            Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
-            resAlert.setTitle("Random Roll Result");
-            resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
-            resAlert.initOwner(mainStage);
-            resAlert.showAndWait();
+        if(!winFlag) {
+            // Shows an alert informing which piece the player got from the random dice roll.
+            if (random != 0) {
+                String result = promRoll(random);
+                Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
+                resAlert.setTitle("Random Roll Result");
+                resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
+                resAlert.initOwner(mainStage);
+                resAlert.showAndWait();
 
-            switch (result) {
-                case "Knight" -> {
-                    Knight knight = new Knight(black);
-                    spot.setPiece(knight);
+                switch (result) {
+                    case "Knight" -> {
+                        Knight knight = new Knight(black);
+                        spot.setPiece(knight);
+                    }
+                    case "Bishop" -> {
+                        Bishop bishop = new Bishop(black);
+                        spot.setPiece(bishop);
+                    }
+                    case "Queen" -> {
+                        Queen queen = new Queen(black);
+                        spot.setPiece(queen);
+                    }
+                    case "Rook" -> {
+                        Rook rook = new Rook(black);
+                        spot.setPiece(rook);
+                    }
                 }
-                case "Bishop" -> {
-                    Bishop bishop = new Bishop(black);
-                    spot.setPiece(bishop);
-                }
-                case "Queen" -> {
-                    Queen queen = new Queen(black);
-                    spot.setPiece(queen);
-                }
-                case "Rook" -> {
-                    Rook rook = new Rook(black);
-                    spot.setPiece(rook);
-                }
-            }
-        } else {
-            Alert selAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            selAlert.setTitle("Selecting a new piece...");
-            selAlert.setHeaderText("LUCKY ROLL! Choose the piece which your pawn will be transformed to.");
-            selAlert.initOwner(mainStage);
+            } else {
+                Alert selAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                selAlert.setTitle("Selecting a new piece...");
+                selAlert.setHeaderText("LUCKY ROLL! Choose the piece which your pawn will be transformed to.");
+                selAlert.initOwner(mainStage);
 
-            ButtonType kChoice = new ButtonType(promRoll(1));
-            ButtonType bChoice = new ButtonType(promRoll(2));
-            ButtonType qChoice = new ButtonType(promRoll(3));
-            ButtonType rChoice = new ButtonType(promRoll(4));
+                ButtonType kChoice = new ButtonType(promRoll(1));
+                ButtonType bChoice = new ButtonType(promRoll(2));
+                ButtonType qChoice = new ButtonType(promRoll(3));
+                ButtonType rChoice = new ButtonType(promRoll(4));
 
-            selAlert.getButtonTypes().setAll(kChoice, bChoice, qChoice, rChoice);
+                selAlert.getButtonTypes().setAll(kChoice, bChoice, qChoice, rChoice);
 
-            Optional<ButtonType> results = selAlert.showAndWait();
-            if (results.get() == kChoice) {
-                Knight knight = new Knight(black);
-                spot.setPiece(knight);
-            } else if (results.get() == bChoice) {
-                Bishop bishop = new Bishop(black);
-                spot.setPiece(bishop);
-            } else if (results.get() == qChoice) {
-                Queen queen = new Queen(black);
-                spot.setPiece(queen);
-            } else if (results.get() == rChoice) {
-                Rook rook = new Rook(black);
-                spot.setPiece(rook);
+                Optional<ButtonType> results = selAlert.showAndWait();
+                if (results.isPresent()) {
+                    if (results.get() == kChoice) {
+                        Knight knight = new Knight(black);
+                        spot.setPiece(knight);
+                    } else if (results.get() == bChoice) {
+                        Bishop bishop = new Bishop(black);
+                        spot.setPiece(bishop);
+                    } else if (results.get() == qChoice) {
+                        Queen queen = new Queen(black);
+                        spot.setPiece(queen);
+                    } else if (results.get() == rChoice) {
+                        Rook rook = new Rook(black);
+                        spot.setPiece(rook);
+                    }
+                }
             }
         }
     }

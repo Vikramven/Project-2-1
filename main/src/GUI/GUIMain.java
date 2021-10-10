@@ -1,8 +1,5 @@
 package GUI;
 
-import Board.Board;
-import Players.Human;
-import Players.Player;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -16,6 +13,8 @@ public class GUIMain extends Application {
     protected static Stage mainStage;
     protected static IntroScene introSc;
     protected static GameScene gameSc;
+    // Boolean that allows other methods to know whether we have a winner or not
+    protected boolean winFlag;
 
     /**
      * Constructor 2
