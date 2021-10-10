@@ -63,7 +63,7 @@ public class LogicGame extends GUIMain {
      * @param passButton Pass button (Change the player move)
      */
     public LogicGame(Board board, Button[][] buttonBoard, Label playerPass, int[] dicePiece,
-                     ImageView diceImgViews[], ArrayList<Image> images, Button passButton) {
+                     ImageView[] diceImgViews, ArrayList<Image> images, Button passButton) {
         this.board = board;
         this.buttonBoard = buttonBoard;
         this.playerPass = playerPass;
@@ -79,7 +79,7 @@ public class LogicGame extends GUIMain {
         startLogicGameAction();
     }
 
-    private void setUpGame(){
+    private void setUpGame() {
         //Rolling dice
         rollDice();
 
@@ -149,12 +149,12 @@ public class LogicGame extends GUIMain {
     /**
      * Change the player in the logic and in the GUI
      */
-    private void changePlayer(){
-        numberMoves = 3; //Give to new move of the player 3 moves
+    private void changePlayer() {
+        numberMoves = 3; // Number of moves the player is allowed per turn.
         currentSpot = null;
         allLegalMoves = null;
 
-        //Change the player in the logic and in the GUI
+        // Change the player in the logic and in the GUI
         if(player.isColorSide().equals("White")) {
             playerPass.setStyle(
                     "-fx-font: 42px SansSerifBold;" +
@@ -169,13 +169,13 @@ public class LogicGame extends GUIMain {
             player.setColorSide(false);
         }
 
-        removeHighlightButtons(board, buttonBoard);//Remove Highlight buttons
+        removeHighlightButtons(board, buttonBoard); // Remove Highlight buttons
     }
 
     /**
      * Randomly roll the dice
      */
-    private void rollDice(){
+    private void rollDice() {
         int point = 0;
         for (ImageView diceImgView : diceImgViews) {
             int random = (int) (Math.random() * 6);
@@ -189,7 +189,7 @@ public class LogicGame extends GUIMain {
      * Remove one piece from dice pieces
      * @param piece Piece of the player
      */
-    private void removeOneMove(Piece piece){
+    private void removeOneMove(Piece piece) {
         for (int i = 0; i < dicePiece.length; i++) {
             if(dicePiece[i] == piece.getNameInt()) {
                 dicePiece[i] = 6;
@@ -201,9 +201,9 @@ public class LogicGame extends GUIMain {
     /**
      * Check if player takes a piece from dice pieces
      * @param piece Player choice
-     * @return true = this piece in the dice pieces/ false = not in the dice pieces
+     * @return true = this piece is in the dice pieces / false = not in the dice pieces
      */
-    private boolean rightPiece(Piece piece){
+    private boolean rightPiece(Piece piece) {
         for (int j : dicePiece) {
             if (j == piece.getNameInt())
                 return true;
@@ -214,7 +214,7 @@ public class LogicGame extends GUIMain {
     /**
      * Assign the choice of the player
      */
-    private void choicePiece(){
+    private void choicePiece() {
         if(allLegalMoves != null) {
             removeHighlightButtons(board, buttonBoard);
             allLegalMoves = null;
@@ -276,7 +276,7 @@ public class LogicGame extends GUIMain {
      * @param finalX where player moves x coordinate
      * @param finalY where player moves y coordinate
      */
-    private void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY){
+    private void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY) {
         boolean flag = movePiece(finalX, finalY);
         if(flag) {
             movePieceGUI(iniX, iniY, finalX, finalY);
@@ -324,13 +324,14 @@ public class LogicGame extends GUIMain {
      * Move the piece
      * @param x X coordinate which choose the player
      * @param y Y coordinate which choose the player
+     * @return true = player chose (clicked on) a legal move / false = player did not choose a legal move
      */
-    private boolean movePiece(int x, int y){
+    private boolean movePiece(int x, int y) {
 
         for (int i = 0; i < allLegalMoves.size(); i++) {
             if(x == allLegalMoves.get(i).getX() && y == allLegalMoves.get(i).getY()){
 
-                removeOneMove(currentSpot.getPiece()); //Remove piece from dice pieces
+                removeOneMove(currentSpot.getPiece()); // Remove piece from dice pieces
 
                 int oldX = currentSpot.getX();
                 int oldY = currentSpot.getY();
@@ -341,9 +342,30 @@ public class LogicGame extends GUIMain {
                     Piece winPiece = win.getPiece();
                     if(winPiece.getName().equals("King")){
                         String colorWin = currentSpot.getPiece().isColor();
-                        System.out.println(colorWin + " WIN !!!!!!");
-                        //TODO: PUSH UP menu, where shows that PlayerColor Win and option restart the game
 
+                        Alert winAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        winAlert.setTitle("We have a winner!");
+                        winAlert.setHeaderText(colorWin + " won the game! " +
+                                "Would to like to play again or go back to the main menu?");
+                        winAlert.initOwner(mainStage);
+
+                        ButtonType playAgain = new ButtonType("Play Again!");
+                        ButtonType goBack = new ButtonType("Go back.");
+
+                        winAlert.getButtonTypes().setAll(playAgain,goBack);
+
+                        Optional<ButtonType> result = winAlert.showAndWait();
+                        if (result.get() == playAgain){
+                            gameSc.setGameScene();
+                            mainStage.setScene(gameSc.getGameScene());
+                            mainStage.setFullScreen(true);
+                            mainStage.setResizable(false);
+                        } else if(result.get() == goBack) {
+                            gameSc.setGameScene();
+                            mainStage.setScene(introSc.getIntroScene());
+                            mainStage.setFullScreen(true);
+                            mainStage.setResizable(false);
+                        }
                     }
                 }
 
@@ -390,7 +412,7 @@ public class LogicGame extends GUIMain {
      * @param kingX king position X
      * @param black color of the piece
      */
-    private void changeRook(int oldRookY, int newRookY, int kingX, boolean black){
+    private void changeRook(int oldRookY, int newRookY, int kingX, boolean black) {
         board.setSpot(null, kingX, oldRookY);
         Spot newRookSpot = new Spot(kingX, newRookY, new Rook(black));
         board.setSpot(newRookSpot, kingX, newRookY);
@@ -400,7 +422,7 @@ public class LogicGame extends GUIMain {
      * Check on EnPassant
      * @param spot Spot of the pawn
      */
-    private void checkEnPassant(Spot spot){
+    private void checkEnPassant(Spot spot) {
         Piece pawn = spot.getPiece();
         if(pawn.isColor().equals("White")){
             if(spot.getX() == 7)
@@ -429,23 +451,23 @@ public class LogicGame extends GUIMain {
             resAlert.initOwner(mainStage);
             resAlert.showAndWait();
 
-            switch(result) {
-                case "Knight":
+            switch (result) {
+                case "Knight" -> {
                     Knight knight = new Knight(black);
                     spot.setPiece(knight);
-                    break;
-                case "Bishop":
+                }
+                case "Bishop" -> {
                     Bishop bishop = new Bishop(black);
                     spot.setPiece(bishop);
-                    break;
-                case "Queen":
+                }
+                case "Queen" -> {
                     Queen queen = new Queen(black);
                     spot.setPiece(queen);
-                    break;
-                case "Rook":
+                }
+                case "Rook" -> {
                     Rook rook = new Rook(black);
                     spot.setPiece(rook);
-                    break;
+                }
             }
         } else {
             Alert selAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -480,27 +502,16 @@ public class LogicGame extends GUIMain {
     /**
      * Determine a valid promotion roll result
      * @param iterator The value gotten from a single dice roll
-     * @return pieceName = The name of the piece associated with the inputted iterator
+     * @return The name of the piece associated with the inputted iterator
      */
     private String promRoll(int iterator) {
-        String pieceName = null;
-        switch(iterator) {
-            case 0:
-                pieceName = "Pawn: FREE CHOICE";
-                break;
-            case 1:
-                pieceName = "Knight";
-                break;
-            case 2:
-                pieceName = "Bishop";
-                break;
-            case 3:
-                pieceName = "Queen";
-                break;
-            case 4:
-                pieceName = "Rook";
-                break;
-        }
-        return pieceName;
+        return switch (iterator) {
+            case 0 -> "Pawn: FREE CHOICE";
+            case 1 -> "Knight";
+            case 2 -> "Bishop";
+            case 3 -> "Queen";
+            case 4 -> "Rook";
+            default -> null;
+        };
     }
 }
