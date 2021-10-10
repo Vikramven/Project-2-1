@@ -414,6 +414,7 @@ public class LogicGame extends GUIMain {
     /**
      * Perform EnPassant
      * @param spot The spot of the pawn
+     * @param black Color of the piece
      */
     private void enPassant(Spot spot, boolean black) {
 
@@ -479,6 +480,7 @@ public class LogicGame extends GUIMain {
     /**
      * Determine a valid promotion roll result
      * @param iterator The value gotten from a single dice roll
+     * @return pieceName = The name of the piece associated with the inputted iterator
      */
     private String promRoll(int iterator) {
         String pieceName = null;
