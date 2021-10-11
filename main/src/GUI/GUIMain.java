@@ -17,7 +17,7 @@ public class GUIMain extends Application {
     protected boolean winFlag;
 
     /**
-     * Constructor 2
+     * Constructor
      * Empty, so that we can create the objects introSc and gameSc - used to set the scenes -
      * - without having to use static variables OR having to reload the board.
      */

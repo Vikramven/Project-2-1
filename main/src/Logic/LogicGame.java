@@ -342,6 +342,9 @@ public class LogicGame extends GUIMain {
                         winFlag = true;
                         String colorWin = currentSpot.getPiece().isColor();
 
+                        gameSc.addMoveToHist(colorWin + " " + currentSpot.getPiece().getName() + " (WM) -> "
+                                + (oldY+1) + " " + (oldX+1) + " to " + (y+1) + " " + (x+1));
+
                         Alert winAlert = new Alert(Alert.AlertType.CONFIRMATION);
                         winAlert.setTitle("We have a winner!");
                         winAlert.setHeaderText(colorWin + " won the game! " +
@@ -391,6 +394,7 @@ public class LogicGame extends GUIMain {
                         } else if(longOrShort == -2){ // Short Castling
                             changeRook(0, 2, kingX, black);
                         }
+                        gameSc.addMoveToHist("CASTLING:");
                     }
                     piece.setCastling(false);
                 }
@@ -399,6 +403,10 @@ public class LogicGame extends GUIMain {
                     Rook rook = (Rook) currentSpot.getPiece();
                     rook.setCastling(false);
                 }
+
+                gameSc.addMoveToHist(currentSpot.getPiece().isColor() + " " + currentSpot.getPiece().getName() +
+                        " -> " + (oldY+1) + " " + (oldX+1) + " to " + (y+1) + " " + (x+1));
+
 
                 return true;
             }
@@ -426,11 +434,15 @@ public class LogicGame extends GUIMain {
     private void checkEnPassant(Spot spot) {
         Piece pawn = spot.getPiece();
         if(pawn.isColor().equals("White")){
-            if(spot.getX() == 7)
-                enPassant(spot,false);
+            if(spot.getX() == 7) {
+                gameSc.addMoveToHist("WHITE PROMOTION::");
+                enPassant(spot, false);
+            }
         } else {
-            if(spot.getX() == 0)
-                enPassant(spot,true);
+            if(spot.getX() == 0) {
+                gameSc.addMoveToHist("BLACK PROMOTION:");
+                enPassant(spot, true);
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package GUI;
 import Board.Board;
 import Board.Spot;
 import Logic.LogicGame;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class GameScene extends GUIMain {
 
     private Scene gameScene;
-    private Label menuLabel, histTitleLabel, histLabel;
+    private Label menuLabel, histTitleLabel;
     private BorderPane gamePane;
     private StackPane menuPane, histPane, dicePane, playerPane;
     private GridPane boardPane;
@@ -55,14 +56,6 @@ public class GameScene extends GUIMain {
         histTitleLabel = new Label("MOVES");
         histTitleLabel.getStyleClass().add("histTitleLabel");
 
-        /*
-        histLabel = new Label("No moves yet\na\na\na\na\na\ng");
-        histLabel.setMinHeight(screenBounds.getHeight()/4);
-        histLabel.setMaxHeight(screenBounds.getHeight()/4);
-        histLabel.getStyleClass().add("histLabel");
-        histLabel.setTextAlignment(TextAlignment.CENTER);
-        */
-
         scrollBox = new VBox();
         scrollBox.getStyleClass().add("scrollBox");
 
@@ -75,23 +68,8 @@ public class GameScene extends GUIMain {
         scrollPane.setMaxHeight(screenBounds.getHeight()/4);
         scrollPane.setFitToHeight(true);
 
-        // Use this to add each move - remove button afterwards, used just for testing
-        /*
-        Button b = new Button("add");
-        b.setOnAction(ev -> {
-            Label newLabel =  new Label("WHATEVER THE MOVE WAS");
-            scrollBox.getChildren().add(newLabel);
-            newLabel.setStyle(
-                    "-fx-font: 15px SansSerifBold;" +
-                    "-fx-font-weight: bold;" +
-                    "-fx-text-fill: white;");
-            newLabel.setAlignment(Pos.CENTER);
-            newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
-                    scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
-        });
-        */
         histBox.setAlignment(Pos.CENTER);
-        histBox.getChildren().addAll(histTitleLabel, scrollPane /*, b*/); // remove button afterwards, used for testing
+        histBox.getChildren().addAll(histTitleLabel, scrollPane);
 
         histPane.getChildren().add(histBox);
 
@@ -228,6 +206,19 @@ public class GameScene extends GUIMain {
                 }
             }
         });
+    }
+
+    public void addMoveToHist(String move) {
+
+        Label newLabel =  new Label(move);
+        scrollBox.getChildren().add(newLabel);
+        newLabel.setStyle(
+                "-fx-font: 15px SansSerifBold;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: white;");
+        newLabel.setAlignment(Pos.CENTER);
+        newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
+                scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
     }
 
     public Scene getGameScene() { return gameScene; }
