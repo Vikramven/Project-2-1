@@ -404,9 +404,10 @@ public class LogicGame extends GUIMain {
                     rook.setCastling(false);
                 }
 
-                gameSc.addMoveToHist(currentSpot.getPiece().isColor() + " " + currentSpot.getPiece().getName() +
-                        " -> " + (oldY+1) + " " + (oldX+1) + " to " + (y+1) + " " + (x+1));
-
+                if(!winFlag) {
+                    gameSc.addMoveToHist(currentSpot.getPiece().isColor() + " " + currentSpot.getPiece().getName() +
+                            " -> " + (oldY+1) + " " + (oldX+1) + " to " + (y+1) + " " + (x+1));
+                }
 
                 return true;
             }
@@ -434,12 +435,12 @@ public class LogicGame extends GUIMain {
     private void checkEnPassant(Spot spot) {
         Piece pawn = spot.getPiece();
         if(pawn.isColor().equals("White")){
-            if(spot.getX() == 7) {
+            if(spot.getX() == 7 && !winFlag) {
                 gameSc.addMoveToHist("WHITE PROMOTION::");
                 enPassant(spot, false);
             }
         } else {
-            if(spot.getX() == 0) {
+            if(spot.getX() == 0 && !winFlag) {
                 gameSc.addMoveToHist("BLACK PROMOTION:");
                 enPassant(spot, true);
             }
