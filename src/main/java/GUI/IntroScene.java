@@ -1,6 +1,5 @@
 package GUI;
 
-import Board.Board;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,7 +25,7 @@ public class IntroScene extends GUIMain {
         beginPane = new StackPane();
         introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
         introScene.getStylesheets().clear();
-        introScene.getStylesheets().add("/res/Stylesheet.css");
+        introScene.getStylesheets().add("/Stylesheet.css");
 
         introBox = new VBox(screenBounds.getHeight()/17.3);
         introLabel = new Label("DICE CHESS 8");

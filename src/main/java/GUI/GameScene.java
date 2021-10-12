@@ -38,7 +38,7 @@ public class GameScene extends GUIMain {
         gamePane = new BorderPane();
         gameScene = new Scene(gamePane, screenBounds.getWidth(), screenBounds.getHeight());
         gameScene.getStylesheets().clear();
-        gameScene.getStylesheets().add("/res/Stylesheet.css");
+        gameScene.getStylesheets().add("/Stylesheet.css");
         winFlag = false;
 
         setMenuPane();
@@ -150,12 +150,12 @@ public class GameScene extends GUIMain {
         diceBox = new HBox(screenBounds.getWidth()/20.5);
         diceImgViews = new ImageView[3];
         images = new ArrayList<>();
-        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_bishop.png")));
-        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_knight.png")));
-        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_king.png")));
-        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_pawn.png")));
-        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_queen.png")));
-        images.add(new Image(GameScene.class.getResourceAsStream("/res/white_rook.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/white_bishop.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/white_knight.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/white_king.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/white_pawn.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/white_queen.png")));
+        images.add(new Image(GameScene.class.getResourceAsStream("/white_rook.png")));
         for(int i = 0; i < diceImgViews.length; i++) {
             diceImgViews[i] = new ImageView(images.get(i));
             diceImgViews[i].setFitHeight(screenBounds.getHeight()/11.5);

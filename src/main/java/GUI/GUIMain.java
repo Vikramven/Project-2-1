@@ -40,7 +40,7 @@ public class GUIMain extends Application {
         mainStage.setScene(introSc.getIntroScene());
 
         mainStage.setTitle("Dice Chess 8");
-        mainStage.getIcons().add(new Image(GUIMain.class.getResourceAsStream("/res/logo.jpg")));
+        mainStage.getIcons().add(new Image(GUIMain.class.getResourceAsStream("/logo.jpg")));
         mainStage.setFullScreen(true);
         mainStage.setResizable(false);
         mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
