@@ -21,3 +21,5 @@ If 'pawn' is the roll result, the player has the freedom to choose whichever pie
     (A configuration section pops up on the right)  
     - Give it a 'Name' of your choice
     - Write the task 'run' in the field 'Tasks and arguments'
+    - 'Apply' followed by 'OK'
+    - Ready to run
