@@ -18,8 +18,8 @@ public class King extends Piece {
         super(black);
         name = "King";
         nameInt = 2;
-        if(black) { imageURL = "/res/black_king.png"; }
-        else { imageURL = "/res/white_king.png"; }
+        if(black) { imageURL = "/black_king.png"; }
+        else { imageURL = "/white_king.png"; }
     }
 
     /**

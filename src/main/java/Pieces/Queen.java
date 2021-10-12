@@ -15,8 +15,8 @@ public class Queen extends Piece {
         super(black);
         name = "Queen";
         nameInt = 4;
-        if(black) { imageURL = "/res/black_queen.png"; }
-        else { imageURL = "/res/white_queen.png"; }
+        if(black) { imageURL = "/black_queen.png"; }
+        else { imageURL = "/white_queen.png"; }
     }
 
     /**

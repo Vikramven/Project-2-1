@@ -17,8 +17,8 @@ public class Rook extends Piece {
         super(black);
         name = "Rook";
         nameInt = 5;
-        if(black) { imageURL = "/res/black_rook.png"; }
-        else { imageURL = "/res/white_rook.png"; }
+        if(black) { imageURL = "/black_rook.png"; }
+        else { imageURL = "/white_rook.png"; }
     }
 
     /**
