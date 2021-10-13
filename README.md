@@ -3,8 +3,9 @@
 ## Rules:
 
 Dice Chess is a variant of the classic Chess in which a dice is used to add randomness to the game. 
-However, the goal remains the same: capture the opponent's King.
+Nonetheless, the goal remains the same: capture the opponent's King.
 
+All the rules of the classic Chess apply in Dice Chess, except for the following:
 1. At every turn, the player rolls three dice. The outcome determines which pieces can be used for that move.
 2. In this version, there is no check or checkmate. It is allowed to move the King to a square attacked by an opponent's piece.
 3. In the case that a pawn would advance to the last row, the player has to wait until he/she rolls pawn again, contrary to 
