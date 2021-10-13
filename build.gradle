@@ -27,7 +27,7 @@ task myJavadocs(type: Javadoc) {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'GUI.GUIMain'
+        attributes 'Main-Class': 'Run'
     }
 }
 
@@ -37,7 +37,7 @@ dependencies {
 }
 
 application {
-    mainClassName = 'GUI.GUIMain'
+    mainClassName = 'Run'
 }
 
 test {
