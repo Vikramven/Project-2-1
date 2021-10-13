@@ -33,7 +33,6 @@ public class Board {
      * @param spot The spot
      * @param x X coordinate
      * @param y Y coordinate
-     * @return The Spot
      */
     public void setSpot(Spot spot, int x, int y){
 
