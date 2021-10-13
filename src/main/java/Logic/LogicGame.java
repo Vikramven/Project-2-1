@@ -391,10 +391,11 @@ public class LogicGame extends GUIMain {
                         int longOrShort = kingY - oldY;
                         if (longOrShort == 2) { // Long Castling
                             changeRook(7, 4, kingX, black);
+                            gameSc.addMoveToHist("CASTLING:");
                         } else if(longOrShort == -2){ // Short Castling
                             changeRook(0, 2, kingX, black);
+                            gameSc.addMoveToHist("CASTLING:");
                         }
-                        gameSc.addMoveToHist("CASTLING:");
                     }
                     piece.setCastling(false);
                 }
