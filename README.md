@@ -14,6 +14,12 @@ If 'pawn' is the roll result, the player has the freedom to choose whichever pie
 
 ## Run Procedures
 
+#### Run from Terminal/Command Line
+    (If you have a Gradle distribution installed in your PC)
+    - Assure the 'gradle-[version]' bin directory is added to path
+    - Navigate to 'Project-2-1', where 'build.gradle' is located
+    - Type 'gradle run'
+
 #### Run from Intellij
     - Select 'Edit Configurations' next to the 'run' green arrow
     - Select 'Add New Configuration', using the '+' symbol.
