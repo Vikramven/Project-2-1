@@ -20,6 +20,10 @@ If 'pawn' is the roll result, the player has the freedom to choose whichever pie
     - Assure the 'gradle-[version]' bin directory is added to path
     - Navigate to 'Project-2-1', where 'build.gradle' is located
     - Type 'gradle run'
+    
+#### Run JAR file
+    - open the console
+    - run the command java -jar Project-Game.jar
 
 #### Run from Intellij
     - Select 'Edit Configurations' next to the 'run' green arrow
@@ -30,3 +34,5 @@ If 'pawn' is the roll result, the player has the freedom to choose whichever pie
     - Write the task 'run' in the field 'Tasks and arguments'
     - 'Apply' followed by 'OK'
     - Ready to run
+    
+
