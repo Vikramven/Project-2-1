@@ -217,8 +217,8 @@ public class GameScene extends GUIMain {
                         "-fx-font-weight: bold;" +
                         "-fx-text-fill: white;");
         newLabel.setAlignment(Pos.CENTER);
-        newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
-                scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
+//        newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
+//                scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
     }
 
     public Scene getGameScene() { return gameScene; }
