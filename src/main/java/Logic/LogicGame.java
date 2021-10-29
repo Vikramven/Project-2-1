@@ -437,7 +437,7 @@ public class LogicGame extends GUIMain {
         Piece pawn = spot.getPiece();
         if(pawn.isColor().equals("White")){
             if(spot.getX() == 7 && !winFlag) {
-                gameSc.addMoveToHist("WHITE PROMOTION::");
+                gameSc.addMoveToHist("WHITE PROMOTION:");
                 enPassant(spot, false);
             }
         } else {
