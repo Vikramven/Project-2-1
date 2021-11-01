@@ -68,7 +68,7 @@
     -fx-background-position: 50%;
 }
 
-.passButton,.backButton {
+.passButton,.rulesButton,.backButton {
     -fx-font: 20px SansSerifBold;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -82,6 +82,13 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: 50%;
     /*-fx-background-size: cover;*/
+}
+
+.rulesButton:hover {
+    -fx-background-image: url('rules.png');
+    -fx-background-size: 70px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
 }
 
 .backButton:hover {

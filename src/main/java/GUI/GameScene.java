@@ -25,7 +25,7 @@ public class GameScene extends GUIMain {
     private HBox diceBox, playerBox;
     private ArrayList<Image> images;
     private ImageView diceImgViews[];
-    private Button passButton, backButton;
+    private Button passButton, backButton, rulesButton;
     private Label playerLabel = new Label("White" + " vs " + "Black");
     private int[] dicePiece = new int[3];
 
@@ -132,12 +132,15 @@ public class GameScene extends GUIMain {
         passButton = new Button("Pass");
         passButton.getStyleClass().add("passButton");
         passButton.setPrefWidth(screenBounds.getWidth()/12.5);
+        rulesButton = new Button("Rules");
+        rulesButton.getStyleClass().add("rulesButton");
+        rulesButton.setPrefWidth(screenBounds.getWidth()/12.5);
         backButton = new Button("Back");
         backButton.getStyleClass().add("backButton");
         backButton.setPrefWidth(screenBounds.getWidth()/12.5);
 
         menuBox.setAlignment(Pos.CENTER);
-        menuBox.getChildren().addAll(menuLabel, passButton, backButton);
+        menuBox.getChildren().addAll(menuLabel, rulesButton, passButton, backButton);
 
         menuPane.getChildren().add(menuBox);
 
@@ -187,7 +190,58 @@ public class GameScene extends GUIMain {
         gamePane.setTop(playerPane);
     }
 
+    @SuppressWarnings("unchecked")
     private void setGameButtonsActions() {
+
+        rulesButton.setOnAction(e -> {
+            Alert[] ruleAlerts = new Alert[5];
+            Optional<ButtonType>[] results = new Optional[5];
+            for(int i = 0; i < 5; i++) {
+                ruleAlerts[i] = new Alert(Alert.AlertType.CONFIRMATION);
+                ruleAlerts[i].setTitle("Dice Chess 8 - Rules");
+                ruleAlerts[i].getDialogPane().setPrefSize(screenBounds.getWidth()/2.5,
+                        screenBounds.getHeight()/4);
+                ruleAlerts[i].initOwner(mainStage);
+            }
+
+            ruleAlerts[0].setHeaderText("Let's take a look at the rules of this variation of dice chess. \n" +
+                    "1. The goal of the game remains the same: To capture the enemy's king.");
+            ruleAlerts[1].setHeaderText("2. At every turn, the player rolls three dice (shown at the bottom). \n" +
+                    "The outcome determines which pieces can be used for that move. \nNOTE: The rolled pieces will " +
+                    "always be white, regardless of whose turn it is. To know whose turn it is, check the green " +
+                    "highlighted colour name at the top. \nEach player can PASS if they have no moves or are done " +
+                    "with which moves they'd like to make.");
+            ruleAlerts[2].setHeaderText("3. In this version, there is no check or checkmate. \nIt is allowed to " +
+                    "move the King to a square attacked by an opponent's piece.");
+            ruleAlerts[3].setHeaderText("4. In the case that a pawn is bound to advance to the last row, the player " +
+                    "has to wait until they roll pawn again, contrary to some versions of the game. Thus, the player " +
+                    "promotes the pawn to one of the pieces chosen by a separate (occult) dice roll. \nIf 'pawn' is " +
+                    "the roll result, the player has the freedom to choose whichever piece the pawn gets promoted to.");
+            ruleAlerts[4].setHeaderText("5. Castling is allowed and issued to solely a King's move (not Rook).");
+
+            ButtonType previousButton = new ButtonType("Previous");
+            ButtonType nextButton = new ButtonType("Next");
+            ButtonType closeButton = new ButtonType("Close");
+
+            ruleAlerts[0].getButtonTypes().setAll(nextButton,closeButton);
+            ruleAlerts[1].getButtonTypes().setAll(previousButton,nextButton,closeButton);
+            ruleAlerts[2].getButtonTypes().setAll(previousButton,nextButton,closeButton);
+            ruleAlerts[3].getButtonTypes().setAll(previousButton,nextButton,closeButton);
+            ruleAlerts[4].getButtonTypes().setAll(previousButton,closeButton);
+
+            int iterator = 0;
+            while(iterator >= 0) {
+                results[iterator] = ruleAlerts[iterator].showAndWait();
+                if(results[iterator].get() == previousButton) {
+                    iterator--;
+                } else if (results[iterator].get() == nextButton) {
+                    iterator++;
+                } else if (results[iterator].get() == closeButton) {
+                    ruleAlerts[iterator].close();
+                    iterator = -1;
+                }
+            }
+        });
 
         // This works (visually) for PvP pre-set settings (names, String, etc.) - need to update when we introduce AI
         backButton.setOnAction(e -> {
