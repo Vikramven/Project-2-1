@@ -44,6 +44,10 @@ public class MiniMax {
 //            }
 //        }
 
+        l.board = initialBoard;
+        l.board.pieceHeap = initialPieceHeap;
+        l.dicePiece = initialDicePiece;
+
         ArrayList<Move> moves = new ArrayList<>();
         while(!maxCostNode.isRoot()){
 
