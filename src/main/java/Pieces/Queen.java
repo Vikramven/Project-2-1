@@ -7,17 +7,6 @@ import Logic.MoveLogic.Move;
 import java.util.ArrayList;
 
 public class Queen extends Piece {
-
-
-    public int[][] cost = {{-20,-10,-10, -5, -5,-10,-10,-20},
-                            {-10,  0,  0,  0,  0,  0,  0,-10},
-                            {-10,  0,  5,  5,  5,  5,  0,-10},
-                            {-5,  0,  5,  5,  5,  5,  0, -5},
-                            {0,  0,  5,  5,  5,  5,  0, -5},
-                            {-10,  5,  5,  5,  5,  5,  0,-10},
-                            {-10,  0,  5,  0,  0,  0,  0,-10},
-                            {-20,-10,-10, -5, -5,-10,-10,-20}};
-
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -37,7 +26,7 @@ public class Queen extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
@@ -50,35 +39,35 @@ public class Queen extends Piece {
         //   Q
         //  /
         // /
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, true, true, this);
+        moveLikeBishop.moveBishop(board, legalMoves, x, y, true, true, this, cost);
         // \
         //  \
         //    Q
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, true, false, this);
+        moveLikeBishop.moveBishop(board, legalMoves, x, y, true, false, this, cost);
         //Q
         //  \
         //   \
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, false, true, this);
+        moveLikeBishop.moveBishop(board, legalMoves, x, y, false, true, this, cost);
         //   /
         //  /
         // Q
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, false, false, this);
+        moveLikeBishop.moveBishop(board, legalMoves, x, y, false, false, this, cost);
 
         //Extend moves from Rook
         Rook moveLikeRook = new Rook(black);
 
         //--Q
-        moveLikeRook.moveRook(board, legalMoves, x, y, true, true, true, this);
+        moveLikeRook.moveRook(board, legalMoves, x, y, true, true, true, this, cost);
         //Q--
-        moveLikeRook.moveRook(board, legalMoves, x, y, false, false, true, this);
+        moveLikeRook.moveRook(board, legalMoves, x, y, false, false, true, this, cost);
         //  Q
         //  |
         //  |
-        moveLikeRook.moveRook(board, legalMoves, x, y, false, true, false, this) ;
+        moveLikeRook.moveRook(board, legalMoves, x, y, false, true, false, this, cost) ;
         //  |
         //  |
         //  Q
-        moveLikeRook.moveRook(board, legalMoves, x, y, false, false, false, this);
+        moveLikeRook.moveRook(board, legalMoves, x, y, false, false, false, this, cost);
 
         return legalMoves;
     }

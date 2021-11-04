@@ -69,7 +69,7 @@ public class MiniMax {
 
                 Piece piece = spot.getPiece();
 
-                ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player);
+                ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap);
 
                 node.addChildren(allMovesPiece);
             }

@@ -8,14 +8,6 @@ import java.util.ArrayList;
 
 public class Pawn extends Piece {
 
-    public int[][] cost = {{0, 0, 0, 0, 0, 0, 0, 0},
-            {50, 50, 50, 50, 50, 50, 50, 50},
-            {10, 10, 20, 30, 30, 20, 10, 10},
-            {5, 5, 10, 25, 25, 10, 5, 5},
-            {0, 0, 0, 20, 20, 0, 0, 0},
-            {5, -5, -10, 0, 0,-10, -5, 5},
-            {5, 10, 10,-20,-20, 10, 10, 5},
-            {0, 0, 0, 0, 0, 0, 0, 0}};
 
     /**
      * Constructor
@@ -36,7 +28,7 @@ public class Pawn extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
@@ -49,11 +41,11 @@ public class Pawn extends Piece {
         //                                                 *
         //                                                 *
         //second one is if a pawn stay on initial position P
-        movePawn(x, y, board,  legalMoves);
+        movePawn(x, y, board,  legalMoves, cost);
 
         //                                                              \ /
         //third variant is where enemy piece is located on it diagonal   P
-        takeEnemyPiece(x, y, board, legalMoves);
+        takeEnemyPiece(x, y, board, legalMoves, cost);
 
         return legalMoves;
     }
@@ -65,7 +57,7 @@ public class Pawn extends Piece {
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void movePawn(int x, int y, Board board, ArrayList<Move> legalMoves){
+    private void movePawn(int x, int y, Board board, ArrayList<Move> legalMoves, int[][]cost){
         int point = 1;
 
         if(checkInitialPosition(x))
@@ -99,7 +91,7 @@ public class Pawn extends Piece {
      * @param board Board
      * @param legalMoves all possible legal moves
      */
-    private void takeEnemyPiece(int x, int y, Board board, ArrayList<Move> legalMoves){
+    private void takeEnemyPiece(int x, int y, Board board, ArrayList<Move> legalMoves, int[][] cost){
         int newX = x+1;
         if(black)
             newX = x-1;

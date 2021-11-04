@@ -39,7 +39,7 @@ public class King extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int spotX = spot.getX();
@@ -226,4 +226,7 @@ public class King extends Piece {
     public void setCastling(boolean castling) {
         this.castling = castling;
     }
+
+
+
 }

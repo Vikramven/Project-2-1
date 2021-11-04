@@ -8,15 +8,6 @@ import java.util.ArrayList;
 
 public class Knight extends Piece {
 
-    public int[][] cost = {{-50, -40, -30, -30, -30, -30, -40, -50},
-            {-40, -20, 0, 0, 0, 0, -20, -40},
-            {-30, 0, 10, 15, 15, 10, 0, -30},
-            {-30, 5, 15, 20, 20, 15, 5, -30},
-            {-30, 0, 15, 20, 20, 15, 0,-30},
-            {-30, 5, 10, 15, 15, 10, 5, -30},
-            {-40, -20, 0, 5, 5, 0, -20, -40},
-            {-50, -40, -30, -30, -30, -30, -40, -50}};
-
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -36,7 +27,7 @@ public class Knight extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
@@ -47,42 +38,42 @@ public class Knight extends Piece {
         //      |
         //      |
         //      K
-        moveKnight(board, legalMoves, x, y, true, true, true, true);
+        moveKnight(board, legalMoves, x, y, true, true, true, true, cost);
 
         //      K
         //      |
         //      |
         //    - -
-        moveKnight(board, legalMoves, x, y, false, false, true, true);
+        moveKnight(board, legalMoves, x, y, false, false, true, true, cost);
 
 
         //  |
         //  - - - K
-        moveKnight(board, legalMoves, x, y, false, true, false, true) ;
+        moveKnight(board, legalMoves, x, y, false, true, false, true, cost) ;
 
         //        |
         //  K - - -
-        moveKnight(board, legalMoves, x, y, false, false, false, true);
+        moveKnight(board, legalMoves, x, y, false, false, false, true, cost);
 
         //      - -
         //      |
         //      |
         //      K
-        moveKnight(board, legalMoves, x, y, true, true, true, false);
+        moveKnight(board, legalMoves, x, y, true, true, true, false, cost);
 
         //      K
         //      |
         //      |
         //      - -
-        moveKnight(board, legalMoves, x, y, false, false, true, false);
+        moveKnight(board, legalMoves, x, y, false, false, true, false, cost);
 
         //  - - - K
         //  |
-        moveKnight(board, legalMoves, x, y, false, true, false, false) ;
+        moveKnight(board, legalMoves, x, y, false, true, false, false, cost) ;
 
         //  K - - -
         //        |
-        moveKnight(board, legalMoves, x, y, false, false, false, false);
+        moveKnight(board, legalMoves, x, y, false, false, false, false, cost);
 
 
         return legalMoves;
@@ -99,7 +90,7 @@ public class Knight extends Piece {
      * @param horizontal goes horizontal or not
      * @param rotation define in which direction rotate the knight
      */
-    private void moveKnight(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal, boolean rotation){
+    private void moveKnight(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal, boolean rotation, int[][]cost){
 
         int newX;
         int newY;

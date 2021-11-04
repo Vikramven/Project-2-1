@@ -8,5 +8,5 @@ import java.util.ArrayList;
 
 public interface PieceMove {
 
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot);
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost);
 }
