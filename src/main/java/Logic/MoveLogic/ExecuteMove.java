@@ -24,7 +24,7 @@ public class ExecuteMove {
      * @param finalY where player moves y coordinate
      */
     public void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY, LogicGame l) {
-        boolean flag = movePiece(finalX, finalY, l);
+        boolean flag = movePiece(finalX, finalY, l, true);
         if(flag) {
             gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
             l.numberMoves--;
@@ -42,7 +42,7 @@ public class ExecuteMove {
      * @param y Y coordinate which choose the player
      * @return true = player chose (clicked on) a legal move / false = player did not choose a legal move
      */
-    public boolean movePiece(int x, int y, LogicGame l) {
+    public boolean movePiece(int x, int y, LogicGame l, boolean GUI) {
 
         for (int i = 0; i < l.allLegalMoves.size(); i++) {
             if(x == l.allLegalMoves.get(i).getX() && y == l.allLegalMoves.get(i).getY()){
@@ -80,7 +80,7 @@ public class ExecuteMove {
                     rook.setCastling(false);
                 }
 
-                if(!l.winFlag) {
+                if(!l.winFlag && GUI) {
                     l.getGameSc().addMoveToHist(l.currentSpot.getPiece().isColor() + " " + l.currentSpot.getPiece().getName() +
                             " -> " + (oldY+1) + " " + (oldX+1) + " to " + (y+1) + " " + (x+1));
                 }

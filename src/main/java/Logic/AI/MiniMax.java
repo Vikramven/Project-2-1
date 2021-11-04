@@ -37,10 +37,14 @@ public class MiniMax {
 //        LinkedList<Node> children = tree.getChildren();
 //
 //        for (int i = 0; i < children.size(); i++) {
-//            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName());
+//            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName() + " COST = " + children.get(i).getCost());
 //            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
 //            for (int j = 0; j < childrenOfChildren.size(); j++) {
-//                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName());
+//                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName() + " COST = " + childrenOfChildren.get(j).getCost());
+//                LinkedList<Node> childrenOfChildrenOF = childrenOfChildren.get(j).getChildren();
+//                for (int k = 0; k < childrenOfChildrenOF.size(); k++) {
+//                    System.out.println("Children 3 " + childrenOfChildrenOF.get(k).getMove().getPiece().getName() + " COST = " + childrenOfChildrenOF.get(k).getCost());
+//                }
 //            }
 //        }
 
@@ -80,7 +84,7 @@ public class MiniMax {
 
             Node childNode = children.get(i);
 
-            if(childNode.getCost() > maxCostNode.getCost())
+            if(childNode.getCost() >= maxCostNode.getCost())
                 maxCostNode = childNode;
 
             Move move = childNode.getMove();
@@ -95,7 +99,7 @@ public class MiniMax {
             l.allLegalMoves.add(move);
 
 
-            l.em.movePiece(move.getX(), move.getY(), l);
+            l.em.movePiece(move.getX(), move.getY(), l, false);
 
             l.dl.removeOneMove(move.getPiece(), l);
 
