@@ -2,6 +2,7 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Logic.MoveLogic.Move;
 import Players.Player;
 
 import java.util.ArrayList;
@@ -22,6 +23,10 @@ public abstract class Piece implements PieceMove {
         if(black)
             return "Black";
         return "White";
+    }
+
+    public boolean getColor(){
+        return black;
     }
 
     public void setWhite() {
@@ -48,11 +53,11 @@ public abstract class Piece implements PieceMove {
      * @param legalMoves Arraylist with all possible legal move
      * @return true = obstacle: false = no obstacle
      */
-    protected boolean isObstacle(Spot spot, ArrayList<Spot> legalMoves){
+    protected boolean isObstacle(Spot spot, ArrayList<Move> legalMoves, int costPiece, int x, int y){
 
         if(spot != null) {
             if (!spot.getPiece().isColor().equals(isColor())) {
-                legalMoves.add(new Spot(spot.getX(), spot.getY(), spot.getPiece()));
+                legalMoves.add(new Move(spot.getX(), spot.getY(), spot.getPiece(), costPiece, x, y));
             }
             return true;
         }
@@ -73,7 +78,7 @@ public abstract class Piece implements PieceMove {
     /**
      * Check if player move with the correct piece
      */
-    public ArrayList<Spot> checkPlayerMove(Board board, Spot spot, Player player){
+    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, Player player){
         if(spot.getPiece().isColor().equals(player.isColorSide())){
             return allLegalMoves(board, spot);
         }

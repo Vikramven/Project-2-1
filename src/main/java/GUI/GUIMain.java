@@ -13,8 +13,6 @@ public class GUIMain extends Application {
     protected static Stage mainStage;
     protected static IntroScene introSc;
     protected static GameScene gameSc;
-    // Boolean that allows other methods to know whether we have a winner or not
-    protected boolean winFlag;
 
     /**
      * Constructor
@@ -45,7 +43,7 @@ public class GUIMain extends Application {
 
         mainStage.setTitle("Dice Chess 8");
         mainStage.getIcons().add(new Image(GUIMain.class.getResourceAsStream("/logo.jpg")));
-        mainStage.setFullScreen(true);
+        mainStage.setFullScreen(false);
         mainStage.setResizable(false);
         mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         mainStage.show();

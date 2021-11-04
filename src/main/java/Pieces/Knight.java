@@ -2,10 +2,20 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
 
 public class Knight extends Piece {
+
+    public int[][] cost = {{-50, -40, -30, -30, -30, -30, -40, -50},
+            {-40, -20, 0, 0, 0, 0, -20, -40},
+            {-30, 0, 10, 15, 15, 10, 0, -30},
+            {-30, 5, 15, 20, 20, 15, 5, -30},
+            {-30, 0, 15, 20, 20, 15, 0,-30},
+            {-30, 5, 10, 15, 15, 10, 5, -30},
+            {-40, -20, 0, 5, 5, 0, -20, -40},
+            {-50, -40, -30, -30, -30, -30, -40, -50}};
 
     /**
      * Constructor
@@ -26,8 +36,8 @@ public class Knight extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Spot> allLegalMoves(Board board, Spot spot) {
-        ArrayList<Spot> legalMoves = new ArrayList<>();
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+        ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
@@ -89,7 +99,7 @@ public class Knight extends Piece {
      * @param horizontal goes horizontal or not
      * @param rotation define in which direction rotate the knight
      */
-    private void moveKnight(Board board, ArrayList<Spot> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal, boolean rotation){
+    private void moveKnight(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal, boolean rotation){
 
         int newX;
         int newY;
@@ -123,9 +133,11 @@ public class Knight extends Piece {
                 return;
         }
 
-        if(isObstacle(board.getSpot(newX, newY), legalMoves))
+        int costMove = cost[newX][newY];
+
+        if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
             return;
 
-        legalMoves.add(new Spot(newX, newY, null));
+        legalMoves.add(new Move(newX, newY, this, costMove, x, y));
     }
 }

@@ -2,10 +2,20 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
 
 public class Pawn extends Piece {
+
+    public int[][] cost = {{0, 0, 0, 0, 0, 0, 0, 0},
+            {50, 50, 50, 50, 50, 50, 50, 50},
+            {10, 10, 20, 30, 30, 20, 10, 10},
+            {5, 5, 10, 25, 25, 10, 5, 5},
+            {0, 0, 0, 20, 20, 0, 0, 0},
+            {5, -5, -10, 0, 0,-10, -5, 5},
+            {5, 10, 10,-20,-20, 10, 10, 5},
+            {0, 0, 0, 0, 0, 0, 0, 0}};
 
     /**
      * Constructor
@@ -26,8 +36,8 @@ public class Pawn extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Spot> allLegalMoves(Board board, Spot spot) {
-        ArrayList<Spot> legalMoves = new ArrayList<>();
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+        ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
@@ -55,7 +65,7 @@ public class Pawn extends Piece {
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void movePawn(int x, int y, Board board, ArrayList<Spot> legalMoves){
+    private void movePawn(int x, int y, Board board, ArrayList<Move> legalMoves){
         int point = 1;
 
         if(checkInitialPosition(x))
@@ -76,7 +86,9 @@ public class Pawn extends Piece {
             if(isObstaclePawn(board.getSpot(newX, y)))
                 break;
 
-            legalMoves.add(new Spot(newX, y, null));
+            int costMove = cost[newX][y];
+
+            legalMoves.add(new Move(newX, y, this, costMove, x, y));
         }
     }
 
@@ -87,7 +99,7 @@ public class Pawn extends Piece {
      * @param board Board
      * @param legalMoves all possible legal moves
      */
-    private void takeEnemyPiece(int x, int y, Board board, ArrayList<Spot> legalMoves){
+    private void takeEnemyPiece(int x, int y, Board board, ArrayList<Move> legalMoves){
         int newX = x+1;
         if(black)
             newX = x-1;
@@ -96,13 +108,17 @@ public class Pawn extends Piece {
             return;
 
         int left = y - 1;
+
         if(!isBoardBounds(left)) {
-            isObstacle(board.getSpot(newX, left), legalMoves);
+            int costMove = cost[newX][left];
+            isObstacle(board.getSpot(newX, left), legalMoves, costMove, x, y);
         }
 
         int right = y + 1;
+
         if(!isBoardBounds(right)) {
-            isObstacle(board.getSpot(newX, right),  legalMoves);
+            int costMove = cost[newX][right];
+            isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y);
         }
     }
 

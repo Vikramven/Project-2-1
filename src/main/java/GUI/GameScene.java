@@ -39,7 +39,6 @@ public class GameScene extends GUIMain {
         gameScene = new Scene(gamePane, screenBounds.getWidth(), screenBounds.getHeight());
         gameScene.getStylesheets().clear();
         gameScene.getStylesheets().add("/Stylesheet.css");
-        winFlag = false;
 
         setMenuPane();
         setHistPane();
@@ -255,7 +254,7 @@ public class GameScene extends GUIMain {
                 if (result.get() == ButtonType.OK){
                     setGameScene();
                     mainStage.setScene(introSc.getIntroScene());
-                    mainStage.setFullScreen(true);
+                    mainStage.setFullScreen(false);
                     mainStage.setResizable(false);
                 }
             }
@@ -271,8 +270,8 @@ public class GameScene extends GUIMain {
                         "-fx-font-weight: bold;" +
                         "-fx-text-fill: white;");
         newLabel.setAlignment(Pos.CENTER);
-//        newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
-//                scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
+        newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
+                scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
     }
 
     public Scene getGameScene() { return gameScene; }

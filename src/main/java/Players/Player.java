@@ -16,6 +16,10 @@ public abstract class Player {
         return "White";
     }
 
+    public boolean isBlackSide() {
+        return blackSide;
+    }
+
     public void setColorSide(boolean colorSide) {
         this.blackSide = colorSide;
     }

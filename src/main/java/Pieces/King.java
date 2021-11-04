@@ -2,13 +2,23 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
 
 public class King extends Piece {
 
 
-    private boolean castling = true;
+    public boolean castling = true;
+
+    private int[][] cost = {{0, 0, 0, 0, 0, 0, 0, 0},
+            {5, 10, 10, 10, 10, 10, 10, 5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            { 0, 0, 0, 5, 5, 0, 0, 0}};
 
     /**
      * Constructor
@@ -29,49 +39,49 @@ public class King extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Spot> allLegalMoves(Board board, Spot spot) {
-        ArrayList<Spot> legalMoves = new ArrayList<>();
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+        ArrayList<Move> legalMoves = new ArrayList<>();
 
-        int x = spot.getX();
-        int y = spot.getY();
+        int spotX = spot.getX();
+        int spotY = spot.getY();
 
-        int top = x+1;
-        int down = x-1;
-        int left = y-1;
-        int right = y+1;
+        int top = spotX+1;
+        int down = spotX-1;
+        int left = spotY-1;
+        int right = spotY+1;
 
         //   |
         //   K
-        moveKing(board, legalMoves, top, y);
+        moveKing(board, legalMoves, top, spotY, spotX, spotY);
 
         //    /
         //   K
-        moveKing(board, legalMoves, top, right);
+        moveKing(board, legalMoves, top, right, spotX, spotY);
 
         //  \
         //   K
-        moveKing(board, legalMoves, top, left);
+        moveKing(board, legalMoves, top, left, spotX, spotY);
 
         //   K
         //   |
-        moveKing(board, legalMoves, down, y);
+        moveKing(board, legalMoves, down, spotY, spotX, spotY);
 
         //   K
         //    \
-        moveKing(board, legalMoves, down, right);
+        moveKing(board, legalMoves, down, right, spotX, spotY);
 
         //   K
         //  /
-        moveKing(board, legalMoves, down, left);
+        moveKing(board, legalMoves, down, left, spotX, spotY);
 
         // - K
-        moveKing(board, legalMoves, x, left);
+        moveKing(board, legalMoves, spotX, left, spotX, spotY);
 
         //   K -
-        moveKing(board, legalMoves, x, right);
+        moveKing(board, legalMoves, spotX, right, spotX, spotY);
 
         if(castling)
-            castlingMove(board, legalMoves, x, y);
+            castlingMove(board, legalMoves, spotX, spotY);
 
         return legalMoves;
     }
@@ -83,15 +93,17 @@ public class King extends Piece {
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void moveKing(Board board, ArrayList<Spot> legalMoves, int x, int y){
+    private void moveKing(Board board, ArrayList<Move> legalMoves, int x, int y, int spotX, int spotY){
 
         if(isBoardBounds(x) || isBoardBounds(y))
             return;
 
-        if(isObstacle(board.getSpot(x, y), legalMoves))
+        int costMove = cost[x][y];
+
+        if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY))
             return;
 
-        legalMoves.add(new Spot(x, y, null));
+        legalMoves.add(new Move(x, y, this, costMove, spotX, spotY));
     }
 
     /**
@@ -101,7 +113,7 @@ public class King extends Piece {
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void castlingMove(Board board, ArrayList<Spot> legalMoves, int x, int y){
+    private void castlingMove(Board board, ArrayList<Move> legalMoves, int x, int y){
 
         moveShortCastling(board, legalMoves, x, y);
 
@@ -116,7 +128,7 @@ public class King extends Piece {
      * @param x X coordinates
      * @param y Y coordinates
      */
-    private void moveShortCastling(Board board, ArrayList<Spot> legalMoves, int x, int y){
+    private void moveShortCastling(Board board, ArrayList<Move> legalMoves, int x, int y){
         if(checkRooks(board, false))
             return;
 
@@ -127,9 +139,9 @@ public class King extends Piece {
         }
 
         if(!black){
-            legalMoves.add(new Spot(0, 1, null));
+            addCastling(legalMoves, x, y, 0, 1);
         } else {
-            legalMoves.add(new Spot(7, 1, null));
+            addCastling(legalMoves, x, y, 7, 1);
         }
 
     }
@@ -141,7 +153,7 @@ public class King extends Piece {
      * @param x X coordinates
      * @param y Y coordinates
      */
-    private void moveLongCastling(Board board, ArrayList<Spot> legalMoves, int x, int y){
+    private void moveLongCastling(Board board, ArrayList<Move> legalMoves, int x, int y){
         if(checkRooks(board, true))
             return;
 
@@ -152,10 +164,17 @@ public class King extends Piece {
         }
 
         if(!black){
-            legalMoves.add(new Spot(0, 5, null));
+            addCastling(legalMoves, x, y, 0, 5);
         } else {
-            legalMoves.add(new Spot(7, 5, null));
+            addCastling(legalMoves, x, y, 7, 5);
         }
+    }
+
+
+    private void addCastling(ArrayList<Move> legalMoves, int x, int y, int MoveX, int MoveY){
+        int costMove = cost[MoveX][MoveY];
+
+        legalMoves.add(new Move(MoveX, MoveY, this, costMove, x, y));
     }
 
     /**

@@ -2,10 +2,21 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
 
 public class Rook extends Piece {
+
+
+    public int[][] cost = {{0,  0,  0,  0,  0,  0,  0,  0},
+                            {5, 10, 10, 10, 10, 10, 10,  5},
+                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                            {0,  0,  0,  5,  5,  0,  0,  0}};
 
 
     private boolean castling = true;
@@ -28,24 +39,24 @@ public class Rook extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Spot> allLegalMoves(Board board, Spot spot) {
-        ArrayList<Spot> legalMoves = new ArrayList<>();
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+        ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
 
         //--R
-        moveRook(board, legalMoves, x, y, true, true, true);
+        moveRook(board, legalMoves, x, y, true, true, true, this);
         //R--
-        moveRook(board, legalMoves, x, y, false, false, true);
+        moveRook(board, legalMoves, x, y, false, false, true, this);
         //  R
         //  |
         //  |
-        moveRook(board, legalMoves, x, y, false, true, false) ;
+        moveRook(board, legalMoves, x, y, false, true, false, this) ;
         //  |
         //  |
         //  R
-        moveRook(board, legalMoves, x, y, false, false, false);
+        moveRook(board, legalMoves, x, y, false, false, false, this);
 
         return legalMoves;
     }
@@ -60,7 +71,7 @@ public class Rook extends Piece {
      * @param minusY goes minus Y coordinate or not
      * @param horizontal goes horizontal or not
      */
-    protected void moveRook(Board board, ArrayList<Spot> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal){
+    protected void moveRook(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal, Piece piece){
         for (int i = 1; i < 8; i++) {
 
                 int newX = x;
@@ -85,10 +96,12 @@ public class Rook extends Piece {
                         return;
                 }
 
-                if(isObstacle(board.getSpot(newX, newY), legalMoves))
+                int costMove = cost[newX][newY];
+
+                if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
                     return;
 
-                legalMoves.add(new Spot(newX, newY, null));
+                legalMoves.add(new Move(newX, newY, piece, costMove, x, y));
         }
     }
 

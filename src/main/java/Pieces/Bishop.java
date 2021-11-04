@@ -2,10 +2,21 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
 
 public class Bishop extends Piece {
+
+
+    public int[][] cost = {{-20,-10,-10,-10,-10,-10,-10,-20},
+                            {-10,  0,  0,  0,  0,  0,  0,-10},
+                            {-10,  0,  5, 10, 10,  5,  0,-10},
+                            {-10,  5,  5, 10, 10,  5,  5,-10},
+                            {-10,  0, 10, 10, 10, 10,  0,-10},
+                            {-10, 10, 10, 10, 10, 10, 10,-10},
+                            {-10,  5,  0,  0,  0,  0,  5,-10},
+                            {-20,-10,-10,-10,-10,-10,-10,-20}};
 
     /**
      * Constructor
@@ -19,6 +30,8 @@ public class Bishop extends Piece {
         else { imageURL = "/white_bishop.png"; }
     }
 
+
+
     /**
      *
      * @param board Board
@@ -26,8 +39,8 @@ public class Bishop extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Spot> allLegalMoves(Board board, Spot spot) {
-        ArrayList<Spot> legalMoves = new ArrayList<>();
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot) {
+        ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
@@ -35,19 +48,19 @@ public class Bishop extends Piece {
         //   B
         //  /
         // /
-        moveBishop(board, legalMoves, x, y, true, true);
+        moveBishop(board, legalMoves, x, y, true, true, this);
         // \
         //  \
         //    B
-        moveBishop(board, legalMoves, x, y, true, false);
+        moveBishop(board, legalMoves, x, y, true, false, this);
         //B
         //  \
         //   \
-        moveBishop(board, legalMoves, x, y, false, true);
+        moveBishop(board, legalMoves, x, y, false, true, this);
         //   /
         //  /
         // B
-        moveBishop(board, legalMoves, x, y, false, false);
+        moveBishop(board, legalMoves, x, y, false, false, this);
         
         return legalMoves;
     }
@@ -61,7 +74,7 @@ public class Bishop extends Piece {
      * @param minusX goes minus X coordinate
      * @param minusY goes minus Y coordinate
      */
-    protected void moveBishop(Board board, ArrayList<Spot> legalMoves, int x, int y, boolean minusX, boolean minusY){
+    protected void moveBishop(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, Piece piece){
         for (int i = 1; i < 8; i++) {
                 int newX;
                 int newY;
@@ -79,10 +92,12 @@ public class Bishop extends Piece {
                 if(isBoardBounds(newX) || isBoardBounds(newY))
                     return;
 
-                if(isObstacle(board.getSpot(newX, newY), legalMoves))
+                int costMove = cost[newX][newY];
+
+                if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
                     return;
 
-                legalMoves.add(new Spot(newX, newY, null));
+                legalMoves.add(new Move(newX, newY, piece, costMove, x, y));
         }
     }
     

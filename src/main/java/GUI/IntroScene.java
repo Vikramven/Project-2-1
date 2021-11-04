@@ -50,8 +50,8 @@ public class IntroScene extends GUIMain {
 
         beginButton.setOnAction(e -> {
             mainStage.setScene(gameSc.getGameScene());
-            mainStage.setFullScreen(true);
-            mainStage.setResizable(false);
+            mainStage.setFullScreen(false);
+            mainStage.setResizable(true);
             mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         });
 

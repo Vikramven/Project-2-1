@@ -6,11 +6,20 @@ public class Board {
 
     private Spot[][] board;
 
+    public PieceHeap pieceHeap = new PieceHeap();
+
     /**
      * Constructor which start the game
      */
     public Board(){
         this.restartGame();
+    }
+
+    /**
+     * Constructor which clone the game
+     */
+    public Board(Spot[][] board){
+        this.board = board;
     }
 
     /**
@@ -71,6 +80,7 @@ public class Board {
         board[1][6] = new Spot(1, 6, new Pawn(false));
         board[1][7] = new Spot(1, 7, new Pawn(false));
 
+
         //Black Side
         //First Line
         board[7][0] = new Spot(7, 0, new Rook(true));
@@ -114,5 +124,19 @@ public class Board {
             }
             System.out.println();
         }
+    }
+
+    public Board clone(){
+        Spot[][] newBoard = new Spot[8][8];
+
+        for (int i = 0; i < newBoard.length; i++) {
+            for (int j = 0; j < newBoard.length; j++) {
+                if(board[i][j] != null)
+                    newBoard[i][j] = board[i][j].clone();
+                else
+                    newBoard[i][j] = null;
+            }
+        }
+        return new Board(newBoard);
     }
 }
