@@ -7,6 +7,7 @@ import Pieces.Piece;
 import Players.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class MiniMax {
@@ -30,18 +31,18 @@ public class MiniMax {
 
         maxCostNode = tree;
 
-        createTree(tree, l, l.player, l.board, l.board.pieceHeap, l.dicePiece, null, 2);
+        createTree(tree, l, l.player, l.board, l.board.pieceHeap, l.dicePiece, 3);
 
 
-        LinkedList<Node> children = tree.getChildren();
-
-        for (int i = 0; i < children.size(); i++) {
-            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName());
-            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
-            for (int j = 0; j < childrenOfChildren.size(); j++) {
-                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName());
-            }
-        }
+//        LinkedList<Node> children = tree.getChildren();
+//
+//        for (int i = 0; i < children.size(); i++) {
+//            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName());
+//            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
+//            for (int j = 0; j < childrenOfChildren.size(); j++) {
+//                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName());
+//            }
+//        }
 
         ArrayList<Move> moves = new ArrayList<>();
         while(!maxCostNode.isRoot()){
@@ -54,11 +55,8 @@ public class MiniMax {
         return moves;
     }
 
-    public void createTree(Node node, LogicGame l, Player player, Board board, PieceHeap pieceHeap, int[] dicePiece, Piece piece, int depth){
+    public void createTree(Node node, LogicGame l, Player player, Board board, PieceHeap pieceHeap, int[] dicePiece, int depth){
         l.allLegalMoves = null;
-
-        if(piece != null)
-            l.dl.removeOneMove(piece, l);
 
         if(node.getDepth() > depth)
             return;
@@ -73,7 +71,7 @@ public class MiniMax {
             int[] cloneDicePiece = new int[dicePiece.length];
 
             for (int j = 0; j < cloneDicePiece.length; j++) {
-                cloneDicePiece[j] = l.dicePiece[j];
+                cloneDicePiece[j] = dicePiece[j];
             }
 
             Node childNode = children.get(i);
@@ -95,16 +93,19 @@ public class MiniMax {
 
             l.em.movePiece(move.getX(), move.getY(), l);
 
+            l.dl.removeOneMove(move.getPiece(), l);
+
             l.currentSpot = null;
 
-            l.board.print();
+//            l.board.print();
 
-            createTree(children.get(i), l, player, cloneBoard, clonePieceHeap, cloneDicePiece, move.getPiece(), depth);
+            createTree(children.get(i), l, player, l.board, l.board.pieceHeap, l.dicePiece, depth);
         }
     }
 
     public void createChildren(LogicGame l, Player player, Node node){
 
+//        System.out.println(Arrays.toString(l.dicePiece));
         int length = l.dicePiece.length;
         int[] temp = new int[length];
         int k = 0;
@@ -120,6 +121,9 @@ public class MiniMax {
             l.dicePiece[i] = temp[i];
         }
 
+//        System.out.println(Arrays.toString(l.dicePiece));
+//        System.out.println(k);
+
         for (int i = 0; i < k; i++) {
             int pieceNum = l.dicePiece[i];
             if(pieceNum < 6){
@@ -127,6 +131,8 @@ public class MiniMax {
 
                 for (int j = 0; j < allPieces.size(); j++) {
                     Coordinate coordinate = allPieces.get(j);
+
+//                    System.out.println(coordinate.x + "  " + coordinate.y);
 
                     Spot spot = l.board.getSpot(coordinate.x, coordinate.y);
 
