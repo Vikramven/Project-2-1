@@ -94,7 +94,7 @@ public abstract class Piece implements PieceMove {
         for (int i = 0; i < 6; i++) {
             LinkedList<Coordinate> pieces = enemyPieces.getAllPieces(i, !player.isBlackSide());
             for (int j = 0; j < pieces.size(); j++) {
-                Coordinate coordinate = pieces.get(i);
+                Coordinate coordinate = pieces.get(j);
 
                 Spot spot = board.getSpot(coordinate.x, coordinate.y);
 
