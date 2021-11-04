@@ -254,7 +254,7 @@ public class GameScene extends GUIMain {
                 if (result.get() == ButtonType.OK){
                     setGameScene();
                     mainStage.setScene(introSc.getIntroScene());
-                    mainStage.setFullScreen(false);
+                    mainStage.setFullScreen(true);
                     mainStage.setResizable(false);
                 }
             }
