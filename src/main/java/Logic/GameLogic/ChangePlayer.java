@@ -1,9 +1,13 @@
 package Logic.GameLogic;
 
+import Logic.AI.ExecuteMovesAI;
 import Logic.AI.MiniMax;
 import Logic.LogicGame;
 
 public class ChangePlayer {
+
+    private final MiniMax miniMax = new MiniMax();
+    private final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
 
     /**
      * Change the player in the logic and in the GUI
@@ -21,6 +25,7 @@ public class ChangePlayer {
                             "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
             l.player.setColorSide(true);
 
+            executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
         } else {
             l.playerPass.setStyle(
                     "-fx-font: 42px SansSerifBold;" +

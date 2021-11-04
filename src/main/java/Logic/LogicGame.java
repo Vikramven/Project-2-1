@@ -37,7 +37,7 @@ public class LogicGame extends GUIMain {
 
     // Variables from the GUI
     // State of the game
-    public final Board board;
+    public Board board;
 
     // Clickable spots on the board
     public final Button[][] buttonBoard;
@@ -46,7 +46,7 @@ public class LogicGame extends GUIMain {
     public final Label playerPass;
 
     // Pieces from rolling dice
-    public final int[] dicePiece;
+    public int[] dicePiece;
 
     // Images of pieces
     public final ImageView[] diceImgViews;
@@ -103,10 +103,10 @@ public class LogicGame extends GUIMain {
         });
     }
 
-    private void startLogicGameAction() {
+    public AtomicInteger iniX = new AtomicInteger();
+    public AtomicInteger iniY = new AtomicInteger();
 
-        AtomicInteger iniX = new AtomicInteger();
-        AtomicInteger iniY = new AtomicInteger();
+    private void startLogicGameAction() {
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {

@@ -134,13 +134,15 @@ public class PieceHeap {
 
         for (int i = 0; i < blackPieces.length; i++) {
             for (int j = 0; j < blackPieces[i].size(); j++) {
-                newBlackPieces[i].add(blackPieces[i].get(j));
+                Coordinate coordinate = blackPieces[i].get(j);
+                newBlackPieces[i].add(new Coordinate(coordinate.x, coordinate.y));
             }
         }
 
         for (int i = 0; i < whitePieces.length; i++) {
             for (int j = 0; j < whitePieces[i].size(); j++) {
-                newWhitePieces[i].add(whitePieces[i].get(j));
+                Coordinate coordinate = whitePieces[i].get(j);
+                newWhitePieces[i].add(new Coordinate(coordinate.x, coordinate.y));
             }
         }
         return new PieceHeap(newWhitePieces, newBlackPieces);
