@@ -1,5 +1,6 @@
 package Logic.MoveLogic;
 
+import Board.Coordinate;
 import Board.Spot;
 import Logic.*;
 import Logic.AdditionalPieceLogic.KingCastling;
@@ -7,6 +8,7 @@ import Logic.AdditionalPieceLogic.PawnPromotion;
 import Logic.GameLogic.WinGui;
 import Pieces.*;
 
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExecuteMove {
@@ -28,6 +30,15 @@ public class ExecuteMove {
         if(flag) {
             gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
             l.numberMoves--;
+//            for (int j = 0; j < 6; j++) {
+//                LinkedList<Coordinate> coordinates = l.board.pieceHeap.getAllPieces(j, !l.player.isBlackSide());
+//                System.out.println("PIECE = " + j);
+//                for (int i = 0; i < coordinates.size(); i++) {
+//                    Coordinate coordinate = coordinates.get(i);
+//                    System.out.println("COORDINATES = " + coordinate.x + "   " + coordinate.y);
+//                }
+//                System.out.println("\n");
+//            }
             if (l.numberMoves == 0) {
                 l.numberMoves = 3;
                 l.dl.rollDice(l);
@@ -59,6 +70,7 @@ public class ExecuteMove {
                     if(winPiece.getName().equals("King")){
                         new WinGui().winGui(l, oldY, oldX, y, x);
                     }
+                    l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.player.isBlackSide(), x, y);
                 }
 
                 l.currentSpot.setX(x);
