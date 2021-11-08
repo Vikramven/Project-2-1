@@ -2,11 +2,12 @@ package GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import java.util.Optional;
 
 public class IntroScene extends GUIMain {
 
@@ -49,9 +50,27 @@ public class IntroScene extends GUIMain {
     private void setIntroButtonsActions() {
 
         beginButton.setOnAction(e -> {
-            mainStage.setScene(gameSc.getGameScene());
+            Alert modeSel = new Alert(Alert.AlertType.CONFIRMATION);
+            modeSel.setTitle("Dice Chess 8 - Game Mode Selection");
+            modeSel.setHeaderText("Select which game mode you'd like to play.");
+            modeSel.initOwner(mainStage);
+
+            ButtonType twoPlButton = new ButtonType("Multiplayer");
+            ButtonType vsAIButton = new ButtonType("Against the AI");
+            ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            modeSel.getButtonTypes().setAll(twoPlButton, vsAIButton, closeButton);
+
+            Optional<ButtonType> result = modeSel.showAndWait();
+            if (result.get() == twoPlButton) {
+                // TODO Implement Human vs Human
+                mainStage.setScene(gameSc.getGameScene());
+            } else if (result.get() == vsAIButton) {
+                // TODO Implement Human vs AI
+                mainStage.setScene(gameSc.getGameScene());
+            }
             mainStage.setFullScreen(true);
-            mainStage.setResizable(true);
+            mainStage.setResizable(false);
             mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         });
 
