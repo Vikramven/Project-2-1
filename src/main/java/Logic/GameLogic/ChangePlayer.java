@@ -17,15 +17,15 @@ public class ChangePlayer {
         l.allLegalMoves = null;
 
         // Change the player in the logic and in the GUI
-        if(l.blackMove) {
+        if(!l.blackMove) {
             l.playerPass.setStyle(
                     "-fx-font: 42px SansSerifBold;" +
                             "-fx-font-weight: bold;" +
                             "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
-            l.blackMove = false;
+            l.blackMove = true;
 
-            if(!l.playerBlack.isHuman())
-                System.out.println("Check Black AI");
+            if(!l.playerWhite.isHuman())
+                System.out.println("Check White AI");
                 // TODO
                 // executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
         } else {
@@ -33,10 +33,10 @@ public class ChangePlayer {
                     "-fx-font: 42px SansSerifBold;" +
                             "-fx-font-weight: bold;" +
                             "-fx-text-fill: linear-gradient(from 60px 60px to 100px 100px, #32cd32, #ff8000);");
-            l.blackMove = true;
+            l.blackMove = false;
 
-            if(!l.playerWhite.isHuman())
-                System.out.println("Check White AI");
+            if(!l.playerBlack.isHuman())
+                System.out.println("Check Black AI");
                 // TODO
                 //executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
         }
