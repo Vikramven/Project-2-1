@@ -54,8 +54,6 @@ public class ExecuteMove {
         for (int i = 0; i < l.allLegalMoves.size(); i++) {
             if(x == l.allLegalMoves.get(i).getX() && y == l.allLegalMoves.get(i).getY()){
 
-                l.dl.removeOneMove(l.currentSpot.getPiece(), l); // Remove piece from dice pieces
-
                 int oldX = l.currentSpot.getX();
                 int oldY = l.currentSpot.getY();
                 l.board.setSpot(null, oldX, oldY);

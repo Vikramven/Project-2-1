@@ -29,7 +29,6 @@ public class GameScene extends GUIMain {
     private ImageView diceImgViews[];
     private Button passButton, backButton, rulesButton;
     private Label playerLabel = new Label("White" + " vs " + "Black");
-    private int[] dicePiece = new int[3];
 
     public GameScene() {
         // Empty.
@@ -121,7 +120,7 @@ public class GameScene extends GUIMain {
         }
 
         System.out.println(players[0] + " " + players[1]);
-        new LogicGame(board, buttonStateBoard, playerLabel, dicePiece,
+        new LogicGame(board, buttonStateBoard, playerLabel,
                 diceImgViews, images, passButton, players[0], players[1]);
 
         gamePane.setCenter(boardPane);

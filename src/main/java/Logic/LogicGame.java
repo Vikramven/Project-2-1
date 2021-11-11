@@ -75,17 +75,15 @@ public class LogicGame extends GUIMain {
      * @param board State of the game
      * @param buttonBoard Clickable spots on the board
      * @param playerPass Player label which shows who move
-     * @param dicePiece Pieces from rolling dice
      * @param diceImgViews Images of pieces
      * @param images Images of pieces
      * @param passButton Pass button (Change the player move)
      */
-    public LogicGame(Board board, Button[][] buttonBoard, Label playerPass, int dicePiece,
+    public LogicGame(Board board, Button[][] buttonBoard, Label playerPass,
                      ImageView[] diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack) {
         this.board = board;
         this.buttonBoard = buttonBoard;
         this.playerPass = playerPass;
-        this.dicePiece = dicePiece;
         this.diceImgViews = diceImgViews;
         this.images = images;
         this.passButton = passButton;

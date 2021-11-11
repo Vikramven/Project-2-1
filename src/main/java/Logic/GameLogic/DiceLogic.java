@@ -10,26 +10,12 @@ public class DiceLogic {
      * Randomly roll the dice
      */
     public void rollDice(LogicGame l) {
-        int point = 0;
         for (ImageView diceImgView : l.diceImgViews) {
             int random = (int) (Math.random() * 6);
             diceImgView.setImage(l.images.get(random));
             l.dicePiece = random;
-            point++;
         }
     }
-
-    /**
-     * Remove one piece from dice pieces
-     * @param piece Piece of the player
-     */
-    public void removeOneMove(Piece piece, LogicGame l) {
-
-            if(l.dicePiece == piece.getNameInt()) {
-                l.dicePiece = 6;
-                return;
-            }
-        }
 
 
     /**
@@ -38,10 +24,7 @@ public class DiceLogic {
      * @return true = this piece is in the dice pieces / false = not in the dice pieces
      */
     public boolean rightPiece(Piece piece, LogicGame l) {
-        int j= l.dicePiece;
-            if (j == piece.getNameInt())
-                return true;
-
-        return false;
+        int j = l.dicePiece;
+        return j == piece.getNameInt();
     }
 }

@@ -62,8 +62,6 @@ public class MiniMax {
     public void createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece, Piece piece, int depth){
         l.allLegalMoves = null;
 
-        if(piece != null)
-            l.dl.removeOneMove(piece, l);
 
         if(node.getDepth() > depth)
             return;
