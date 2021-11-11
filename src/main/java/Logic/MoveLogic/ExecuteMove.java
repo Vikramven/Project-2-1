@@ -70,7 +70,7 @@ public class ExecuteMove {
                     if(winPiece.getName().equals("King")){
                         new WinGui().winGui(l, oldY, oldX, y, x);
                     }
-                    l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.player.isBlackSide(), x, y);
+                    l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.blackMove, x, y);
                 }
 
                 l.currentSpot.setX(x);
