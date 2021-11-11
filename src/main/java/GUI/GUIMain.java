@@ -37,7 +37,7 @@ public class GUIMain extends Application {
         introSc = new IntroScene();
         gameSc = new GameScene();
         introSc.setIntroScene();
-        gameSc.setGameScene();
+        //gameSc.setGameScene(gameSc.getPlayers());
 
         mainStage.setScene(introSc.getIntroScene());
 

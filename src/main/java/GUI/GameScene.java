@@ -3,8 +3,7 @@ package GUI;
 import Board.Board;
 import Board.Spot;
 import Logic.LogicGame;
-import Players.AI;
-import Players.Human;
+import Players.Player;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,6 +17,7 @@ import java.util.Optional;
 public class GameScene extends GUIMain {
 
     private Scene gameScene;
+    private Player[] players;
     private Label menuLabel, histTitleLabel;
     private BorderPane gamePane;
     private StackPane menuPane, histPane, dicePane, playerPane;
@@ -35,12 +35,13 @@ public class GameScene extends GUIMain {
         // Empty.
     }
 
-    public void setGameScene() {
+    public void setGameScene(Player[] pls) {
 
         gamePane = new BorderPane();
         gameScene = new Scene(gamePane, screenBounds.getWidth(), screenBounds.getHeight());
         gameScene.getStylesheets().clear();
         gameScene.getStylesheets().add("/Stylesheet.css");
+        players = pls;
 
         setMenuPane();
         setHistPane();
@@ -119,7 +120,9 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
-        new LogicGame(board, buttonStateBoard, playerLabel, dicePiece, diceImgViews, images, passButton, );
+        System.out.println(players[0] + " " + players[1]);
+        new LogicGame(board, buttonStateBoard, playerLabel, dicePiece,
+                diceImgViews, images, passButton, players[0], players[1]);
 
         gamePane.setCenter(boardPane);
     }
@@ -254,7 +257,7 @@ public class GameScene extends GUIMain {
             Optional<ButtonType> result = confAlert.showAndWait();
             if(result.isPresent()) {
                 if (result.get() == ButtonType.OK){
-                    setGameScene();
+                    setGameScene(players);
                     mainStage.setScene(introSc.getIntroScene());
                     mainStage.setFullScreen(true);
                     mainStage.setResizable(false);
@@ -275,6 +278,8 @@ public class GameScene extends GUIMain {
         //newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
         //        scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
     }
+
+    public Player[] getPlayers() { return players; }
 
     public Scene getGameScene() { return gameScene; }
 }

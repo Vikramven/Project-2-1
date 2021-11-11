@@ -38,7 +38,6 @@ public class LogicGame extends GUIMain {
     public boolean blackMove = false;
 
 
-
     // Variables from the GUI
     // State of the game
     public Board board;
@@ -50,7 +49,7 @@ public class LogicGame extends GUIMain {
     public final Label playerPass;
 
     // Pieces from rolling dice
-    public int dicePiece;
+    public int[] dicePiece;
 
     // Images of pieces
     public final ImageView[] diceImgViews;
@@ -81,7 +80,7 @@ public class LogicGame extends GUIMain {
      * @param images Images of pieces
      * @param passButton Pass button (Change the player move)
      */
-    public LogicGame(Board board, Button[][] buttonBoard, Label playerPass, int dicePiece,
+    public LogicGame(Board board, Button[][] buttonBoard, Label playerPass, int[] dicePiece,
                      ImageView[] diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack) {
         this.board = board;
         this.buttonBoard = buttonBoard;
@@ -166,8 +165,12 @@ public class LogicGame extends GUIMain {
             }
         }
 
-        if(!playerWhite.isHuman())
-            executeMovesAI.executeMovesAI(this, miniMax.calculateBestMoves(this));
+        if(!playerWhite.isHuman()) {
+            System.out.println("White AI");
+            dl.rollDice(this);
+            cp.changePlayer(this);
+        }
+            //executeMovesAI.executeMovesAI(this, miniMax.calculateBestMoves(this));
     }
 
     /**

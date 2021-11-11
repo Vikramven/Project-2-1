@@ -1,5 +1,8 @@
 package GUI;
 
+import Players.AI;
+import Players.Human;
+import Players.Player;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -64,9 +67,35 @@ public class IntroScene extends GUIMain {
             Optional<ButtonType> result = modeSel.showAndWait();
             if (result.get() == twoPlButton) {
                 // TODO Implement Human vs Human
+                Player whitePl = new Human(false);
+                Player blackPl = new Human(true);
+                Player[] plToAdd = {whitePl, blackPl};
+                gameSc.setGameScene(plToAdd);
                 mainStage.setScene(gameSc.getGameScene());
             } else if (result.get() == vsAIButton) {
                 // TODO Implement Human vs AI
+                Alert colSel = new Alert(Alert.AlertType.CONFIRMATION);
+                colSel.setTitle("Dice Chess 8 - Side Color Selection");
+                colSel.setHeaderText("Select which side color you'd like to take.");
+                colSel.initOwner(mainStage);
+
+                ButtonType blackSide = new ButtonType("Black Side");
+                ButtonType whiteSide = new ButtonType("White Side");
+
+                colSel.getButtonTypes().setAll(blackSide, whiteSide);
+
+                Optional<ButtonType> newResult = colSel.showAndWait();
+                if(newResult.get() == blackSide) {
+                    Player humanPl = new Human(true);
+                    Player aiPl = new AI(false);
+                    Player[] plToAdd = {humanPl, aiPl};
+                    gameSc.setGameScene(plToAdd);
+                } else if(newResult.get() == whiteSide) {
+                    Player humanPl = new Human(false);
+                    Player aiPl = new AI(true);
+                    Player[] plToAdd = {humanPl, aiPl};
+                    gameSc.setGameScene(plToAdd);
+                }
                 mainStage.setScene(gameSc.getGameScene());
             }
             mainStage.setFullScreen(true);

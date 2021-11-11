@@ -29,7 +29,6 @@ public class ExecuteMove {
         boolean flag = movePiece(finalX, finalY, l, true);
         if(flag) {
             gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
-
 //            for (int j = 0; j < 6; j++) {
 //                LinkedList<Coordinate> coordinates = l.board.pieceHeap.getAllPieces(j, !l.player.isBlackSide());
 //                System.out.println("PIECE = " + j);
@@ -39,12 +38,10 @@ public class ExecuteMove {
 //                }
 //                System.out.println("\n");
 //            }
-
                 l.dl.rollDice(l);
                 l.cp.changePlayer(l);
-            }
         }
-
+    }
 
     /**
      * Move the piece
@@ -71,6 +68,7 @@ public class ExecuteMove {
                     }
                     l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.blackMove, x, y);
                 }
+
                 l.currentSpot.setX(x);
                 l.currentSpot.setY(y);
                 l.board.setSpot(l.currentSpot, x, y);
