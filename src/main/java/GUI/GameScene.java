@@ -169,7 +169,7 @@ public class GameScene extends GUIMain {
         }
 
         diceBox.setAlignment(Pos.TOP_CENTER);
-        diceBox.getChildren().addAll(diceImgViews);
+        diceBox.getChildren().add(diceImgViews[2]);
 
         dicePane.getChildren().add(diceBox);
 
@@ -209,8 +209,8 @@ public class GameScene extends GUIMain {
 
             ruleAlerts[0].setHeaderText("Let's take a look at the rules of this variation of dice chess. \n" +
                     "1. The goal of the game remains the same: To capture the enemy's king.");
-            ruleAlerts[1].setHeaderText("2. At every turn, the player rolls three dice (shown at the bottom). \n" +
-                    "The outcome determines which pieces can be used for that move. \nNOTE: The rolled pieces will " +
+            ruleAlerts[1].setHeaderText("2. At every turn, the player rolls one dice (shown at the bottom). \n" +
+                    "The outcome determines which piece can be used for that move. \nNOTE: The rolled piece will " +
                     "always be white, regardless of whose turn it is. To know whose turn it is, check the green " +
                     "highlighted colour name at the top. \nEach player can PASS if they have no moves or are done " +
                     "with which moves they'd like to make.");
