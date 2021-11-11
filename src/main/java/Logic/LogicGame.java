@@ -37,8 +37,6 @@ public class LogicGame extends GUIMain {
 
     public boolean blackMove = false;
 
-    // Number of moves
-    public int numberMoves = 3;
 
     // Variables from the GUI
     // State of the game
@@ -167,8 +165,12 @@ public class LogicGame extends GUIMain {
             }
         }
 
-        if(!playerWhite.isHuman())
-            executeMovesAI.executeMovesAI(this, miniMax.calculateBestMoves(this));
+        if(!playerWhite.isHuman()) {
+            System.out.println("White AI");
+            dl.rollDice(this);
+            cp.changePlayer(this);
+        }
+            //executeMovesAI.executeMovesAI(this, miniMax.calculateBestMoves(this));
     }
 
     /**
