@@ -29,6 +29,7 @@ public class ExecuteMove {
         boolean flag = movePiece(finalX, finalY, l, true);
         if(flag) {
             gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
+            l.numberMoves--;
 //            for (int j = 0; j < 6; j++) {
 //                LinkedList<Coordinate> coordinates = l.board.pieceHeap.getAllPieces(j, !l.player.isBlackSide());
 //                System.out.println("PIECE = " + j);
@@ -38,8 +39,11 @@ public class ExecuteMove {
 //                }
 //                System.out.println("\n");
 //            }
+            if (l.numberMoves == 0) {
+                l.numberMoves = 3;
                 l.dl.rollDice(l);
                 l.cp.changePlayer(l);
+            }
         }
     }
 
@@ -66,7 +70,7 @@ public class ExecuteMove {
                     if(winPiece.getName().equals("King")){
                         new WinGui().winGui(l, oldY, oldX, y, x);
                     }
-                    l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.blackMove, x, y);
+                    l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.player.isBlackSide(), x, y);
                 }
 
                 l.currentSpot.setX(x);

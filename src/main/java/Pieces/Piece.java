@@ -81,7 +81,7 @@ public abstract class Piece implements PieceMove {
      * Check if player move with the correct piece
      */
     public ArrayList<Move> checkPlayerMove(Board board, Spot spot, boolean player, PieceHeap enemyPieces){
-        if(spot.getPiece().getColor() == player){
+        if(spot.getPiece().isColor().equals(player)){
             int[][] cost = calculateBoard(enemyPieces, player, board);
             return allLegalMoves(board, spot, cost);
         }

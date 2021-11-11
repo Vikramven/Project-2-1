@@ -14,7 +14,7 @@ public class DiceLogic {
         for (ImageView diceImgView : l.diceImgViews) {
             int random = (int) (Math.random() * 6);
             diceImgView.setImage(l.images.get(random));
-            l.dicePiece[point] = random;
+            l.dicePiece = random;
             point++;
         }
     }
@@ -24,13 +24,13 @@ public class DiceLogic {
      * @param piece Piece of the player
      */
     public void removeOneMove(Piece piece, LogicGame l) {
-        for (int i = 0; i < l.dicePiece.length; i++) {
-            if(l.dicePiece[i] == piece.getNameInt()) {
-                l.dicePiece[i] = 6;
+
+            if(l.dicePiece == piece.getNameInt()) {
+                l.dicePiece = 6;
                 return;
             }
         }
-    }
+
 
     /**
      * Check if player takes a piece from dice pieces
@@ -38,10 +38,10 @@ public class DiceLogic {
      * @return true = this piece is in the dice pieces / false = not in the dice pieces
      */
     public boolean rightPiece(Piece piece, LogicGame l) {
-        for (int j : l.dicePiece) {
+        int j= l.dicePiece;
             if (j == piece.getNameInt())
                 return true;
-        }
+
         return false;
     }
 }

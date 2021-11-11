@@ -21,11 +21,7 @@ public class MiniMax {
     public ArrayList<Move> calculateBestMoves(LogicGame l){
         Board initialBoard = l.board.clone();
         PieceHeap initialPieceHeap = l.board.pieceHeap.clone();
-        int[] initialDicePiece = new int[l.dicePiece.length];
-
-        for (int i = 0; i < initialDicePiece.length; i++) {
-            initialDicePiece[i] = l.dicePiece[i];
-        }
+        int initialDicePiece = l.dicePiece;
 
         Node tree = new Node();
 
@@ -63,7 +59,7 @@ public class MiniMax {
         return moves;
     }
 
-    public void createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int[] dicePiece, Piece piece, int depth){
+    public void createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece, Piece piece, int depth){
         l.allLegalMoves = null;
 
         if(piece != null)
@@ -79,11 +75,9 @@ public class MiniMax {
         for (int i = 0; i < children.size(); i++) {
             Board cloneBoard = board.clone();
             PieceHeap clonePieceHeap = pieceHeap.clone();
-            int[] cloneDicePiece = new int[dicePiece.length];
+            int cloneDicePiece = dicePiece;
 
-            for (int j = 0; j < cloneDicePiece.length; j++) {
-                cloneDicePiece[j] = dicePiece[j];
-            }
+
 
             Node childNode = children.get(i);
 
@@ -116,26 +110,26 @@ public class MiniMax {
     public void createChildren(LogicGame l, boolean player, Node node){
 
 //        System.out.println(Arrays.toString(l.dicePiece));
-        int length = l.dicePiece.length;
+        int length = l.dicePiece;
         int[] temp = new int[length];
         int k = 0;
 
-        for (int i = 0; i < length-1; i++){
-            if (l.dicePiece[i] != l.dicePiece[i+1]){
-                temp[k++] = l.dicePiece[i];
-            }
-        }
-        temp[k++] = l.dicePiece[length - 1];
+//        for (int i = 0; i < length-1; i++){
+//            if (l.dicePiece != l.dicePiece){
+//                temp[k++] = l.dicePiece[i];
+//            }
+//        }
+        temp[k++] = l.dicePiece;
         // Changing original array
         for (int i = 0; i < k; i++){
-            l.dicePiece[i] = temp[i];
+            l.dicePiece = temp[i];
         }
 //
 //        System.out.println(Arrays.toString(l.dicePiece));
 //        System.out.println(k);
 
         for (int i = 0; i < k; i++) {
-            int pieceNum = l.dicePiece[i];
+            int pieceNum = l.dicePiece;
             if(pieceNum < 6){
             LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum, player);
 
