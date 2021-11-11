@@ -3,6 +3,8 @@ package GUI;
 import Board.Board;
 import Board.Spot;
 import Logic.LogicGame;
+import Players.AI;
+import Players.Human;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -117,7 +119,7 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
-        new LogicGame(board, buttonStateBoard, playerLabel, dicePiece, diceImgViews, images, passButton);
+        new LogicGame(board, buttonStateBoard, playerLabel, dicePiece, diceImgViews, images, passButton, );
 
         gamePane.setCenter(boardPane);
     }
