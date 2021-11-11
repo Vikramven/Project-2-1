@@ -31,7 +31,7 @@ public class MiniMax {
 
         maxCostNode = tree;
 
-        createTree(tree, l, l.player, l.board, l.board.pieceHeap, l.dicePiece, null, 3);
+        createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, null, 3);
 
 
 //        LinkedList<Node> children = tree.getChildren();
@@ -63,7 +63,7 @@ public class MiniMax {
         return moves;
     }
 
-    public void createTree(Node node, LogicGame l, Player player, Board board, PieceHeap pieceHeap, int[] dicePiece, Piece piece, int depth){
+    public void createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int[] dicePiece, Piece piece, int depth){
         l.allLegalMoves = null;
 
         if(piece != null)
@@ -113,7 +113,7 @@ public class MiniMax {
         }
     }
 
-    public void createChildren(LogicGame l, Player player, Node node){
+    public void createChildren(LogicGame l, boolean player, Node node){
 
 //        System.out.println(Arrays.toString(l.dicePiece));
         int length = l.dicePiece.length;
@@ -137,7 +137,7 @@ public class MiniMax {
         for (int i = 0; i < k; i++) {
             int pieceNum = l.dicePiece[i];
             if(pieceNum < 6){
-            LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum, player.isBlackSide());
+            LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum, player);
 
                 for (int j = 0; j < allPieces.size(); j++) {
                     Coordinate coordinate = allPieces.get(j);

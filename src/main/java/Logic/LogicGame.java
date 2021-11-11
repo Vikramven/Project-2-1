@@ -4,6 +4,8 @@ import Board.*;
 import GUI.GUIMain;
 import GUI.GameScene;
 import GUI.IntroScene;
+import Logic.AI.ExecuteMovesAI;
+import Logic.AI.MiniMax;
 import Logic.GameLogic.ChangePlayer;
 import Logic.GameLogic.DiceLogic;
 import Logic.HintLogic.ButtonHighlight;
@@ -30,7 +32,10 @@ public class LogicGame extends GUIMain {
     public ArrayList<Move> allLegalMoves = null;
 
     // Player
-    public final Player player = new Human(false, true);
+    public Player playerWhite;
+    public Player playerBlack;
+
+    public boolean blackMove = false;
 
     // Number of moves
     public int numberMoves = 3;
@@ -64,6 +69,8 @@ public class LogicGame extends GUIMain {
     public ButtonHighlight bh = new ButtonHighlight();
     public DiceLogic dl = new DiceLogic();
     public ExecuteMove em = new ExecuteMove();
+    private final MiniMax miniMax = new MiniMax();
+    private final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
 
     /**
      * Constructor for the logic game
@@ -76,7 +83,7 @@ public class LogicGame extends GUIMain {
      * @param passButton Pass button (Change the player move)
      */
     public LogicGame(Board board, Button[][] buttonBoard, Label playerPass, int[] dicePiece,
-                     ImageView[] diceImgViews, ArrayList<Image> images, Button passButton) {
+                     ImageView[] diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack) {
         this.board = board;
         this.buttonBoard = buttonBoard;
         this.playerPass = playerPass;
@@ -84,6 +91,8 @@ public class LogicGame extends GUIMain {
         this.diceImgViews = diceImgViews;
         this.images = images;
         this.passButton = passButton;
+        this.playerWhite = playerWhite;
+        this.playerBlack = playerBlack;
 
         //Set Up the game = roll dice and set an action to the pass button
         setUpGame();
@@ -157,6 +166,9 @@ public class LogicGame extends GUIMain {
                 });
             }
         }
+
+        if(!playerWhite.isHuman())
+            executeMovesAI.executeMovesAI(this, miniMax.calculateBestMoves(this));
     }
 
     /**
@@ -170,7 +182,7 @@ public class LogicGame extends GUIMain {
 
         Piece piece = currentSpot.getPiece();
         //System.out.println(piece.getName());
-        allLegalMoves = piece.checkPlayerMove(board, currentSpot, player, board.pieceHeap);
+        allLegalMoves = piece.checkPlayerMove(board, currentSpot, blackMove, board.pieceHeap);
 
         if (allLegalMoves == null) {
             currentSpot = null;

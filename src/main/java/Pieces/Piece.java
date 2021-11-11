@@ -80,19 +80,19 @@ public abstract class Piece implements PieceMove {
     /**
      * Check if player move with the correct piece
      */
-    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, Player player, PieceHeap enemyPieces){
-        if(spot.getPiece().isColor().equals(player.isColorSide())){
+    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, boolean player, PieceHeap enemyPieces){
+        if(spot.getPiece().isColor().equals(player)){
             int[][] cost = calculateBoard(enemyPieces, player, board);
             return allLegalMoves(board, spot, cost);
         }
         return null;
     }
 
-    private int[][] calculateBoard(PieceHeap enemyPieces, Player player, Board board){
+    private int[][] calculateBoard(PieceHeap enemyPieces, boolean player, Board board){
         ArrayList<Move> movesEnemy = new ArrayList<>();
         int[][] emptyCost = new int[8][8];
         for (int i = 0; i < 6; i++) {
-            LinkedList<Coordinate> pieces = enemyPieces.getAllPieces(i, !player.isBlackSide());
+            LinkedList<Coordinate> pieces = enemyPieces.getAllPieces(i, !player);
             for (int j = 0; j < pieces.size(); j++) {
                 Coordinate coordinate = pieces.get(j);
 
