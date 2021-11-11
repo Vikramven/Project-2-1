@@ -13,7 +13,6 @@ public class ChangePlayer {
      * Change the player in the logic and in the GUI
      */
     public void changePlayer(LogicGame l) {
-        l.numberMoves = 3; // Number of moves the player is allowed per turn.
         l.currentSpot = null;
         l.allLegalMoves = null;
 
@@ -26,7 +25,9 @@ public class ChangePlayer {
             l.blackMove = false;
 
             if(!l.playerBlack.isHuman())
-                executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
+                System.out.println("Check Black AI");
+                // TODO
+                // executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
         } else {
             l.playerPass.setStyle(
                     "-fx-font: 42px SansSerifBold;" +
@@ -35,7 +36,9 @@ public class ChangePlayer {
             l.blackMove = true;
 
             if(!l.playerWhite.isHuman())
-                executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
+                System.out.println("Check White AI");
+                // TODO
+                //executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
         }
 
         l.bh.removeHighlightButtons(l); // Remove Highlight buttons

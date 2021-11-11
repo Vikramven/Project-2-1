@@ -36,12 +36,12 @@ public class WinGui {
         Optional<ButtonType> results = winAlert.showAndWait();
         if(results.isPresent()) {
             if (results.get() == playAgain) {
-                gameSc.setGameScene();
+                gameSc.setGameScene(gameSc.getPlayers());
                 mainStage.setScene(gameSc.getGameScene());
                 mainStage.setFullScreen(true);
                 mainStage.setResizable(false);
             } else if (results.get() == goBack) {
-                gameSc.setGameScene();
+                gameSc.setGameScene(gameSc.getPlayers());
                 mainStage.setScene(introSc.getIntroScene());
                 mainStage.setFullScreen(true);
                 mainStage.setResizable(false);
