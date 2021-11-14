@@ -7,34 +7,26 @@ import java.util.ArrayList;
 
 public class ExecuteMovesAI {
 
-    public void executeMovesAI(LogicGame l, ArrayList<Move> moves){
+    public void executeMovesAI(LogicGame l, Move move){
 
-        int length = moves.size();
+        int currentX = move.getPieceSpotX();
+        int currentY = move.getPieceSpotY();
 
-        for (int i = length-1;i >= 0; i--) {
+        l.iniX.set(currentX);
+        l.iniY.set(currentY);
 
-            Move move = moves.get(i);
+        int moveX = move.getX();
+        int moveY = move.getY();
 
-            int currentX = move.getPieceSpotX();
-            int currentY = move.getPieceSpotY();
+        l.currentSpot = l.board.getSpot(currentX, currentY);
 
-            l.iniX.set(currentX);
-            l.iniY.set(currentY);
+        l.allLegalMoves = new ArrayList<>();
+        l.allLegalMoves.add(move);
 
-            int moveX = move.getX();
-            int moveY = move.getY();
+        l.em.executeMove(l.iniX, l.iniY, moveX, moveY, l);
 
-            l.currentSpot = l.board.getSpot(currentX, currentY);
-
-            l.allLegalMoves = new ArrayList<>();
-            l.allLegalMoves.add(move);
-
-            l.em.executeMove(l.iniX, l.iniY, moveX, moveY, l);
-
-            l.allLegalMoves = new ArrayList<>();
-            l.currentSpot = null;
-        }
-
+        l.allLegalMoves = new ArrayList<>();
+        l.currentSpot = null;
         l.allLegalMoves = null;
     }
 }

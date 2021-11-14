@@ -4,32 +4,38 @@ import Board.*;
 import Logic.LogicGame;
 import Logic.MoveLogic.Move;
 import Pieces.Piece;
-import Players.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class MiniMax {
 
-    private Node maxCostNode;
 
     public MiniMax(){
 
     }
 
-    public ArrayList<Move> calculateBestMoves(LogicGame l){
+    /**
+     *
+     * @param l State of the game
+     * @return The best Move
+     */
+    public Move calculateBestMoves(LogicGame l){
+
+        //Clone objects to avoid side effects
         Board initialBoard = l.board.clone();
         PieceHeap initialPieceHeap = l.board.pieceHeap.clone();
         int initialDicePiece = l.dicePiece;
 
+
+        //Create a root of the tree
         Node tree = new Node();
 
-        maxCostNode = tree;
+        //Creating a tree
+        createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 2, true);
 
-        createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, null, 3);
 
-
+        //Check the tree by prints
 //        LinkedList<Node> children = tree.getChildren();
 //
 //        for (int i = 0; i < children.size(); i++) {
@@ -44,49 +50,59 @@ public class MiniMax {
 //            }
 //        }
 
+
+        //Return to the original state
         l.board = initialBoard;
         l.board.pieceHeap = initialPieceHeap;
         l.dicePiece = initialDicePiece;
 
-        ArrayList<Move> moves = new ArrayList<>();
-        while(!maxCostNode.isRoot()){
 
-            moves.add(maxCostNode.getMove());
+        //Find the best move
+        //TODO
 
-            maxCostNode = maxCostNode.getParent();
-        }
 
-        return moves;
+        return null;
     }
 
-    public void createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece, Piece piece, int depth){
+    /**
+     * Create a tree recursively
+     * @param node Node
+     * @param l State of the game (Simulation)
+     * @param player player side
+     * @param board State of the board (Simulation)
+     * @param pieceHeap Where pieces are located (Simulation)
+     * @param dicePiece Piece on the dice (Simulations)
+     * @param depth Maximum Depth of the tree
+     * @param firstChildren boolean for the first depth
+     */
+    public void createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap,
+                           int dicePiece, int depth, boolean firstChildren){
+
+
         l.allLegalMoves = null;
 
 
-        if(node.getDepth() > depth)
+        if(node.getDepth() == depth)
             return;
 
-        createChildren(l, player, node);
+        //Create children for the node
+        createChildren(l, player, node, firstChildren);
 
         LinkedList<Node> children = node.getChildren();
 
+        //Simulation moves of children
         for (int i = 0; i < children.size(); i++) {
             Board cloneBoard = board.clone();
             PieceHeap clonePieceHeap = pieceHeap.clone();
-            int cloneDicePiece = dicePiece;
-
 
 
             Node childNode = children.get(i);
-
-            if(childNode.getCost() >= maxCostNode.getCost())
-                maxCostNode = childNode;
 
             Move move = childNode.getMove();
 
             l.board = cloneBoard;
             l.board.pieceHeap = clonePieceHeap;
-            l.dicePiece = cloneDicePiece;
+            l.dicePiece = dicePiece;
 
             l.currentSpot = l.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
 
@@ -100,50 +116,47 @@ public class MiniMax {
             l.currentSpot = null;
 
 //            l.board.print();
-
-            createTree(children.get(i), l, player, l.board, l.board.pieceHeap, l.dicePiece, move.getPiece(), depth);
+            createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece, depth, false);
         }
     }
 
-    public void createChildren(LogicGame l, boolean player, Node node){
 
-//        System.out.println(Arrays.toString(l.dicePiece));
-        int length = l.dicePiece;
-        int[] temp = new int[length];
-        int k = 0;
+    /**
+     * Create children for children
+     * @param l State of the game (Simulation)
+     * @param player player side
+     * @param node Node
+     * @param firstChildren boolean for the first depth
+     */
+    public void createChildren(LogicGame l, boolean player, Node node, boolean firstChildren){
 
-//        for (int i = 0; i < length-1; i++){
-//            if (l.dicePiece != l.dicePiece){
-//                temp[k++] = l.dicePiece[i];
-//            }
-//        }
-        temp[k++] = l.dicePiece;
-        // Changing original array
-        for (int i = 0; i < k; i++){
-            l.dicePiece = temp[i];
-        }
-//
-//        System.out.println(Arrays.toString(l.dicePiece));
-//        System.out.println(k);
+        int[] pieceNum;
 
-        for (int i = 0; i < k; i++) {
-            int pieceNum = l.dicePiece;
-            if(pieceNum < 6){
-            LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum, player);
+        //First depth = create children for one piece
+        //Next depths = create children for all pieces
+        if(firstChildren)
+            pieceNum = new int[]{l.dicePiece};
+        else
+            pieceNum = new int[]{0, 1, 2, 3, 4, 5};
 
-                for (int j = 0; j < allPieces.size(); j++) {
-                    Coordinate coordinate = allPieces.get(j);
+//        System.out.println(Arrays.toString(pieceNum));
+
+        //Create children with possible legal move
+        for (int i = 0; i < pieceNum.length; i++) {
+            LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum[i], player);
+
+            for (int j = 0; j < allPieces.size(); j++) {
+                Coordinate coordinate = allPieces.get(j);
 
 //                    System.out.println(coordinate.x + "  " + coordinate.y);
 
-                    Spot spot = l.board.getSpot(coordinate.x, coordinate.y);
+                Spot spot = l.board.getSpot(coordinate.x, coordinate.y);
 
-                    Piece piece = spot.getPiece();
+                Piece piece = spot.getPiece();
 
-                    ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap);
+                ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
 
-                    node.addChildren(allMovesPiece);
-                }
+                node.addChildren(allMovesPiece);
             }
         }
     }

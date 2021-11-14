@@ -80,9 +80,14 @@ public abstract class Piece implements PieceMove {
     /**
      * Check if player move with the correct piece
      */
-    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, boolean player, PieceHeap enemyPieces){
+    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, boolean player, PieceHeap enemyPieces, boolean costAI){
         if(spot.getPiece().getColor() == player){
-            int[][] cost = calculateBoard(enemyPieces, player, board);
+
+            int[][] cost = new int[8][8];
+
+            if(costAI)
+                cost = calculateBoard(enemyPieces, !player, board);
+
             return allLegalMoves(board, spot, cost);
         }
         return null;
@@ -121,11 +126,11 @@ public abstract class Piece implements PieceMove {
                 case 0:
                     cost[goodX][goodY] = 10;
                 case 2:
-                    cost[goodX][goodY]=50;
+                    cost[goodX][goodY] = 50;
                 case 1:
-                    cost[goodX][goodY]=10;
+                    cost[goodX][goodY] = 10;
                 case 3:
-                    cost[goodX][goodY]=5;
+                    cost[goodX][goodY] = 5;
             }
 
             cost[badX][badY] = -10;

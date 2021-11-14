@@ -24,8 +24,14 @@ public class ChangePlayer {
                             "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
             l.blackMove = true;
 
-            if(!l.playerWhite.isHuman())
-                System.out.println("Check White AI");
+
+            //AI move
+            if(!l.playerBlack.isHuman()) {
+                System.out.println("Check Black AI");
+                miniMax.calculateBestMoves(l);
+                l.dl.rollDice(l);
+                l.cp.changePlayer(l);
+            }
                 // TODO
                 // executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
         } else {
@@ -35,8 +41,14 @@ public class ChangePlayer {
                             "-fx-text-fill: linear-gradient(from 60px 60px to 100px 100px, #32cd32, #ff8000);");
             l.blackMove = false;
 
-            if(!l.playerBlack.isHuman())
-                System.out.println("Check Black AI");
+
+            //AI move
+            if(!l.playerWhite.isHuman()) {
+                System.out.println("Check White AI");
+                miniMax.calculateBestMoves(l);
+                l.dl.rollDice(l);
+                l.cp.changePlayer(l);
+            }
                 // TODO
                 //executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
         }

@@ -93,7 +93,7 @@ public class IntroScene extends GUIMain {
                 } else if(newResult.get() == whiteSide) {
                     Player humanPl = new Human(false);
                     Player aiPl = new AI(true);
-                    Player[] plToAdd = {humanPl, aiPl};
+                    Player[] plToAdd = {aiPl, humanPl};
                     gameSc.setGameScene(plToAdd);
                 }
                 mainStage.setScene(gameSc.getGameScene());

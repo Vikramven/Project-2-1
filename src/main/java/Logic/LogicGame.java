@@ -163,8 +163,10 @@ public class LogicGame extends GUIMain {
             }
         }
 
+        //AI move
         if(!playerWhite.isHuman()) {
             System.out.println("White AI");
+            miniMax.calculateBestMoves(this);
             dl.rollDice(this);
             cp.changePlayer(this);
         }
@@ -182,7 +184,7 @@ public class LogicGame extends GUIMain {
 
         Piece piece = currentSpot.getPiece();
         //System.out.println(piece.getName());
-        allLegalMoves = piece.checkPlayerMove(board, currentSpot, blackMove, board.pieceHeap);
+        allLegalMoves = piece.checkPlayerMove(board, currentSpot, blackMove, board.pieceHeap, false);
 
         if (allLegalMoves == null) {
             currentSpot = null;
