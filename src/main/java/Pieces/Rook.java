@@ -10,6 +10,10 @@ public class Rook extends Piece {
 
 
     private boolean castling = true;
+
+    //TODO
+    int[][] cost = new int[8][8];
+
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -29,24 +33,24 @@ public class Rook extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
 
         //--R
-        moveRook(board, legalMoves, x, y, true, true, true, this, cost);
+        moveRook(board, legalMoves, x, y, true, true, true, this, costDynamic);
         //R--
-        moveRook(board, legalMoves, x, y, false, false, true, this, cost);
+        moveRook(board, legalMoves, x, y, false, false, true, this, costDynamic);
         //  R
         //  |
         //  |
-        moveRook(board, legalMoves, x, y, false, true, false, this, cost) ;
+        moveRook(board, legalMoves, x, y, false, true, false, this, costDynamic) ;
         //  |
         //  |
         //  R
-        moveRook(board, legalMoves, x, y, false, false, false, this, cost);
+        moveRook(board, legalMoves, x, y, false, false, false, this, costDynamic);
 
         return legalMoves;
     }
@@ -61,7 +65,8 @@ public class Rook extends Piece {
      * @param minusY goes minus Y coordinate or not
      * @param horizontal goes horizontal or not
      */
-    protected void moveRook(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, boolean horizontal, Piece piece, int[][] cost){
+    protected void moveRook(Board board, ArrayList<Move> legalMoves, int x, int y,
+                            boolean minusX, boolean minusY, boolean horizontal, Piece piece, int[][] costDynamic){
         for (int i = 1; i < 8; i++) {
 
                 int newX = x;
@@ -86,7 +91,8 @@ public class Rook extends Piece {
                         return;
                 }
 
-                int costMove = cost[newX][newY];
+
+                int costMove = costDynamic[newX][newY] + cost[newX][newY];
 
                 if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
                     return;

@@ -11,6 +11,7 @@ public class King extends Piece {
 
     public boolean castling = true;
 
+    //Todo
     private int[][] cost = {{0, 0, 0, 0, 0, 0, 0, 0},
             {5, 10, 10, 10, 10, 10, 10, 5},
             {-5, 0, 0, 0, 0, 0, 0, -5},
@@ -39,7 +40,7 @@ public class King extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int spotX = spot.getX();
@@ -52,33 +53,33 @@ public class King extends Piece {
 
         //   |
         //   K
-        moveKing(board, legalMoves, top, spotY, spotX, spotY);
+        moveKing(board, legalMoves, top, spotY, spotX, spotY, costDynamic);
 
         //    /
         //   K
-        moveKing(board, legalMoves, top, right, spotX, spotY);
+        moveKing(board, legalMoves, top, right, spotX, spotY, costDynamic);
 
         //  \
         //   K
-        moveKing(board, legalMoves, top, left, spotX, spotY);
+        moveKing(board, legalMoves, top, left, spotX, spotY, costDynamic);
 
         //   K
         //   |
-        moveKing(board, legalMoves, down, spotY, spotX, spotY);
+        moveKing(board, legalMoves, down, spotY, spotX, spotY, costDynamic);
 
         //   K
         //    \
-        moveKing(board, legalMoves, down, right, spotX, spotY);
+        moveKing(board, legalMoves, down, right, spotX, spotY, costDynamic);
 
         //   K
         //  /
-        moveKing(board, legalMoves, down, left, spotX, spotY);
+        moveKing(board, legalMoves, down, left, spotX, spotY, costDynamic);
 
         // - K
-        moveKing(board, legalMoves, spotX, left, spotX, spotY);
+        moveKing(board, legalMoves, spotX, left, spotX, spotY, costDynamic);
 
         //   K -
-        moveKing(board, legalMoves, spotX, right, spotX, spotY);
+        moveKing(board, legalMoves, spotX, right, spotX, spotY, costDynamic);
 
         if(castling)
             castlingMove(board, legalMoves, spotX, spotY);
@@ -93,12 +94,12 @@ public class King extends Piece {
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void moveKing(Board board, ArrayList<Move> legalMoves, int x, int y, int spotX, int spotY){
+    private void moveKing(Board board, ArrayList<Move> legalMoves, int x, int y, int spotX, int spotY, int[][] costDynamic){
 
         if(isBoardBounds(x) || isBoardBounds(y))
             return;
 
-        int costMove = cost[x][y];
+        int costMove = costDynamic[x][y] + cost[x][y];
 
         if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY))
             return;

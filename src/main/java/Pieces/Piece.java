@@ -2,8 +2,8 @@ package Pieces;
 
 import Board.Board;
 import Board.Spot;
+import Logic.EvaluationFunction.EvaluationFunction;
 import Logic.MoveLogic.Move;
-import Players.Player;
 import Board.*;
 
 import java.util.ArrayList;
@@ -86,56 +86,10 @@ public abstract class Piece implements PieceMove {
             int[][] cost = new int[8][8];
 
             if(costAI)
-                cost = calculateBoard(enemyPieces, !player, board);
+                cost = new EvaluationFunction().evaluateTheBoard(enemyPieces, player, board);
 
             return allLegalMoves(board, spot, cost);
         }
         return null;
-    }
-
-    private int[][] calculateBoard(PieceHeap enemyPieces, boolean player, Board board){
-        ArrayList<Move> movesEnemy = new ArrayList<>();
-        int[][] emptyCost = new int[8][8];
-        for (int i = 0; i < 6; i++) {
-            LinkedList<Coordinate> pieces = enemyPieces.getAllPieces(i, !player);
-            for (int j = 0; j < pieces.size(); j++) {
-                Coordinate coordinate = pieces.get(j);
-
-                Spot spot = board.getSpot(coordinate.x, coordinate.y);
-
-                Piece piece = spot.getPiece();
-
-                movesEnemy.addAll(piece.allLegalMoves(board,spot, emptyCost));
-            }
-        }
-
-        int[][] cost = new int[8][8];
-
-        for (int i = 0; i < movesEnemy.size(); i++) {
-            Move move = movesEnemy.get(i);
-
-            int badX = move.getX();
-            int badY = move.getY();
-
-            int goodX = move.getPieceSpotX();
-            int goodY = move.getPieceSpotY();
-
-            int check=move.getPiece().nameInt;
-
-            switch(check){
-                case 0:
-                    cost[goodX][goodY] = 10;
-                case 2:
-                    cost[goodX][goodY] = 50;
-                case 1:
-                    cost[goodX][goodY] = 10;
-                case 3:
-                    cost[goodX][goodY] = 5;
-            }
-
-            cost[badX][badY] = -10;
-
-        }
-        return cost;
     }
 }

@@ -9,6 +9,10 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
 
 
+    //TODO
+    int[][] cost = new int[8][8];
+
+
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -28,7 +32,7 @@ public class Pawn extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
@@ -41,11 +45,11 @@ public class Pawn extends Piece {
         //                                                 *
         //                                                 *
         //second one is if a pawn stay on initial position P
-        movePawn(x, y, board,  legalMoves, cost);
+        movePawn(x, y, board,  legalMoves, costDynamic);
 
         //                                                              \ /
         //third variant is where enemy piece is located on it diagonal   P
-        takeEnemyPiece(x, y, board, legalMoves, cost);
+        takeEnemyPiece(x, y, board, legalMoves, costDynamic);
 
         return legalMoves;
     }
@@ -57,7 +61,7 @@ public class Pawn extends Piece {
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void movePawn(int x, int y, Board board, ArrayList<Move> legalMoves, int[][]cost){
+    private void movePawn(int x, int y, Board board, ArrayList<Move> legalMoves, int[][]costDynamic){
         int point = 1;
 
         if(checkInitialPosition(x))
@@ -78,7 +82,7 @@ public class Pawn extends Piece {
             if(isObstaclePawn(board.getSpot(newX, y)))
                 break;
 
-            int costMove = cost[newX][y];
+            int costMove = costDynamic[newX][y] + cost[newX][y];
 
             legalMoves.add(new Move(newX, y, this, costMove, x, y));
         }
@@ -91,7 +95,7 @@ public class Pawn extends Piece {
      * @param board Board
      * @param legalMoves all possible legal moves
      */
-    private void takeEnemyPiece(int x, int y, Board board, ArrayList<Move> legalMoves, int[][] cost){
+    private void takeEnemyPiece(int x, int y, Board board, ArrayList<Move> legalMoves, int[][] costDynamic){
         int newX = x+1;
         if(black)
             newX = x-1;
@@ -102,14 +106,14 @@ public class Pawn extends Piece {
         int left = y - 1;
 
         if(!isBoardBounds(left)) {
-            int costMove = cost[newX][left];
+            int costMove = costDynamic[newX][left] + cost[newX][left];
             isObstacle(board.getSpot(newX, left), legalMoves, costMove, x, y);
         }
 
         int right = y + 1;
 
         if(!isBoardBounds(right)) {
-            int costMove = cost[newX][right];
+            int costMove = costDynamic[newX][right] + cost[newX][right];
             isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y);
         }
     }

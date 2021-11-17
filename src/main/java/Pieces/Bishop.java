@@ -7,6 +7,10 @@ import Logic.MoveLogic.Move;
 import java.util.ArrayList;
 
 public class Bishop extends Piece {
+
+    //TODO
+    int[][] cost = new int[8][8];
+
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -28,7 +32,7 @@ public class Bishop extends Piece {
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] cost) {
+    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
@@ -37,19 +41,19 @@ public class Bishop extends Piece {
         //   B
         //  /
         // /
-        moveBishop(board, legalMoves, x, y, true, true, this, cost);
+        moveBishop(board, legalMoves, x, y, true, true, this, costDynamic);
         // \
         //  \
         //    B
-        moveBishop(board, legalMoves, x, y, true, false, this, cost);
+        moveBishop(board, legalMoves, x, y, true, false, this, costDynamic);
         //B
         //  \
         //   \
-        moveBishop(board, legalMoves, x, y, false, true, this, cost);
+        moveBishop(board, legalMoves, x, y, false, true, this, costDynamic);
         //   /
         //  /
         // B
-        moveBishop(board, legalMoves, x, y, false, false, this, cost);
+        moveBishop(board, legalMoves, x, y, false, false, this, costDynamic);
         
         return legalMoves;
     }
@@ -63,7 +67,7 @@ public class Bishop extends Piece {
      * @param minusX goes minus X coordinate
      * @param minusY goes minus Y coordinate
      */
-    protected void moveBishop(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, Piece piece, int[][] cost){
+    protected void moveBishop(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, Piece piece, int[][] costDynamic){
         for (int i = 1; i < 8; i++) {
                 int newX;
                 int newY;
@@ -81,7 +85,7 @@ public class Bishop extends Piece {
                 if(isBoardBounds(newX) || isBoardBounds(newY))
                     return;
 
-                int costMove = cost[newX][newY];
+                int costMove = costDynamic[newX][newY] + costDynamic[newX][newY];
 
                 if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
                     return;
