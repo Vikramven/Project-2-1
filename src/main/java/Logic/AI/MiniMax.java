@@ -31,24 +31,25 @@ public class MiniMax {
         //Create a root of the tree
         Node tree = new Node();
 
+        System.out.println(l.dicePiece);
         //Creating a tree
         createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 2, true);
 
 
         //Check the tree by prints
-//        LinkedList<Node> children = tree.getChildren();
-//
-//        for (int i = 0; i < children.size(); i++) {
-//            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName() + " COST = " + children.get(i).getCost());
-//            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
-//            for (int j = 0; j < childrenOfChildren.size(); j++) {
-//                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName() + " COST = " + childrenOfChildren.get(j).getCost());
-//                LinkedList<Node> childrenOfChildrenOF = childrenOfChildren.get(j).getChildren();
-//                for (int k = 0; k < childrenOfChildrenOF.size(); k++) {
-//                    System.out.println("Children 3 " + childrenOfChildrenOF.get(k).getMove().getPiece().getName() + " COST = " + childrenOfChildrenOF.get(k).getCost());
-//                }
-//            }
-//        }
+        LinkedList<Node> children = tree.getChildren();
+
+        for (int i = 0; i < children.size(); i++) {
+            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName() + " COST = " + children.get(i).getCost());
+            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
+            for (int j = 0; j < childrenOfChildren.size(); j++) {
+                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName() + " COST = " + childrenOfChildren.get(j).getCost());
+                LinkedList<Node> childrenOfChildrenOF = childrenOfChildren.get(j).getChildren();
+                for (int k = 0; k < childrenOfChildrenOF.size(); k++) {
+                    System.out.println("Children 3 " + childrenOfChildrenOF.get(k).getMove().getPiece().getName() + " COST = " + childrenOfChildrenOF.get(k).getCost());
+                }
+            }
+        }
 
 
         //Return to the original state

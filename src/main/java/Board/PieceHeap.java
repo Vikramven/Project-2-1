@@ -22,7 +22,7 @@ public class PieceHeap {
         for (int i = 0; i < whitePieces.length; i++) {
             whitePieces[i] = new LinkedList<>();
         }
-
+        // WHAT IS THE REASONING BEHIND THE INDEXES OF THE LINKED LIST?
         whitePieces[3].add(new Coordinate(1, 0));
         whitePieces[3].add(new Coordinate(1, 1));
         whitePieces[3].add(new Coordinate(1, 2));
@@ -67,6 +67,11 @@ public class PieceHeap {
         blackPieces[5].add(new Coordinate(7, 7));
     }
 
+    /**
+     *  What is the use of the int x here? i thought getallpieces returns a whole list
+     *  x relates to i when it's called, see piece class, so if i=0, for example, that means it's a bishop, and it then gets enemy moves of all bishops
+     */
+
     public LinkedList<Coordinate> getAllPieces(int x, boolean black){
            if(!black)
                return whitePieces[x];
@@ -74,6 +79,14 @@ public class PieceHeap {
            return blackPieces[x];
     }
 
+    /**
+     *
+     * @param Piece which decides the depth? idk check again
+     * @param black condition for deciding which list to pop from
+     * @param x desired locations in the heap
+     * @param y desired locations in the heap
+     * Does pop piece remove any element u want to? what does i represent? the piece in the list or the depth of the piece in the list?
+     */
     public void popPiece(int Piece, boolean black, int x, int y){
         LinkedList<Coordinate> allPiece;
         if(!black)
@@ -94,6 +107,9 @@ public class PieceHeap {
         }
     }
 
+    /**
+     *What does this method do?
+     */
     public void pawn(int Piece, boolean black, int x, int y, int changePiece){
         popPiece(Piece, black, x, y);
 

@@ -11,8 +11,16 @@ public class Rook extends Piece {
 
     private boolean castling = true;
 
-    //TODO
-    int[][] cost = new int[8][8];
+    //TODO set costs for best move of bishop
+    //int[][] cost = new int[8][8];
+    private int[][] cost = {{0, 0, 0, 0, 0, 0, 0, 0},
+            {5, 10, 10, 10, 10, 10, 10, 5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            { 0, 0, 0, 5, 5, 0, 0, 0}};
 
     /**
      * Constructor

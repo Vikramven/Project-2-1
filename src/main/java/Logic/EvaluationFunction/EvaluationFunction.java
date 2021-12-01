@@ -4,6 +4,7 @@ import Board.*;
 import Board.PieceHeap;
 import Logic.MoveLogic.Move;
 import Pieces.Piece;
+import Pieces.Queen;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ public class EvaluationFunction {
 
      seems to be correct
      */
-    public int[][] evaluateTheBoard(PieceHeap enemyPieces, boolean player, Board board){
+    public int[][] evaluateTheBoard(PieceHeap enemyPieces, boolean player, Board board, Piece piece){
         ArrayList<Move> movesEnemy = new ArrayList<>();
         int[][] emptyCost = new int[8][8];
         for (int i = 0; i < 6; i++) {//6 pieces
@@ -30,7 +31,7 @@ public class EvaluationFunction {
 
                 Spot spot = board.getSpot(coordinate.x, coordinate.y);
 
-                Piece piece = spot.getPiece();
+                piece = spot.getPiece();
 
                 movesEnemy.addAll(piece.allLegalMoves(board,spot, emptyCost));
             }
@@ -51,23 +52,24 @@ public class EvaluationFunction {
 
 
             //TODO decide which values for every piece
-            switch(check){
-                case 0: //Bishop
-                    cost[goodX][goodY] = 10;
-                case 1: //Knight
-                    cost[goodX][goodY] = 50;
-                case 2: //King
-                    cost[goodX][goodY] = 10;
-                case 3: //Pawn
-                    cost[goodX][goodY] = 5;
-                case 4: //Queen
-                    cost[goodX][goodY] = 5;
-                case 5: //Rook
-                    cost[goodX][goodY] = 5;
-            }
+                switch (piece.getNameInt()) {
+                    case 0: //Bishop
+                        cost[goodX][goodY] = getPieceBishop(check); // put value for bishop
+                    case 1: //Knight
+                        cost[goodX][goodY] = 30;
+                    case 2: //King
+                        cost[goodX][goodY] = 1000;
+                    case 3: //Pawn
+                        cost[goodX][goodY] = 10;
+                    case 4: //Queen
+                        cost[goodX][goodY] = 50;
+                    case 5: //Rook
+                        cost[goodX][goodY] = 40;
+                }
+
 
             //TODO decide which value
-            cost[badX][badY] = -10;
+            cost[badX][badY] = -30;
 
         }
 
@@ -80,5 +82,22 @@ public class EvaluationFunction {
 //        }
         return cost;
     }
-
+    //TODO print this method for every piece
+    public int getPieceBishop(int check){
+        switch (check) {
+            case 0: //Bishop
+                return  30; // put value for bishop
+            case 1: //Knight
+                return  30;
+            case 2: //King
+                return  1000;
+            case 3: //Pawn
+                return 10;
+            case 4: //Queen
+                return  50;
+            case 5: //Rook
+                return  40;
+        }
+        return 0;
+    }
 }
