@@ -9,8 +9,17 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
 
 
-    //TODO
-    int[][] cost = new int[8][8];
+    //TODO promotion and 2 possible moves in the beginning of the game are the best moves, and the square before promotion is good good move
+    //DOUBT:WHICH IS THE BLACK SIDE
+
+    private int[][] cost = {{0 , 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {15, 15, 15, 15, 15, 15, 15, 15},
+            {15, 15, 15, 15, 15, 15, 15, 15},
+            {0, 0, 0, 0, 0, 0, 0, 0},//DOUBT: NEUTRAL OR CHANGE THE VALUES?
+            {5,  5,  5,  5,  5,  5,  5,  5},
+            {10, 10, 10, 10, 10, 10, 10, 10},
+            { 15, 15, 15, 15, 15, 15, 15, 15}};
 
 
     /**
