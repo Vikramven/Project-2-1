@@ -22,21 +22,21 @@ public class MiniMax {
      */
     public Move calculateBestMoves(LogicGame l){
 
-        //Clone objects to avoid side effects
+        // Clone objects to avoid side effects
         Board initialBoard = l.board.clone();
         PieceHeap initialPieceHeap = l.board.pieceHeap.clone();
         int initialDicePiece = l.dicePiece;
 
 
-        //Create a root of the tree
+        // Create a root of the tree
         Node tree = new Node();
 
-        System.out.println(l.dicePiece);
-        //Creating a tree
-        createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 2, true);
+        // Creating a tree
+        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 4,
+                true, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 
-        //Check the tree by prints
+        // Check the tree by prints
         LinkedList<Node> children = tree.getChildren();
 
         for (int i = 0; i < children.size(); i++) {
@@ -52,18 +52,22 @@ public class MiniMax {
         }
 
 
-        //Return to the original state
+        // Return to the original state
         l.board = initialBoard;
         l.board.pieceHeap = initialPieceHeap;
         l.dicePiece = initialDicePiece;
 
 
-        //Find the best move
-        //TODO
+        // Find the best move
+        while(!bestMove.isRoot()) {
+            System.out.println(bestMove.getMove().getPiece().getName() + " COST = " + bestMove.getCost());
+            bestMove = bestMove.getParent();
+        }
 
 
         return null;
     }
+
 
     /**
      * Create a tree recursively
@@ -76,48 +80,110 @@ public class MiniMax {
      * @param depth Maximum Depth of the tree
      * @param firstChildren boolean for the first depth
      */
-    public void createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap,
-                           int dicePiece, int depth, boolean firstChildren){
+    public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece,
+                           int depth, boolean firstChildren, boolean max, int alpha, int beta) {
 
 
         l.allLegalMoves = null;
 
 
-        if(node.getDepth() == depth)
-            return;
+        if (node.getDepth() == depth)
+            //TODO
+            return node;
 
-        //Create children for the node
+        // Create children for the node
         createChildren(l, player, node, firstChildren);
 
         LinkedList<Node> children = node.getChildren();
 
-        //Simulation moves of children
-        for (int i = 0; i < children.size(); i++) {
-            Board cloneBoard = board.clone();
-            PieceHeap clonePieceHeap = pieceHeap.clone();
+        if(max) {
 
+            Node maxValue = new Node();
+            maxValue.setCost(Integer.MIN_VALUE);
 
-            Node childNode = children.get(i);
+            // Simulation moves of children
+            for (int i = 0; i < children.size(); i++) {
+                Board cloneBoard = board.clone();
+                PieceHeap clonePieceHeap = pieceHeap.clone();
 
-            Move move = childNode.getMove();
+                Node childNode = children.get(i);
 
-            l.board = cloneBoard;
-            l.board.pieceHeap = clonePieceHeap;
-            l.dicePiece = dicePiece;
+                Move move = childNode.getMove();
 
-            l.currentSpot = l.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
+                l.board = cloneBoard;
+                l.board.pieceHeap = clonePieceHeap;
+                l.dicePiece = dicePiece;
 
-            l.allLegalMoves = new ArrayList<>();
-            l.allLegalMoves.add(move);
+                l.currentSpot = l.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
 
+                l.allLegalMoves = new ArrayList<>();
+                l.allLegalMoves.add(move);
 
-            l.em.movePiece(move.getX(), move.getY(), l, false);
+                l.em.movePiece(move.getX(), move.getY(), l, false);
 
+                l.currentSpot = null;
 
-            l.currentSpot = null;
+                // l.board.print();
+                Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece,
+                        depth, false, false, alpha, beta);
 
-//            l.board.print();
-            createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece, depth, false);
+                // If evaluating value is larger than our maxValue up until this point
+                if(evalNode.getCost() >= maxValue.getCost() ) {
+                    maxValue = evalNode;
+                }
+
+                // Pruning conditions
+                if(evalNode.getCost() >= alpha) {
+                    alpha = evalNode.getCost();
+                }
+                if(beta <= alpha) { break;}
+            }
+            return maxValue;
+
+        } else {
+
+            Node minValue = new Node();
+            minValue.setCost(Integer.MAX_VALUE);
+
+            // Simulation moves of children
+            for (int i = 0; i < children.size(); i++) {
+
+                Board cloneBoard = board.clone();
+                PieceHeap clonePieceHeap = pieceHeap.clone();
+
+                Node childNode = children.get(i);
+
+                Move move = childNode.getMove();
+
+                l.board = cloneBoard;
+                l.board.pieceHeap = clonePieceHeap;
+                l.dicePiece = dicePiece;
+
+                l.currentSpot = l.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
+
+                l.allLegalMoves = new ArrayList<>();
+                l.allLegalMoves.add(move);
+
+                l.em.movePiece(move.getX(), move.getY(), l, false);
+
+                l.currentSpot = null;
+
+                // l.board.print();
+                Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece,
+                        depth, false, true, alpha, beta);
+
+                // If the evaluating node is less than our minValue up until this point
+                if(evalNode.getCost() <= minValue.getCost() ) {
+                    minValue = evalNode;
+                }
+
+                // Pruning conditions
+                if(evalNode.getCost() <= beta) {
+                    beta = evalNode.getCost();
+                }
+                if(beta <= alpha) { break;}
+            }
+            return minValue;
         }
     }
 
@@ -133,8 +199,8 @@ public class MiniMax {
 
         int[] pieceNum;
 
-        //First depth = create children for one piece
-        //Next depths = create children for all pieces
+        // First depth = create children for one piece
+        // Next depths = create children for all pieces
         if(firstChildren)
             pieceNum = new int[]{l.dicePiece};
         else
@@ -142,7 +208,7 @@ public class MiniMax {
 
 //        System.out.println(Arrays.toString(pieceNum));
 
-        //Create children with possible legal move
+        // Create children with possible legal move
         for (int i = 0; i < pieceNum.length; i++) {
             LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum[i], player);
 
@@ -158,6 +224,7 @@ public class MiniMax {
                 ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
 
                 node.addChildren(allMovesPiece);
+
             }
         }
     }

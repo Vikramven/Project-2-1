@@ -81,6 +81,10 @@ public class Node {
         return cost;
     }
 
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
     /**
      * Is root?
      * @return true = root || false = not root
