@@ -12,7 +12,7 @@ public class Pawn extends Piece {
     //TODO promotion and 2 possible moves in the beginning of the game are the best moves, and the square before promotion is good good move
     //DOUBT:WHICH IS THE BLACK SIDE
 
-    private int[][] cost = {{0 , 0, 0, 0, 0, 0, 0, 0},
+    private int[][] blackCost = {{0 , 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
             {15, 15, 15, 15, 15, 15, 15, 15},
             {15, 15, 15, 15, 15, 15, 15, 15},
@@ -20,6 +20,15 @@ public class Pawn extends Piece {
             {5,  5,  5,  5,  5,  5,  5,  5},
             {10, 10, 10, 10, 10, 10, 10, 10},
             { 15, 15, 15, 15, 15, 15, 15, 15}};
+
+    private int[][] whiteCost = {{ 15, 15, 15, 15, 15, 15, 15, 15},
+            {10, 10, 10, 10, 10, 10, 10, 10},
+            {5,  5,  5,  5,  5,  5,  5,  5},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {15, 15, 15, 15, 15, 15, 15, 15},
+            {15, 15, 15, 15, 15, 15, 15, 15},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0 , 0, 0, 0, 0, 0, 0, 0}};
 
 
     /**
@@ -91,7 +100,8 @@ public class Pawn extends Piece {
             if(isObstaclePawn(board.getSpot(newX, y)))
                 break;
 
-            int costMove = costDynamic[newX][y] + cost[newX][y];
+            int costMove = costDynamic[newX][y] + blackCost[newX][y];
+
 
             legalMoves.add(new Move(newX, y, this, costMove, x, y));
         }
@@ -115,14 +125,14 @@ public class Pawn extends Piece {
         int left = y - 1;
 
         if(!isBoardBounds(left)) {
-            int costMove = costDynamic[newX][left] + cost[newX][left];
+            int costMove = costDynamic[newX][left] + blackCost[newX][left];
             isObstacle(board.getSpot(newX, left), legalMoves, costMove, x, y);
         }
 
         int right = y + 1;
 
         if(!isBoardBounds(right)) {
-            int costMove = costDynamic[newX][right] + cost[newX][right];
+            int costMove = costDynamic[newX][right] + blackCost[newX][right];
             isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y);
         }
     }

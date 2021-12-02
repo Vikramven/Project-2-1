@@ -38,6 +38,15 @@ public class EvaluationFunction {
         }
 
         int[][] cost = new int[8][8];
+        //TODO: flippping the array, but this is probably O(N) right?
+        for(int i=0;i<cost.length/2;i++){
+            int[] temp = cost[i];
+            cost[i] = cost[cost.length - i - 1];
+            cost[cost.length - i - 1] = temp;
+            return cost;
+        }
+
+
 
         for (int i = 0; i < movesEnemy.size(); i++) {
             Move move = movesEnemy.get(i);
