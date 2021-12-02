@@ -15,17 +15,17 @@ public class PawnPromotion {
      * Check on pawn promotion
      * @param spot Spot of the pawn
      */
-    public void checkPawnPromotion(Spot spot, LogicGame l) {
+    public void checkPawnPromotion(Spot spot, LogicGame l, boolean AI) {
         Piece pawn = spot.getPiece();
         if(pawn.isColor().equals("White")){
             if(spot.getX() == 7 && !l.winFlag) {
                 l.getGameSc().addMoveToHist("WHITE PROMOTION:");
-                pawnPromotion(spot, false, l);
+                pawnPromotion(spot, false, l, AI);
             }
         } else {
             if(spot.getX() == 0 && !l.winFlag) {
                 l.getGameSc().addMoveToHist("BLACK PROMOTION:");
-                pawnPromotion(spot, true, l);
+                pawnPromotion(spot, true, l, AI);
             }
         }
     }
@@ -35,16 +35,12 @@ public class PawnPromotion {
      * @param spot The spot of the pawn
      * @param black Color of the piece
      */
-    private void pawnPromotion(Spot spot, boolean black, LogicGame l) {
-        int random = (int)Math.floor(Math.random()*(4-0+1)+0);
+    private void pawnPromotion(Spot spot, boolean black, LogicGame l, boolean AI) {
+        int random = (int)Math.floor(Math.random()*(4-1+1)+1);
 
-        if(black) {
-            if (l.playerBlack.isHuman())
-                random = (int) (Math.random() * 4);
-        } else {
-            if (l.playerWhite.isHuman())
-                random = (int) (Math.random() * 4);
-        }
+
+        if(!AI) random = (int) (Math.random() * 4);
+
 
         if(!l.winFlag) {
             Stage mainStage = l.getMainStage();
@@ -52,22 +48,12 @@ public class PawnPromotion {
             if (random != 0) {
                 String result = promRoll(random);
 
-                if(black) {
-                    if (l.playerBlack.isHuman()) {
-                        Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
-                        resAlert.setTitle("Random Roll Result");
-                        resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
-                        resAlert.initOwner(mainStage);
-                        resAlert.showAndWait();
-                    }
-                } else {
-                    if (l.playerWhite.isHuman()) {
-                        Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
-                        resAlert.setTitle("Random Roll Result");
-                        resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
-                        resAlert.initOwner(mainStage);
-                        resAlert.showAndWait();
-                    }
+                if(!AI) {
+                    Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
+                    resAlert.setTitle("Random Roll Result");
+                    resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
+                    resAlert.initOwner(mainStage);
+                    resAlert.showAndWait();
                 }
 
                 switch (result) {
@@ -110,15 +96,19 @@ public class PawnPromotion {
                 if (results.isPresent()) {
                     if (results.get() == kChoice) {
                         Knight knight = new Knight(black);
+                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 1);
                         spot.setPiece(knight);
                     } else if (results.get() == bChoice) {
                         Bishop bishop = new Bishop(black);
+                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 0);
                         spot.setPiece(bishop);
                     } else if (results.get() == qChoice) {
                         Queen queen = new Queen(black);
+                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 4);
                         spot.setPiece(queen);
                     } else if (results.get() == rChoice) {
                         Rook rook = new Rook(black);
+                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 5);
                         spot.setPiece(rook);
                     }
                 }

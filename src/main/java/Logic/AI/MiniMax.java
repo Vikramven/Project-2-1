@@ -119,7 +119,7 @@ public class MiniMax {
                 l.allLegalMoves = new ArrayList<>();
                 l.allLegalMoves.add(move);
 
-                l.em.movePiece(move.getX(), move.getY(), l, false);
+                l.em.movePiece(move.getX(), move.getY(), l, false, true);
 
                 l.currentSpot = null;
 
@@ -164,7 +164,7 @@ public class MiniMax {
                 l.allLegalMoves = new ArrayList<>();
                 l.allLegalMoves.add(move);
 
-                l.em.movePiece(move.getX(), move.getY(), l, false);
+                l.em.movePiece(move.getX(), move.getY(), l, false, true);
 
                 l.currentSpot = null;
 

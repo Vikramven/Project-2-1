@@ -26,7 +26,7 @@ public class ExecuteMove {
      * @param finalY where player moves y coordinate
      */
     public void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY, LogicGame l) {
-        boolean flag = movePiece(finalX, finalY, l, true);
+        boolean flag = movePiece(finalX, finalY, l, true, false);
         if(flag) {
             gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
 //            for (int j = 0; j < 6; j++) {
@@ -49,7 +49,7 @@ public class ExecuteMove {
      * @param y Y coordinate which choose the player
      * @return true = player chose (clicked on) a legal move / false = player did not choose a legal move
      */
-    public boolean movePiece(int x, int y, LogicGame l, boolean GUI) {
+    public boolean movePiece(int x, int y, LogicGame l, boolean GUI, boolean AI) {
 
         for (int i = 0; i < l.allLegalMoves.size(); i++) {
             if(x == l.allLegalMoves.get(i).getX() && y == l.allLegalMoves.get(i).getY()){
@@ -62,7 +62,8 @@ public class ExecuteMove {
                 if(win != null){
                     Piece winPiece = win.getPiece();
                     if(winPiece.getName().equals("King")){
-                        new WinGui().winGui(l, oldY, oldX, y, x);
+                        if(!AI)
+                            new WinGui().winGui(l, oldY, oldX, y, x);
                     }
                     l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.blackMove, x, y);
                 }
@@ -74,7 +75,7 @@ public class ExecuteMove {
                         l.currentSpot.getPiece().getColor(), oldX, oldY, x, y);
 
                 if(l.currentSpot.getPiece().getName().equals("Pawn")){
-                    pp.checkPawnPromotion(l.currentSpot, l);
+                    pp.checkPawnPromotion(l.currentSpot, l, AI);
                 }
 
                 if(l.currentSpot.getPiece().getName().equals("King")){

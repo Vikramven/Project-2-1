@@ -137,9 +137,9 @@ public class Pawn extends Piece {
 
         if(!isBoardBounds(right)) {
             if(black)
-                costMove = costDynamic[newX][left] + blackCost[newX][left];
+                costMove = costDynamic[newX][right] + blackCost[newX][right];
             else
-                costMove = costDynamic[newX][left] + whiteCost[newX][left];
+                costMove = costDynamic[newX][right] + whiteCost[newX][right];
             isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y);
         }
     }

@@ -68,6 +68,10 @@ public class Expectimax {
 
 
         // Find the best move
+        if(bestMove.getParent() == null)
+            return null;
+
+
         while(!bestMove.getParent().isRoot()) {
             bestMove = bestMove.getParent();
         }
@@ -128,7 +132,7 @@ public class Expectimax {
                 l.allLegalMoves = new ArrayList<>();
                 l.allLegalMoves.add(move);
 
-                l.em.movePiece(move.getX(), move.getY(), l, false);
+                l.em.movePiece(move.getX(), move.getY(), l, false, true);
 
                 l.currentSpot = null;
 
@@ -203,7 +207,8 @@ public class Expectimax {
 
             ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
 
-            node.addChildren(allMovesPiece);
+            if(allMovesPiece != null)
+                node.addChildren(allMovesPiece);
 
         }
     }
