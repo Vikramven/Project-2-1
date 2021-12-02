@@ -11,8 +11,26 @@ public class Rook extends Piece {
 
     private boolean castling = true;
 
-    //TODO
-    int[][] cost = new int[8][8];
+    //TODO set costs for best move of bishop
+    //TODO cost matrix is not done yet
+    //int[][] cost = new int[8][8];
+    private int[][] blackCost = {{0, 0, 0, 0, 0, 0, 0, 0},
+            {5, 10, 10, 10, 10, 10, 10, 5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            { 0, 0, 0, 5, 5, 0, 0, 0}};
+
+    private int[][] whiteCost = {{0, 0, 0, 5, 5, 0, 0, 0},
+            {5, 10, 10, 10, 10, 10, 10, 5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            { 0, 0, 0, 5, 5, 0, 0, 0}};
 
     /**
      * Constructor
@@ -92,7 +110,7 @@ public class Rook extends Piece {
                 }
 
 
-                int costMove = costDynamic[newX][newY] + cost[newX][newY];
+                int costMove = costDynamic[newX][newY] + blackCost[newX][newY];
 
                 if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
                     return;

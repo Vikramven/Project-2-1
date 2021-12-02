@@ -11,16 +11,24 @@ public class King extends Piece {
 
     public boolean castling = true;
 
-    //Todo
-    private int[][] cost = {{0, 0, 0, 0, 0, 0, 0, 0},
-            {5, 10, 10, 10, 10, 10, 10, 5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            { 0, 0, 0, 5, 5, 0, 0, 0}};
+    //Todo I think the initial cost function was for the black portion of the board
+    private int[][] blackCost = {{10, 15, 10, 10, 10, 15, 10, 10},
+                            {10, -10, -10, -10, -10, -10, -10, 10},
+                            {5, -10, -15, -15, -15, -15, -10, 5},
+                            {5, -10, -15, -15, -15, -15, -10, 5},
+                            {-5, -10, -15, -15, -15, -15, -10, -5},
+                            {-5, -10, -15, -15, -15, -15, -10, -5},
+                            {-5, -10, -10, -10, -10, -10, -10, -5},
+                            { -5, -5, -5, +15, -5, -5, -5, -5}};
 
+    private int[][] whiteCost = {{-5, -5, -5, +15, -5, -5, -5, -5},
+            {-5, -10, -10, -10, -10, -10, -10, -5},
+            {-5, -10, -15, -15, -15, -15, -10, -5},
+            {-5, -10, -15, -15, -15, -15, -10, -5},
+            {5, -10, -15, -15, -15, -15, -10, 5},
+            {5, -10, -15, -15, -15, -15, -10, 5},
+            {10, -10, -10, -10, -10, -10, -10, 10},
+            {10, 15, 10, 10, 10, 15, 10, 10 }};
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -99,7 +107,7 @@ public class King extends Piece {
         if(isBoardBounds(x) || isBoardBounds(y))
             return;
 
-        int costMove = costDynamic[x][y] + cost[x][y];
+        int costMove = costDynamic[x][y] + blackCost[x][y];
 
         if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY))
             return;
@@ -173,7 +181,7 @@ public class King extends Piece {
 
 
     private void addCastling(ArrayList<Move> legalMoves, int x, int y, int MoveX, int MoveY){
-        int costMove = cost[MoveX][MoveY];
+        int costMove = blackCost[MoveX][MoveY];
 
         legalMoves.add(new Move(MoveX, MoveY, this, costMove, x, y));
     }

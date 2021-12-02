@@ -9,7 +9,23 @@ import java.util.ArrayList;
 public class Knight extends Piece {
 
     //TODO
-    int[][] cost = new int[8][8];
+    private int[][] blackCost = {{0, 0, 0, 0, 0, 0, 0, 0},
+                            {0, 0, 0, 0, 0, 0, 0, 0},
+                            {15, 0, 15, 0, 0, 15, 0, 15},
+                            {-5, 0, 0, 0, 0, 0, 0, -5},
+                            {-5, 0, 0, 0, 0, 0, 0, -5},
+                            {-5, 0, 0, 0, 0, 0, 0, -5},
+                            {-5, 0, 0, 0, 0, 0, 0, -5},
+                            { 0, 0, 0, 15, 15, 0, 0, 0}};
+
+    private int[][] whiteCost = {{0, 0, 0, 15, 15, 0, 0, 0},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {-5, 0, 0, 0, 0, 0, 0, -5},
+            {15, 0, 15, 0, 0, 15, 0, 15},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0 }};
 
     /**
      * Constructor
@@ -128,7 +144,7 @@ public class Knight extends Piece {
                 return;
         }
 
-        int costMove = costDynamic[newX][newY] + cost[newX][newY];
+        int costMove = costDynamic[newX][newY] + blackCost[newX][newY];
 
         if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
             return;

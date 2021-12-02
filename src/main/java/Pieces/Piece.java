@@ -86,7 +86,7 @@ public abstract class Piece implements PieceMove {
             int[][] cost = new int[8][8];
 
             if(costAI)
-                cost = new EvaluationFunction().evaluateTheBoard(enemyPieces, player, board);
+                cost = new EvaluationFunction().evaluateTheBoard(enemyPieces, player,board, spot.getPiece());
 
             return allLegalMoves(board, spot, cost);
         }
