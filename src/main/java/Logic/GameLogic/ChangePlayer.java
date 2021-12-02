@@ -19,18 +19,23 @@ public class ChangePlayer {
                             "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
             l.blackMove = true;
 
-
-            Move AImove = null;
             //AI move
             if(!l.playerBlack.isHuman()) {
                 System.out.println("Black AI");
+                Move AImove = null;
                 if(l.AIblack == 1)
                     AImove = l.expectimax.calculateBestMoves(l);
                 else if(l.AIblack == 0)
                     AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
+
+                if(AImove != null) {
+                    l.executeMovesAI.executeMovesAI(l, AImove);
+                } else {
+                    l.dl.rollDice(l);
+                    l.cp.changePlayer(l);
+                }
             }
-            if(AImove != null)
-                l.executeMovesAI.executeMovesAI(l, AImove);
+
 
         } else {
             l.playerPass.setStyle(
@@ -40,17 +45,22 @@ public class ChangePlayer {
             l.blackMove = false;
 
 
-            Move AImove = null;
             //AI move
             if(!l.playerWhite.isHuman()) {
+                Move AImove = null;
                 System.out.println("White AI");
                 if(l.AIwhite == 1)
                     AImove = l.expectimax.calculateBestMoves(l);
                 else if(l.AIwhite == 0)
                     AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
+
+                if(AImove != null) {
+                    l.executeMovesAI.executeMovesAI(l, AImove);
+                } else {
+                    l.dl.rollDice(l);
+                    l.cp.changePlayer(l);
+                }
             }
-            if(AImove != null)
-                l.executeMovesAI.executeMovesAI(l, AImove);
 
         }
 

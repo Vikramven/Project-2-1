@@ -98,10 +98,7 @@ public class PieceHeap {
             int tmp_x = allPiece.get(i).x;
             int tmp_y = allPiece.get(i).y;
             if(tmp_x == x && tmp_y == y) {
-                if(!black)
-                    whitePieces[Piece].remove(i);
-                else
-                    blackPieces[Piece].remove(i);
+                allPiece.remove(i);
                 return;
             }
         }

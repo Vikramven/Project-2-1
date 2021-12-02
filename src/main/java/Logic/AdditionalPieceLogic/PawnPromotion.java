@@ -36,19 +36,39 @@ public class PawnPromotion {
      * @param black Color of the piece
      */
     private void pawnPromotion(Spot spot, boolean black, LogicGame l) {
+        int random = (int)Math.floor(Math.random()*(4-0+1)+0);
 
-        int random = (int) (Math.random() * 4);
+        if(black) {
+            if (l.playerBlack.isHuman())
+                random = (int) (Math.random() * 4);
+        } else {
+            if (l.playerWhite.isHuman())
+                random = (int) (Math.random() * 4);
+        }
 
         if(!l.winFlag) {
             Stage mainStage = l.getMainStage();
             // Shows an alert informing which piece the player got from the random dice roll.
             if (random != 0) {
                 String result = promRoll(random);
-                Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
-                resAlert.setTitle("Random Roll Result");
-                resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
-                resAlert.initOwner(mainStage);
-                resAlert.showAndWait();
+
+                if(black) {
+                    if (l.playerBlack.isHuman()) {
+                        Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
+                        resAlert.setTitle("Random Roll Result");
+                        resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
+                        resAlert.initOwner(mainStage);
+                        resAlert.showAndWait();
+                    }
+                } else {
+                    if (l.playerWhite.isHuman()) {
+                        Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
+                        resAlert.setTitle("Random Roll Result");
+                        resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");
+                        resAlert.initOwner(mainStage);
+                        resAlert.showAndWait();
+                    }
+                }
 
                 switch (result) {
                     case "Knight" -> {
@@ -73,6 +93,7 @@ public class PawnPromotion {
                     }
                 }
             } else {
+
                 Alert selAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 selAlert.setTitle("Selecting a new piece...");
                 selAlert.setHeaderText("LUCKY ROLL! Choose the piece which your pawn will be transformed to.");

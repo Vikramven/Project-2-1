@@ -35,6 +35,10 @@ public class RandomAgent {
         int min = 0;
         int randomNumber = (int)Math.floor(Math.random()*(max-min+1)+min);
 
+        if(allMovesPiece.size() == 0)
+            return null;
+
+
         return allMovesPiece.get(randomNumber);
     }
 }

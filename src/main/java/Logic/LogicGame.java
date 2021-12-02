@@ -178,17 +178,22 @@ public class LogicGame extends GUIMain {
         }
 
 
-        Move AImove = null;
         //AI move
         if(!playerWhite.isHuman()) {
+            Move AImove = null;
             System.out.println("White AI");
             if(AIwhite == 1)
                 AImove = expectimax.calculateBestMoves(this);
             else if(AIblack == 0)
                 AImove = randomAgent.executeRandomMove(this, dicePiece, blackMove);
+
+            if(AImove != null) {
+                executeMovesAI.executeMovesAI(this, AImove);
+            } else {
+                dl.rollDice(this);
+                cp.changePlayer(this);
+            }
         }
-        if(AImove != null)
-            executeMovesAI.executeMovesAI(this, AImove);
     }
 
     /**
