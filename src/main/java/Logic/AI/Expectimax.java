@@ -32,21 +32,30 @@ public class Expectimax {
         Node tree = new Node();
 
         // Creating a tree
-        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 2,
+        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 3,
                 true);
 
 
-        // Check the tree by prints
-        LinkedList<Node> children = tree.getChildren();
-
+////         Check the tree by prints
+//        LinkedList<Node> children = tree.getChildren();
+//
 //        for (int i = 0; i < children.size(); i++) {
 //            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName() + " COST = " + children.get(i).getCost());
 //            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
 //            for (int j = 0; j < childrenOfChildren.size(); j++) {
-//                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName() + " COST = " + childrenOfChildren.get(j).getCost());
+//                System.out.println("Children 2 " + childrenOfChildren.get(j).getChancePiece() + " COST = " + childrenOfChildren.get(j).getCost());
 //                LinkedList<Node> childrenOfChildrenOF = childrenOfChildren.get(j).getChildren();
 //                for (int k = 0; k < childrenOfChildrenOF.size(); k++) {
 //                    System.out.println("Children 3 " + childrenOfChildrenOF.get(k).getMove().getPiece().getName() + " COST = " + childrenOfChildrenOF.get(k).getCost());
+//                    LinkedList<Node> children4 = childrenOfChildrenOF.get(k).getChildren();
+//                    for (int x = 0; x < children4.size(); x++) {
+//                        System.out.println("Children 4 " + children4.get(x).getChancePiece() + " COST = " + children4.get(x).getCost());
+//                        LinkedList<Node> children5 = children4.get(x).getChildren();
+//                        for (int t = 0; t < children5.size(); t++) {
+//                            System.out.println("Children 5 " + children5.get(t).getMove().getPiece().getName() + " COST = " + children5.get(t).getCost());
+//
+//                        }
+//                    }
 //                }
 //            }
 //        }
@@ -59,13 +68,12 @@ public class Expectimax {
 
 
         // Find the best move
-        while(!bestMove.isRoot()) {
-            System.out.println(bestMove.getMove().getPiece().getName() + " COST = " + bestMove.getCost());
+        while(!bestMove.getParent().isRoot()) {
             bestMove = bestMove.getParent();
         }
 
 
-        return null;
+        return bestMove.getMove();
     }
 
 
@@ -96,7 +104,8 @@ public class Expectimax {
 
             LinkedList<Node> children = node.getChildren();
 
-            Node maxValueOfNode = children.get(0);
+            Node maxValueOfNode = new Node();
+            maxValueOfNode.setCost(Double.MIN_VALUE);
 
             // Simulation moves of children
             for (int i = 0; i < children.size(); i++) {
@@ -123,7 +132,7 @@ public class Expectimax {
 
                 l.currentSpot = null;
 
-                Node evalNode = createTree(childNode, l, !player, l.board, l.board.pieceHeap, 0,
+                Node evalNode = createTree(childNode, l, player, l.board, l.board.pieceHeap, 0,
                             depth, false);
 
                 if(evalNode.getCost() >= maxValueOfNode.getCost() ) {
@@ -137,18 +146,38 @@ public class Expectimax {
 
             LinkedList<Node> chancesNodes = node.getChildren();
 
-            Node maxValueOfChance = chancesNodes.get(0);
+            Node maxValueOfNode = new Node();
+            maxValueOfNode.setCost(Double.MIN_VALUE);;
 
             for (int i = 0; i < chancesNodes.size(); i++) {
                 Node currentChanceNode = chancesNodes.get(i);
-                createTree(currentChanceNode, l, !player, l.board, l.board.pieceHeap, currentChanceNode.getChancePiece(),
+
+                Board cloneBoard = board.clone();
+
+                PieceHeap clonePieceHeap = pieceHeap.clone();
+
+
+                l.board = cloneBoard;
+                l.board.pieceHeap = clonePieceHeap;
+                l.dicePiece = dicePiece;
+
+
+                Node evalNode = createTree(currentChanceNode, l, !player, l.board, l.board.pieceHeap, currentChanceNode.getChancePiece(),
                         depth, true);
 
-                if(maxValueOfChance.getCost() > currentChanceNode.getCost()){
-                    maxValueOfChance = currentChanceNode;
+                double totalCost = 0;
+                LinkedList<Node> childrenOfChance = currentChanceNode.getChildren();
+                for (int j = 0; j < childrenOfChance.size(); j++) {
+                    totalCost += childrenOfChance.get(j).getCost();
+                }
+                currentChanceNode.setCost(totalCost / 6.0);
+
+                if(evalNode.getCost() >= maxValueOfNode.getCost() ) {
+                    maxValueOfNode = evalNode;
                 }
             }
-            return maxValueOfChance;
+
+            return maxValueOfNode;
         }
     }
 
@@ -173,12 +202,6 @@ public class Expectimax {
             Piece piece = spot.getPiece();
 
             ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
-
-            double totalCost = 0;
-            for (int i = 0; i < allMovesPiece.size(); i++) {
-                totalCost += allMovesPiece.get(i).getCost();
-            }
-            node.getParent().setCost(totalCost/6);
 
             node.addChildren(allMovesPiece);
 

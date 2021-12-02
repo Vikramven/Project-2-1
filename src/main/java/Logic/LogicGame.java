@@ -5,12 +5,14 @@ import GUI.GUIMain;
 import GUI.GameScene;
 import GUI.IntroScene;
 import Logic.AI.ExecuteMovesAI;
+import Logic.AI.Expectimax;
 import Logic.AI.MiniMax;
 import Logic.GameLogic.ChangePlayer;
 import Logic.GameLogic.DiceLogic;
 import Logic.HintLogic.ButtonHighlight;
 import Logic.MoveLogic.ExecuteMove;
 import Logic.MoveLogic.Move;
+import Logic.RandomAgent.RandomAgent;
 import Pieces.*;
 import Players.Human;
 import Players.Player;
@@ -62,13 +64,22 @@ public class LogicGame extends GUIMain {
     public boolean winFlag = false;
 
 
+    public int AIwhite;
+
+    public int AIblack;
+
+
     //Parts of logic
     public ChangePlayer cp = new ChangePlayer();
     public ButtonHighlight bh = new ButtonHighlight();
     public DiceLogic dl = new DiceLogic();
     public ExecuteMove em = new ExecuteMove();
-    private final MiniMax miniMax = new MiniMax();
-    private final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
+
+
+    public final MiniMax miniMax = new MiniMax();
+    public final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
+    public final Expectimax expectimax = new Expectimax();
+    public final RandomAgent randomAgent = new RandomAgent();
 
     /**
      * Constructor for the logic game
@@ -80,7 +91,8 @@ public class LogicGame extends GUIMain {
      * @param passButton Pass button (Change the player move)
      */
     public LogicGame(Board board, Button[][] buttonBoard, Label playerPass,
-                     ImageView[] diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack) {
+                     ImageView[] diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack, int AIwhite,
+                     int AIblack) {
         this.board = board;
         this.buttonBoard = buttonBoard;
         this.playerPass = playerPass;
@@ -89,6 +101,8 @@ public class LogicGame extends GUIMain {
         this.passButton = passButton;
         this.playerWhite = playerWhite;
         this.playerBlack = playerBlack;
+        this.AIwhite = AIwhite;
+        this.AIblack = AIblack;
 
         //Set Up the game = roll dice and set an action to the pass button
         setUpGame();
@@ -163,14 +177,18 @@ public class LogicGame extends GUIMain {
             }
         }
 
+
+        Move AImove = null;
         //AI move
         if(!playerWhite.isHuman()) {
             System.out.println("White AI");
-            miniMax.calculateBestMoves(this);
-            dl.rollDice(this);
-            cp.changePlayer(this);
+            if(AIwhite == 1)
+                AImove = expectimax.calculateBestMoves(this);
+            else if(AIblack == 0)
+                AImove = randomAgent.executeRandomMove(this, dicePiece, blackMove);
         }
-            //executeMovesAI.executeMovesAI(this, miniMax.calculateBestMoves(this));
+        if(AImove != null)
+            executeMovesAI.executeMovesAI(this, AImove);
     }
 
     /**

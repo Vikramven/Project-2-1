@@ -37,10 +37,7 @@ public class Node {
         this.move = move;
         this.cost = move.getCost();
         this.parent = parent;
-        if(chanceNode)
-            this.depth = parent.getDepth();
-        else
-            this.depth = parent.getDepth() + 1;
+        this.depth = parent.getDepth() + 1;
     }
 
     /**
@@ -50,7 +47,7 @@ public class Node {
     public Node(Node parent, int chancePiece){
         this.chancePiece = chancePiece;
         this.parent = parent;
-        this.depth = parent.getDepth() + 1;
+        this.depth = parent.getDepth();
         this.chanceNode = true;
     }
 

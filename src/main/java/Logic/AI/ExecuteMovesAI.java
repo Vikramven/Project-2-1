@@ -28,5 +28,8 @@ public class ExecuteMovesAI {
         l.allLegalMoves = new ArrayList<>();
         l.currentSpot = null;
         l.allLegalMoves = null;
+
+        l.dl.rollDice(l);
+        l.cp.changePlayer(l);
     }
 }

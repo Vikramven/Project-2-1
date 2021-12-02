@@ -1,13 +1,8 @@
 package Logic.GameLogic;
-
-import Logic.AI.ExecuteMovesAI;
-import Logic.AI.MiniMax;
 import Logic.LogicGame;
+import Logic.MoveLogic.Move;
 
 public class ChangePlayer {
-
-    private final MiniMax miniMax = new MiniMax();
-    private final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
 
     /**
      * Change the player in the logic and in the GUI
@@ -25,15 +20,18 @@ public class ChangePlayer {
             l.blackMove = true;
 
 
+            Move AImove = null;
             //AI move
             if(!l.playerBlack.isHuman()) {
-                System.out.println("Check Black AI");
-                miniMax.calculateBestMoves(l);
-                l.dl.rollDice(l);
-                l.cp.changePlayer(l);
+                System.out.println("Black AI");
+                if(l.AIblack == 1)
+                    AImove = l.expectimax.calculateBestMoves(l);
+                else if(l.AIblack == 0)
+                    AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
             }
-                // TODO
-                // executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
+            if(AImove != null)
+                l.executeMovesAI.executeMovesAI(l, AImove);
+
         } else {
             l.playerPass.setStyle(
                     "-fx-font: 42px SansSerifBold;" +
@@ -42,15 +40,18 @@ public class ChangePlayer {
             l.blackMove = false;
 
 
+            Move AImove = null;
             //AI move
             if(!l.playerWhite.isHuman()) {
-                System.out.println("Check White AI");
-                miniMax.calculateBestMoves(l);
-                l.dl.rollDice(l);
-                l.cp.changePlayer(l);
+                System.out.println("White AI");
+                if(l.AIwhite == 1)
+                    AImove = l.expectimax.calculateBestMoves(l);
+                else if(l.AIwhite == 0)
+                    AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
             }
-                // TODO
-                //executeMovesAI.executeMovesAI(l, miniMax.calculateBestMoves(l));
+            if(AImove != null)
+                l.executeMovesAI.executeMovesAI(l, AImove);
+
         }
 
         l.bh.removeHighlightButtons(l); // Remove Highlight buttons
