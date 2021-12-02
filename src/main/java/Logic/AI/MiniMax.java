@@ -59,13 +59,12 @@ public class MiniMax {
 
 
         // Find the best move
-        while(!bestMove.isRoot()) {
-            System.out.println(bestMove.getMove().getPiece().getName() + " COST = " + bestMove.getCost());
+        while(!bestMove.getParent().isRoot()) {
             bestMove = bestMove.getParent();
         }
 
 
-        return null;
+        return bestMove.getMove();
     }
 
 
