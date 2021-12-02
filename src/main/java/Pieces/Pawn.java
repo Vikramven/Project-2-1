@@ -12,7 +12,7 @@ public class Pawn extends Piece {
     //TODO promotion and 2 possible moves in the beginning of the game are the best moves, and the square before promotion is good good move
     //DOUBT:WHICH IS THE BLACK SIDE
 
-    private int[][] blackCost = {{0 , 0, 0, 0, 0, 0, 0, 0},
+    private int[][] whiteCost = {{0 , 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
             {15, 0, 15, 0, 0, 15, 0, 15},
             {0, 15, 0, 15, 15, 0, 15, 0},
@@ -21,7 +21,7 @@ public class Pawn extends Piece {
             {10, 10, 10, 10, 10, 10, 10, 10},
             { 15, 15, 15, 15, 15, 15, 15, 15}};
 
-    private int[][] whiteCost = {{ 15, 15, 15, 15, 15, 15, 15, 15},
+    private int[][] blackCost = {{ 15, 15, 15, 15, 15, 15, 15, 15},
             {10, 10, 10, 10, 10, 10, 10, 10},
             {5,  5,  5,  5,  5,  5,  5,  5},
             {0, 0, 0, 0, 0, 0, 0, 0},
@@ -124,15 +124,22 @@ public class Pawn extends Piece {
 
         int left = y - 1;
 
+        int costMove = 0;
         if(!isBoardBounds(left)) {
-            int costMove = costDynamic[newX][left] + blackCost[newX][left];
+            if(black)
+                costMove = costDynamic[newX][left] + blackCost[newX][left];
+            else
+                costMove = costDynamic[newX][left] + whiteCost[newX][left];
             isObstacle(board.getSpot(newX, left), legalMoves, costMove, x, y);
         }
 
         int right = y + 1;
 
         if(!isBoardBounds(right)) {
-            int costMove = costDynamic[newX][right] + blackCost[newX][right];
+            if(black)
+                costMove = costDynamic[newX][left] + blackCost[newX][left];
+            else
+                costMove = costDynamic[newX][left] + whiteCost[newX][left];
             isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y);
         }
     }

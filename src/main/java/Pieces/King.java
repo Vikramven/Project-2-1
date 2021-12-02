@@ -12,7 +12,7 @@ public class King extends Piece {
     public boolean castling = true;
 
     //Todo I think the initial cost function was for the black portion of the board
-    private int[][] blackCost = {{10, 15, 10, 10, 10, 15, 10, 10},
+    private int[][] whiteCost = {{10, 15, 10, 10, 10, 15, 10, 10},
                             {10, -10, -10, -10, -10, -10, -10, 10},
                             {5, -10, -15, -15, -15, -15, -10, 5},
                             {5, -10, -15, -15, -15, -15, -10, 5},
@@ -21,7 +21,7 @@ public class King extends Piece {
                             {-5, -10, -10, -10, -10, -10, -10, -5},
                             { -5, -5, -5, +15, -5, -5, -5, -5}};
 
-    private int[][] whiteCost = {{-5, -5, -5, +15, -5, -5, -5, -5},
+    private int[][] blackCost = {{-5, -5, -5, +15, -5, -5, -5, -5},
             {-5, -10, -10, -10, -10, -10, -10, -5},
             {-5, -10, -15, -15, -15, -15, -10, -5},
             {-5, -10, -15, -15, -15, -15, -10, -5},
@@ -107,7 +107,11 @@ public class King extends Piece {
         if(isBoardBounds(x) || isBoardBounds(y))
             return;
 
-        int costMove = costDynamic[x][y] + blackCost[x][y];
+        int costMove;
+        if(black)
+            costMove = costDynamic[x][y] + blackCost[x][y];
+        else
+            costMove = costDynamic[x][y] + whiteCost[x][y];
 
         if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY))
             return;
@@ -181,7 +185,7 @@ public class King extends Piece {
 
 
     private void addCastling(ArrayList<Move> legalMoves, int x, int y, int MoveX, int MoveY){
-        int costMove=0;
+        int costMove;
         if(black) {
             costMove = blackCost[MoveX][MoveY];
         }

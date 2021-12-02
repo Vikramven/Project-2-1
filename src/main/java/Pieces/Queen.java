@@ -8,11 +8,6 @@ import java.util.ArrayList;
 
 public class Queen extends Piece {
 
-
-    //TODO
-    int[][] cost = new int[8][8];
-
-
     /**
      * Constructor
      * @param black Define the color for the piece
