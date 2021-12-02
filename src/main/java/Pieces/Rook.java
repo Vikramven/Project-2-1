@@ -14,23 +14,23 @@ public class Rook extends Piece {
     //TODO set costs for best move of bishop
     //TODO cost matrix is not done yet
     //int[][] cost = new int[8][8];
-    private int[][] blackCost = {{0, 0, 0, 0, 0, 0, 0, 0},
-            {5, 10, 10, 10, 10, 10, 10, 5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            { 0, 0, 0, 5, 5, 0, 0, 0}};
+    private int[][] whiteCost = {{0, 0, 0, 0, 0, 0, 0, 0},
+                                 {0, 0, 0, 0, 0, 0, 0, 0},
+                                 {15, 5, 10, 0, 0, 10, 5, 15},
+                                 {15, 5, 10, 0, 0, 10, 5, 15},
+                                 {15, 5, 10, 0, 0, 10, 5, 15},
+                                 {15, 5, 10, 0, 0, 10, 5, 15},
+                                 {15, 5, 10, 0, 0, 10, 5, 15},
+                                 {15, 5, 5, 15, 15, 5, 5, 15}};
 
-    private int[][] whiteCost = {{0, 0, 0, 5, 5, 0, 0, 0},
-            {5, 10, 10, 10, 10, 10, 10, 5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            {-5, 0, 0, 0, 0, 0, 0, -5},
-            { 0, 0, 0, 5, 5, 0, 0, 0}};
+    private int[][] blackCost = {{15, 5, 5, 15, 15, 5, 5, 15},
+            {15, 5, 10, 0, 0, 10, 5, 15},
+            {15, 5, 10, 0, 0, 10, 5, 15},
+            {15, 5, 10, 0, 0, 10, 5, 15},
+            {15, 5, 10, 0, 0, 10, 5, 15},
+            {15, 5, 10, 0, 0, 10, 5, 15},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}};
 
     /**
      * Constructor
@@ -114,7 +114,7 @@ public class Rook extends Piece {
                     costMove = costDynamic[newX][newY] + blackCost[newX][newY];
                 }
                 else{
-                    costMove = costDynamic[newX][newY] + blackCost[newX][newY];
+                    costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
                 }
 
                 if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
