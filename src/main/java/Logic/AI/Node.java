@@ -17,10 +17,14 @@ public class Node {
     private Move move;
 
     //Cost of the move
-    private int cost;
+    private double cost;
 
     //Depth of the node
     private int depth;
+
+    private boolean chanceNode = false;
+
+    private int chancePiece;
 
     private boolean root = false;
 
@@ -33,7 +37,21 @@ public class Node {
         this.move = move;
         this.cost = move.getCost();
         this.parent = parent;
+        if(chanceNode)
+            this.depth = parent.getDepth();
+        else
+            this.depth = parent.getDepth() + 1;
+    }
+
+    /**
+     * Constructor for chance node
+     * @param parent Parent
+     */
+    public Node(Node parent, int chancePiece){
+        this.chancePiece = chancePiece;
+        this.parent = parent;
         this.depth = parent.getDepth() + 1;
+        this.chanceNode = true;
     }
 
     /**
@@ -44,6 +62,12 @@ public class Node {
         this.cost = 0;
         this.parent = null;
         this.depth = 0;
+    }
+
+    public void addChanceNodes(){
+        for (int i = 0; i < 6; i++) {
+            children.add(new Node(this, i));
+        }
     }
 
     /**
@@ -77,11 +101,11 @@ public class Node {
      * Gets cost
      * @return Cost
      */
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 
@@ -107,5 +131,13 @@ public class Node {
      */
     public Node getParent() {
         return parent;
+    }
+
+    public int getChancePiece() {
+        return chancePiece;
+    }
+
+    public void setChancePiece(int chancePiece) {
+        this.chancePiece = chancePiece;
     }
 }
