@@ -38,6 +38,15 @@ public class EvaluationFunction {
         }
 
         int[][] cost = new int[8][8];
+        //TODO: flippping the array, but this is probably O(N) right?
+        for(int i=0;i<cost.length/2;i++){
+            int[] temp = cost[i];
+            cost[i] = cost[cost.length - i - 1];
+            cost[cost.length - i - 1] = temp;
+            return cost;
+        }
+
+
 
         for (int i = 0; i < movesEnemy.size(); i++) {
             Move move = movesEnemy.get(i);
@@ -52,19 +61,21 @@ public class EvaluationFunction {
 
 
             //TODO decide which values for every piece
+            //TODO write the inverse matrix method
+            //TODO junit testing
                 switch (piece.getNameInt()) {
                     case 0: //Bishop
                         cost[goodX][goodY] = getPieceBishop(check); // put value for bishop
                     case 1: //Knight
-                        cost[goodX][goodY] = 30;
+                        cost[goodX][goodY] = getPieceKnight(check);
                     case 2: //King
-                        cost[goodX][goodY] = 1000;
+                        cost[goodX][goodY] = getPieceKing(check);
                     case 3: //Pawn
-                        cost[goodX][goodY] = 10;
+                        cost[goodX][goodY] = getPiecePawn(check);
                     case 4: //Queen
-                        cost[goodX][goodY] = 50;
+                        cost[goodX][goodY] = getPieceQueen(check);
                     case 5: //Rook
-                        cost[goodX][goodY] = 40;
+                        cost[goodX][goodY] = getPieceRook(check);
                 }
 
 
@@ -86,17 +97,102 @@ public class EvaluationFunction {
     public int getPieceBishop(int check){
         switch (check) {
             case 0: //Bishop
-                return  30; // put value for bishop
+                return  20; // put value for bishop
             case 1: //Knight
-                return  30;
+                return  20;
             case 2: //King
                 return  1000;
             case 3: //Pawn
-                return 10;
+                return 15;
             case 4: //Queen
-                return  50;
+                return  30;
             case 5: //Rook
-                return  40;
+                return  25;
+        }
+        return 0;
+    }
+    public int getPieceQueen(int check){
+        switch (check) {
+            case 0: //Bishop
+                return  20;
+            case 1: //Knight
+                return  20;
+            case 2: //King
+                return  1000;
+            case 3: //Pawn
+                return 15;
+            case 4: //Queen
+                return  30;
+            case 5: //Rook
+                return  25;
+        }
+        return 0;
+    }
+    public int getPieceKnight(int check){
+        switch (check) {
+            case 0: //Bishop
+                return  20;
+            case 1: //Knight
+                return  20;
+            case 2: //King
+                return  1000;
+            case 3: //Pawn
+                return 15;
+            case 4: //Queen
+                return  30;
+            case 5: //Rook
+                return  25;
+        }
+        return 0;
+    }
+    public int getPieceRook(int check){
+        switch (check) {
+            case 0: //Bishop
+                return  20;
+            case 1: //Knight
+                return  20;
+            case 2: //King
+                return  1000;
+            case 3: //Pawn
+                return 15;
+            case 4: //Queen
+                return  30;
+            case 5: //Rook
+                return  25;
+        }
+        return 0;
+    }
+    public int getPiecePawn(int check){
+        switch (check) {
+            case 0: //Bishop
+                return  20;
+            case 1: //Knight
+                return  20;
+            case 2: //King
+                return  1000;
+            case 3: //Pawn
+                return 15;
+            case 4: //Queen
+                return  30;
+            case 5: //Rook
+                return  25;
+        }
+        return 0;
+    }
+    public int getPieceKing(int check){
+        switch (check) {
+            case 0: //Bishop
+                return  20;
+            case 1: //Knight
+                return  20;
+            case 2: //King
+                return  1000;
+            case 3: //Pawn
+                return 15;
+            case 4: //Queen
+                return  30;
+            case 5: //Rook
+                return  25;
         }
         return 0;
     }
