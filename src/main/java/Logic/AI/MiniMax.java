@@ -33,23 +33,23 @@ public class MiniMax {
 
         // Creating a tree
         Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 4,
-                true, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                true, true, Double.MIN_VALUE, Double.MAX_VALUE);
 
 
         // Check the tree by prints
-        LinkedList<Node> children = tree.getChildren();
-
-        for (int i = 0; i < children.size(); i++) {
-            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName() + " COST = " + children.get(i).getCost());
-            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
-            for (int j = 0; j < childrenOfChildren.size(); j++) {
-                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName() + " COST = " + childrenOfChildren.get(j).getCost());
-                LinkedList<Node> childrenOfChildrenOF = childrenOfChildren.get(j).getChildren();
-                for (int k = 0; k < childrenOfChildrenOF.size(); k++) {
-                    System.out.println("Children 3 " + childrenOfChildrenOF.get(k).getMove().getPiece().getName() + " COST = " + childrenOfChildrenOF.get(k).getCost());
-                }
-            }
-        }
+//        LinkedList<Node> children = tree.getChildren();
+//
+//        for (int i = 0; i < children.size(); i++) {
+//            System.out.println("Children 1 " + children.get(i).getMove().getPiece().getName() + " COST = " + children.get(i).getCost());
+//            LinkedList<Node> childrenOfChildren = children.get(i).getChildren();
+//            for (int j = 0; j < childrenOfChildren.size(); j++) {
+//                System.out.println("Children 2 " + childrenOfChildren.get(j).getMove().getPiece().getName() + " COST = " + childrenOfChildren.get(j).getCost());
+//                LinkedList<Node> childrenOfChildrenOF = childrenOfChildren.get(j).getChildren();
+//                for (int k = 0; k < childrenOfChildrenOF.size(); k++) {
+//                    System.out.println("Children 3 " + childrenOfChildrenOF.get(k).getMove().getPiece().getName() + " COST = " + childrenOfChildrenOF.get(k).getCost());
+//                }
+//            }
+//        }
 
 
         // Return to the original state
@@ -81,14 +81,13 @@ public class MiniMax {
      * @param firstChildren boolean for the first depth
      */
     public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece,
-                           int depth, boolean firstChildren, boolean max, int alpha, int beta) {
+                           int depth, boolean firstChildren, boolean max, double alpha, double beta) {
 
 
         l.allLegalMoves = null;
 
 
         if (node.getDepth() == depth)
-            //TODO
             return node;
 
         // Create children for the node
@@ -99,11 +98,13 @@ public class MiniMax {
         if(max) {
 
             Node maxValue = new Node();
-            maxValue.setCost(Integer.MIN_VALUE);
+            maxValue.setCost(Double.MIN_VALUE);
 
             // Simulation moves of children
             for (int i = 0; i < children.size(); i++) {
+
                 Board cloneBoard = board.clone();
+
                 PieceHeap clonePieceHeap = pieceHeap.clone();
 
                 Node childNode = children.get(i);
@@ -143,7 +144,7 @@ public class MiniMax {
         } else {
 
             Node minValue = new Node();
-            minValue.setCost(Integer.MAX_VALUE);
+            minValue.setCost(Double.MAX_VALUE);
 
             // Simulation moves of children
             for (int i = 0; i < children.size(); i++) {
