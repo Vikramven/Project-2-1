@@ -109,8 +109,13 @@ public class Rook extends Piece {
                         return;
                 }
 
-
-                int costMove = costDynamic[newX][newY] + blackCost[newX][newY];
+                int costMove=0;
+                if(black){
+                    costMove = costDynamic[newX][newY] + blackCost[newX][newY];
+                }
+                else{
+                    costMove = costDynamic[newX][newY] + blackCost[newX][newY];
+                }
 
                 if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
                     return;

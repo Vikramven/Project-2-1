@@ -181,8 +181,13 @@ public class King extends Piece {
 
 
     private void addCastling(ArrayList<Move> legalMoves, int x, int y, int MoveX, int MoveY){
-        int costMove = blackCost[MoveX][MoveY];
-
+        int costMove=0;
+        if(black) {
+            costMove = blackCost[MoveX][MoveY];
+        }
+        else{
+            costMove = whiteCost[MoveX][MoveY];
+        }
         legalMoves.add(new Move(MoveX, MoveY, this, costMove, x, y));
     }
 
