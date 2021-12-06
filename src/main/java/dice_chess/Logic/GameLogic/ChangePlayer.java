@@ -25,11 +25,11 @@ public class ChangePlayer {
                 System.out.println("Black AI");
                 Move AImove = null;
                 if(l.AIblack == 1)
-                    AImove = l.expectimax.calculateBestMoves(l);
+                    AImove = l.expectimax.calculateBestMoves(l, l.depth);
                 else if(l.AIblack == 0)
                     AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
                 else if(l.AIblack == 2)
-                    AImove = l.miniMax.calculateBestMoves(l);
+                    AImove = l.miniMax.calculateBestMoves(l, l.depth);
 
                 if(AImove != null) {
                     l.executeMovesAI.executeMovesAI(l, AImove);
@@ -53,11 +53,11 @@ public class ChangePlayer {
                 Move AImove = null;
                 System.out.println("White AI");
                 if(l.AIwhite == 1)
-                    AImove = l.expectimax.calculateBestMoves(l);
+                    AImove = l.expectimax.calculateBestMoves(l, l.depth);
                 else if(l.AIwhite == 0)
                     AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
                 else if(l.AIwhite == 2)
-                    AImove = l.miniMax.calculateBestMoves(l);
+                    AImove = l.miniMax.calculateBestMoves(l, l.depth);
 
                 if(AImove != null) {
                     l.executeMovesAI.executeMovesAI(l, AImove);

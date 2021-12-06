@@ -21,7 +21,7 @@ public class MiniMax {
      * @param l State of the game
      * @return The best Move
      */
-    public Move calculateBestMoves(LogicGame l){
+    public Move calculateBestMoves(LogicGame l, int depth){
 
         // Clone objects to avoid side effects
         Board initialBoard = l.board.clone();
@@ -33,7 +33,7 @@ public class MiniMax {
         Node tree = new Node();
 
         // Creating a tree
-        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 4,
+        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, depth,
                 true, true, Double.MIN_VALUE, Double.MAX_VALUE);
 
 

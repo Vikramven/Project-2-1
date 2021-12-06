@@ -3,6 +3,8 @@ package dice_chess.GUI;
 import dice_chess.Players.AI;
 import dice_chess.Players.Human;
 import dice_chess.Players.Player;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -143,6 +145,10 @@ public class IntroScene extends GUIMain {
             else { rButton[i].setText("Human"); }
         }
 
+        // Default selected Radio Buttons -> Human vs Human
+        rButton[1].setSelected(true);
+        rButton[3].setSelected(true);
+
         VBox whiteBox = new VBox();
         Label whitePlLabel = new Label("White Player");
         whitePlLabel.getStyleClass().add("settingsLabel2");
@@ -187,6 +193,10 @@ public class IntroScene extends GUIMain {
 
         // Button Actions
         nextButton.setOnAction(e -> {
+
+            int depthValue = Integer.parseInt(depthField.getText());
+            gameSc.setDepth(depthValue);
+
             // Access Selected Radio Buttons
             RadioButton selWhite = (RadioButton) whiteGroup.getSelectedToggle();
             RadioButton selBlack = (RadioButton) blackGroup.getSelectedToggle();

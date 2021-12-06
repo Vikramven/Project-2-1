@@ -19,6 +19,7 @@ public class GameScene extends GUIMain {
     private Scene gameScene;
     private Player[] players;
     private int AIWhite, AIBlack;
+    private int depth;
     private Label menuLabel, histTitleLabel;
     private BorderPane gamePane;
     private StackPane menuPane, histPane, dicePane, playerPane;
@@ -122,7 +123,7 @@ public class GameScene extends GUIMain {
 
         System.out.println(players[0] + " " + players[1]);
         new LogicGame(board, buttonStateBoard, playerLabel,
-                diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack);
+                diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack, depth);
 
         gamePane.setCenter(boardPane);
     }
@@ -282,6 +283,8 @@ public class GameScene extends GUIMain {
     public void setAIWhite(int white) { this.AIWhite = white; }
 
     public void setAIBlack(int black) { this.AIBlack = black; }
+
+    public void setDepth(int depth) { this.depth = depth; }
 
     public Player[] getPlayers() { return players; }
 

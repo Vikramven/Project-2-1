@@ -67,6 +67,8 @@ public class LogicGame extends GUIMain {
 
     public int AIblack;
 
+    public int depth;
+
 
     //Parts of logic
     public ChangePlayer cp = new ChangePlayer();
@@ -91,7 +93,7 @@ public class LogicGame extends GUIMain {
      */
     public LogicGame(Board board, Button[][] buttonBoard, Label playerPass,
                      ImageView[] diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack, int AIwhite,
-                     int AIblack) {
+                     int AIblack, int depth) {
         this.board = board;
         this.buttonBoard = buttonBoard;
         this.playerPass = playerPass;
@@ -102,6 +104,7 @@ public class LogicGame extends GUIMain {
         this.playerBlack = playerBlack;
         this.AIwhite = AIwhite;
         this.AIblack = AIblack;
+        this.depth = depth;
 
         //Set Up the game = roll dice and set an action to the pass button
         setUpGame();
@@ -182,11 +185,11 @@ public class LogicGame extends GUIMain {
             Move AImove = null;
             System.out.println("White AI");
             if(AIwhite == 1)
-                AImove = expectimax.calculateBestMoves(this);
+                AImove = expectimax.calculateBestMoves(this, depth);
             else if(AIwhite == 0)
                 AImove = randomAgent.executeRandomMove(this, dicePiece, blackMove);
             else if(AIwhite == 2)
-                AImove = miniMax.calculateBestMoves(this);
+                AImove = miniMax.calculateBestMoves(this, depth);
 
             if(AImove != null) {
                 executeMovesAI.executeMovesAI(this, AImove);
