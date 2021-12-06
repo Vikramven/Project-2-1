@@ -136,7 +136,7 @@ public class Expectimax {
 
                 l.currentSpot = null;
 
-                Node evalNode = createTree(childNode, l, player, l.board, l.board.pieceHeap, 0,
+                Node evalNode = createTree(childNode, l, !player, l.board, l.board.pieceHeap, 0,
                             depth, false);
 
                 if(evalNode.getCost() > maxValueOfNode.getCost() ) {
@@ -175,6 +175,8 @@ public class Expectimax {
                     totalCost += childrenOfChance.get(j).getCost();
                 }
                 currentChanceNode.setCost(totalCost / 6.0);
+
+                evalNode.setCost(evalNode.getCost() + currentChanceNode.getCost());
 
                 if(evalNode.getCost() > maxValueOfNode.getCost() ) {
                     maxValueOfNode = evalNode;
