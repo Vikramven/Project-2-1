@@ -63,22 +63,22 @@ public class PawnPromotion {
                 switch (result) {
                     case "Knight" -> {
                         Knight knight = new Knight(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 1);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 1);
                         spot.setPiece(knight);
                     }
                     case "Bishop" -> {
                         Bishop bishop = new Bishop(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 0);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 0);
                         spot.setPiece(bishop);
                     }
                     case "Queen" -> {
                         Queen queen = new Queen(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 4);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 4);
                         spot.setPiece(queen);
                     }
                     case "Rook" -> {
                         Rook rook = new Rook(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 5);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 5);
                         spot.setPiece(rook);
                     }
                 }
@@ -100,19 +100,19 @@ public class PawnPromotion {
                 if (results.isPresent()) {
                     if (results.get() == kChoice) {
                         Knight knight = new Knight(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 1);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 1);
                         spot.setPiece(knight);
                     } else if (results.get() == bChoice) {
                         Bishop bishop = new Bishop(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 0);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 0);
                         spot.setPiece(bishop);
                     } else if (results.get() == qChoice) {
                         Queen queen = new Queen(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 4);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 4);
                         spot.setPiece(queen);
                     } else if (results.get() == rChoice) {
                         Rook rook = new Rook(black);
-                        l.board.pieceHeap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 5);
+                        l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 5);
                         spot.setPiece(rook);
                     }
                 }

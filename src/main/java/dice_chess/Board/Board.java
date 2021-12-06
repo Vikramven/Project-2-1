@@ -9,7 +9,7 @@ public class Board {
     /**
      * Piece heap helps to get exact coordinates of pieces on the board
      */
-    public PieceHeap pieceHeap = new PieceHeap();
+    public PieceMap pieceMap = new PieceMap();
 
     /**
      * Constructor which start the game

@@ -2,7 +2,7 @@ package dice_chess.Board;
 
 import java.util.LinkedList;
 
-public class PieceHeap {
+public class PieceMap {
 
     //Piece Heap for the white side
     LinkedList<Coordinate>[] whitePieces = new LinkedList[6];
@@ -13,7 +13,7 @@ public class PieceHeap {
     /**
      * Creating the Piece Heap with pieces
      */
-    public PieceHeap(){
+    public PieceMap(){
         createWhitePieceHeap();
         createBlackPieceHeap();
     }
@@ -23,7 +23,7 @@ public class PieceHeap {
      * @param w white Piece Heap
      * @param b black Piece Heap
      */
-    public PieceHeap(LinkedList<Coordinate>[] w, LinkedList<Coordinate>[] b){
+    public PieceMap(LinkedList<Coordinate>[] w, LinkedList<Coordinate>[] b){
         this.whitePieces = w;
         this.blackPieces = b;
     }
@@ -36,6 +36,7 @@ public class PieceHeap {
             whitePieces[i] = new LinkedList<>();
         }
         // WHAT IS THE REASONING BEHIND THE INDEXES OF THE LINKED LIST?
+        // The index in the array similar to the name int of the piece
         whitePieces[3].add(new Coordinate(1, 0));
         whitePieces[3].add(new Coordinate(1, 1));
         whitePieces[3].add(new Coordinate(1, 2));
@@ -170,7 +171,7 @@ public class PieceHeap {
      * @return the clone of the object Piece Heap
      */
     @Override
-    public PieceHeap clone(){
+    public PieceMap clone(){
         LinkedList<Coordinate>[] newWhitePieces = new LinkedList[6];
 
         LinkedList<Coordinate>[] newBlackPieces = new LinkedList[6];
@@ -196,6 +197,6 @@ public class PieceHeap {
                 newWhitePieces[i].add(new Coordinate(coordinate.x, coordinate.y));
             }
         }
-        return new PieceHeap(newWhitePieces, newBlackPieces);
+        return new PieceMap(newWhitePieces, newBlackPieces);
     }
 }

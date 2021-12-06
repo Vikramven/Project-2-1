@@ -25,7 +25,7 @@ public class MiniMax {
 
         // Clone objects to avoid side effects
         Board initialBoard = l.board.clone();
-        PieceHeap initialPieceHeap = l.board.pieceHeap.clone();
+        PieceMap initialPieceMap = l.board.pieceMap.clone();
         int initialDicePiece = l.dicePiece;
 
 
@@ -33,7 +33,7 @@ public class MiniMax {
         Node tree = new Node();
 
         // Creating a tree
-        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, depth,
+        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceMap, l.dicePiece, depth,
                 true, true, Double.MIN_VALUE, Double.MAX_VALUE);
 
 
@@ -55,7 +55,7 @@ public class MiniMax {
 
         // Return to the original state
         l.board = initialBoard;
-        l.board.pieceHeap = initialPieceHeap;
+        l.board.pieceMap = initialPieceMap;
         l.dicePiece = initialDicePiece;
 
 
@@ -79,12 +79,12 @@ public class MiniMax {
      * @param l State of the game (Simulation)
      * @param player player side
      * @param board State of the board (Simulation)
-     * @param pieceHeap Where pieces are located (Simulation)
+     * @param pieceMap Where pieces are located (Simulation)
      * @param dicePiece Piece on the dice (Simulations)
      * @param depth Maximum Depth of the tree
      * @param firstDepth boolean for the first depth
      */
-    public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece,
+    public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceMap pieceMap, int dicePiece,
                            int depth, boolean firstDepth, boolean max, double alpha, double beta) {
 
         if (node.getDepth() == depth)
@@ -105,7 +105,7 @@ public class MiniMax {
 
                 //Cloning the state of the board
                 Board cloneBoard = board.clone();
-                PieceHeap clonePieceHeap = pieceHeap.clone();
+                PieceMap clonePieceMap = pieceMap.clone();
                 Node childNode = children.get(i);
 
                 //Simulating the move
@@ -113,7 +113,7 @@ public class MiniMax {
 
                 //Reset the state of the board
                 l.board = cloneBoard;
-                l.board.pieceHeap = clonePieceHeap;
+                l.board.pieceMap = clonePieceMap;
                 l.dicePiece = dicePiece;
 
                 //Get the piece from the simulated board
@@ -131,7 +131,7 @@ public class MiniMax {
                 l.allLegalMoves = null;
 
                 // l.board.print();
-                Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece,
+                Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceMap, l.dicePiece,
                         depth, false, false, alpha, beta);
 
                 //If on the first depth it find the win move, if execute it, without continue creating the tree
@@ -164,7 +164,7 @@ public class MiniMax {
 
                 //Cloning the state of the board
                 Board cloneBoard = board.clone();
-                PieceHeap clonePieceHeap = pieceHeap.clone();
+                PieceMap clonePieceMap = pieceMap.clone();
                 Node childNode = children.get(i);
 
                 //Simulating the move
@@ -172,7 +172,7 @@ public class MiniMax {
 
                 //Reset the state of the board
                 l.board = cloneBoard;
-                l.board.pieceHeap = clonePieceHeap;
+                l.board.pieceMap = clonePieceMap;
                 l.dicePiece = dicePiece;
 
                 //Get the piece from the simulated board
@@ -190,7 +190,7 @@ public class MiniMax {
                 l.allLegalMoves = null;
 
                 // l.board.print();
-                Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece,
+                Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceMap, l.dicePiece,
                         depth, false, true, alpha, beta);
 
                 // If the evaluating node is less than our minValue up until this point
@@ -231,7 +231,7 @@ public class MiniMax {
 
         // Create children with possible legal move
         for (int i = 0; i < pieceNum.length; i++) {
-            LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum[i], player);
+            LinkedList<Coordinate> allPieces = l.board.pieceMap.getAllPieces(pieceNum[i], player);
 
             for (int j = 0; j < allPieces.size(); j++) {
                 Coordinate coordinate = allPieces.get(j);
@@ -242,7 +242,7 @@ public class MiniMax {
 
                 Piece piece = spot.getPiece();
 
-                ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
+                ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceMap, true);
 
                 if(allMovesPiece != null)
                     node.addChildren(allMovesPiece);

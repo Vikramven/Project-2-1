@@ -211,7 +211,7 @@ public class LogicGame extends GUIMain {
 
         Piece piece = currentSpot.getPiece();
         //System.out.println(piece.getName());
-        allLegalMoves = piece.checkPlayerMove(board, currentSpot, blackMove, board.pieceHeap, false);
+        allLegalMoves = piece.checkPlayerMove(board, currentSpot, blackMove, board.pieceMap, false);
 
         if (allLegalMoves == null) {
             currentSpot = null;

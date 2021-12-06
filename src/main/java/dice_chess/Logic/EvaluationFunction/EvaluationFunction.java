@@ -1,7 +1,7 @@
 package dice_chess.Logic.EvaluationFunction;
 
 import dice_chess.Board.*;
-import dice_chess.Board.PieceHeap;
+import dice_chess.Board.PieceMap;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Pieces.Piece;
 
@@ -20,7 +20,7 @@ public class EvaluationFunction {
 
      seems to be correct
      */
-    public int[][] evaluateTheBoard(PieceHeap enemyPieces, boolean player, Board board, Piece piece){
+    public int[][] evaluateTheBoard(PieceMap enemyPieces, boolean player, Board board, Piece piece){
         ArrayList<Move> movesEnemy = new ArrayList<>();
         int[][] emptyCost = new int[8][8];
         for (int i = 0; i < 6; i++) {//6 pieces

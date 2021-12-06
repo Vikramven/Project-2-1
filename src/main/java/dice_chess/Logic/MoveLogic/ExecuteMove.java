@@ -28,7 +28,7 @@ public class ExecuteMove {
         if(flag) {
             gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
 //            for (int j = 0; j < 6; j++) {
-//                LinkedList<Coordinate> coordinates = l.board.pieceHeap.getAllPieces(j, !l.player.isBlackSide());
+//                LinkedList<Coordinate> coordinates = l.board.pieceMap.getAllPieces(j, !l.player.isBlackSide());
 //                System.out.println("PIECE = " + j);
 //                for (int i = 0; i < coordinates.size(); i++) {
 //                    Coordinate coordinate = coordinates.get(i);
@@ -63,13 +63,13 @@ public class ExecuteMove {
                         if(!AI)
                             new WinGui().winGui(l, oldY, oldX, y, x);
                     }
-                    l.board.pieceHeap.popPiece(winPiece.getNameInt(), !l.blackMove, x, y);
+                    l.board.pieceMap.popPiece(winPiece.getNameInt(), !l.blackMove, x, y);
                 }
 
                 l.currentSpot.setX(x);
                 l.currentSpot.setY(y);
                 l.board.setSpot(l.currentSpot, x, y);
-                l.board.pieceHeap.changeCoordinate(l.currentSpot.getPiece().getNameInt(),
+                l.board.pieceMap.changeCoordinate(l.currentSpot.getPiece().getNameInt(),
                         l.currentSpot.getPiece().getColor(), oldX, oldY, x, y);
 
                 if(l.currentSpot.getPiece().getName().equals("Pawn")){

@@ -24,7 +24,7 @@ public class Expectimax {
 
         // Clone objects to avoid side effects
         Board initialBoard = l.board.clone();
-        PieceHeap initialPieceHeap = l.board.pieceHeap.clone();
+        PieceMap initialPieceMap = l.board.pieceMap.clone();
         int initialDicePiece = l.dicePiece;
 
 
@@ -32,7 +32,7 @@ public class Expectimax {
         Node tree = new Node();
 
         // Creating a tree
-        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, depth,
+        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceMap, l.dicePiece, depth,
                 true, true);
 
 
@@ -63,7 +63,7 @@ public class Expectimax {
 
         // Return to the original state
         l.board = initialBoard;
-        l.board.pieceHeap = initialPieceHeap;
+        l.board.pieceMap = initialPieceMap;
         l.dicePiece = initialDicePiece;
 
 
@@ -87,13 +87,13 @@ public class Expectimax {
      * @param l State of the game (Simulation)
      * @param player player side
      * @param board State of the board (Simulation)
-     * @param pieceHeap Where pieces are located (Simulation)
+     * @param pieceMap Where pieces are located (Simulation)
      * @param dicePiece Piece on the dice (Simulations)
      * @param depth Maximum Depth of the tree
      * @param max determine which action we do, find the max node or find the max chance node
      * @param firstDepth determine, if it is the first depth or not
      */
-    public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece,
+    public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceMap pieceMap, int dicePiece,
                            int depth, boolean max, boolean firstDepth) {
 
         //Base case of the recursion
@@ -115,7 +115,7 @@ public class Expectimax {
 
                 //Cloning the state of the board
                 Board cloneBoard = board.clone();
-                PieceHeap clonePieceHeap = pieceHeap.clone();
+                PieceMap clonePieceMap = pieceMap.clone();
                 Node childNode = children.get(i);
 
                 //If opponent moves with the positive impact for him, for us it is the negative impact
@@ -128,7 +128,7 @@ public class Expectimax {
 
                 //Reset the state of the board
                 l.board = cloneBoard;
-                l.board.pieceHeap = clonePieceHeap;
+                l.board.pieceMap = clonePieceMap;
                 l.dicePiece = dicePiece;
 
                 //Get the piece from the simulated board
@@ -145,7 +145,7 @@ public class Expectimax {
                 l.currentSpot = null;
                 l.allLegalMoves = null;
 
-                Node evalNode = createTree(childNode, l, !player, l.board, l.board.pieceHeap, 0,
+                Node evalNode = createTree(childNode, l, !player, l.board, l.board.pieceMap, 0,
                             depth, false, false);
 
                 //If on the first depth it find the win move, if execute it, without continue creating the tree
@@ -177,14 +177,14 @@ public class Expectimax {
                 //Cloning the state of the board
                 Node currentChanceNode = chancesNodes.get(i);
                 Board cloneBoard = board.clone();
-                PieceHeap clonePieceHeap = pieceHeap.clone();
+                PieceMap clonePieceMap = pieceMap.clone();
 
                 //Reset the state of the board
                 l.board = cloneBoard;
-                l.board.pieceHeap = clonePieceHeap;
+                l.board.pieceMap = clonePieceMap;
                 l.dicePiece = dicePiece;
 
-                Node evalNode = createTree(currentChanceNode, l, !player, l.board, l.board.pieceHeap, currentChanceNode.getChancePiece(),
+                Node evalNode = createTree(currentChanceNode, l, !player, l.board, l.board.pieceMap, currentChanceNode.getChancePiece(),
                         depth, true, false);
 
 
@@ -218,7 +218,7 @@ public class Expectimax {
      */
     public void createChildren(LogicGame l, boolean player, Node node, int pieceNum){
 
-        LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum, player);
+        LinkedList<Coordinate> allPieces = l.board.pieceMap.getAllPieces(pieceNum, player);
 
         for (int j = 0; j < allPieces.size(); j++) {
             Coordinate coordinate = allPieces.get(j);
@@ -229,7 +229,7 @@ public class Expectimax {
 
             Piece piece = spot.getPiece();
 
-            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
+            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceMap, true);
 
             if(allMovesPiece != null)
                 node.addChildren(allMovesPiece);

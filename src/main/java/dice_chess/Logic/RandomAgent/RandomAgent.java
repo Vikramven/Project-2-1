@@ -20,7 +20,7 @@ public class RandomAgent {
      */
     public Move executeRandomMove(LogicGame l, int pieceNum, boolean player){
 
-        LinkedList<Coordinate> allPieces = l.board.pieceHeap.getAllPieces(pieceNum, player);
+        LinkedList<Coordinate> allPieces = l.board.pieceMap.getAllPieces(pieceNum, player);
 
         ArrayList<Move> allMovesPiece = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class RandomAgent {
 
             Piece piece = spot.getPiece();
 
-            ArrayList<Move> allMovesPieceOfCurrentPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
+            ArrayList<Move> allMovesPieceOfCurrentPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceMap, true);
 
             allMovesPiece.addAll(allMovesPieceOfCurrentPiece);
         }

@@ -109,7 +109,7 @@ public abstract class Piece implements PieceMove {
     /**
      * Check if player move with the correct piece
      */
-    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, boolean player, PieceHeap enemyPieces, boolean costAI){
+    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, boolean player, PieceMap enemyPieces, boolean costAI){
         if(spot.getPiece().getColor() == player){
 
             int[][] cost = new int[8][8];

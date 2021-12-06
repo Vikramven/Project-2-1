@@ -42,6 +42,6 @@ public class KingCastling {
         l.board.setSpot(null, kingX, oldRookY);
         Spot newRookSpot = new Spot(kingX, newRookY, new Rook(black));
         l.board.setSpot(newRookSpot, kingX, newRookY);
-        l.board.pieceHeap.changeCoordinate(5, black, kingX, oldRookY, kingX, newRookY);
+        l.board.pieceMap.changeCoordinate(5, black, kingX, oldRookY, kingX, newRookY);
     }
 }
