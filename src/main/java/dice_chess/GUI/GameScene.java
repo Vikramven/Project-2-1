@@ -18,6 +18,7 @@ public class GameScene extends GUIMain {
 
     private Scene gameScene;
     private Player[] players;
+    private int AIWhite, AIBlack;
     private Label menuLabel, histTitleLabel;
     private BorderPane gamePane;
     private StackPane menuPane, histPane, dicePane, playerPane;
@@ -121,7 +122,7 @@ public class GameScene extends GUIMain {
 
         System.out.println(players[0] + " " + players[1]);
         new LogicGame(board, buttonStateBoard, playerLabel,
-                diceImgViews, images, passButton, players[0], players[1], 1, 0);
+                diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack);
 
         gamePane.setCenter(boardPane);
     }
@@ -277,6 +278,10 @@ public class GameScene extends GUIMain {
         //newLabel.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
         //        scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
     }
+
+    public void setAIWhite(int white) { this.AIWhite = white; }
+
+    public void setAIBlack(int black) { this.AIBlack = black; }
 
     public Player[] getPlayers() { return players; }
 

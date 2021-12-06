@@ -100,8 +100,8 @@ public class IntroScene extends GUIMain {
 //            }
             // Create Popup Stage
             Stage settingsStage = new Stage(); settingsStage.setTitle("Game Settings");
-            settingsStage.setWidth(640);
-            settingsStage.setHeight(480);
+//            settingsStage.setWidth(640);
+//            settingsStage.setHeight(480);
             settingsStage.centerOnScreen();
             settingsStage.setResizable(false); settingsStage.setFullScreen(false);
             settingsStage.initOwner(mainStage);
@@ -166,21 +166,22 @@ public class IntroScene extends GUIMain {
         centerBox.getChildren().addAll(playerSelLabel, playerSelBox, depthBox);
 
         // Assign positions
+        playerSelLabel.setAlignment(Pos.CENTER);
         playerSelBox.setAlignment(Pos.CENTER);
         depthBox.setAlignment(Pos.CENTER);
         centerBox.setAlignment(Pos.CENTER);
 
         // Create empty buttons to allow centering
-        Button rightEmpty = new Button();
-        rightEmpty.setPrefSize(140,480);
-        Button bottomEmpty = new Button();
-        bottomEmpty.setPrefSize(640,100);
-        settingsPane.setRight(rightEmpty);
-        settingsPane.setBottom(bottomEmpty);
+//        Button rightEmpty = new Button();
+//        rightEmpty.setPrefSize(140,480);
+//        Button bottomEmpty = new Button();
+//        bottomEmpty.setPrefSize(640,100);
+//        settingsPane.setRight(rightEmpty);
+//        settingsPane.setBottom(bottomEmpty);
         settingsPane.setCenter(centerBox);
 
         // Finish up preparing the scene
-        Scene settingsScene = new Scene(settingsPane, s.getWidth(), s.getHeight());
+        Scene settingsScene = new Scene(settingsPane, s.getMaxWidth(), s.getHeight());
         settingsScene.getStylesheets().add("/SettingsSS.css");
         s.setScene(settingsScene);
 
@@ -227,28 +228,32 @@ public class IntroScene extends GUIMain {
 
         // Prepare Radio Buttons
         ToggleGroup aiSetGroup = new ToggleGroup();
-        RadioButton[] rButton = new RadioButton[4];
-        for(int i = 0; i < 4; i++) {
+        RadioButton[] rButton = new RadioButton[3];
+        for(int i = 0; i < 3; i++) {
             rButton[i] = new RadioButton();
             rButton[i].setToggleGroup(aiSetGroup);
         }
-        rButton[0].setText("Minimax / α-β Pruning");
-        rButton[1].setText("Expected Minimax");
-        rButton[2].setText("Expected Max");
-        rButton[3].setText("Baseline (Random) Agent");
 
-        VBox leftOptions = new VBox(50);
-        leftOptions.getChildren().addAll(rButton[0], rButton[1]);
-        VBox rightOptions = new VBox(50);
-        rightOptions.getChildren().addAll(rButton[2], rButton[3]);
-
-        HBox settingsBox = new HBox(50);
-        settingsBox.getChildren().addAll(leftOptions, rightOptions);
+        rButton[0].setText("Baseline (Random) Agent");
+        rButton[1].setText("ExpectiMax");
+        rButton[2].setText("Minimax / α-β Pruning");
+        //rButton[3].setText("Expected Minimax"); // Possible implementation next phase
 
         Button nextButton = new Button("NEXT");
         nextButton.getStyleClass().add("nextButton");
 
-        centerBox.getChildren().addAll(setAILabel, settingsBox, nextButton);
+        VBox leftOptions = new VBox(50);
+        leftOptions.getChildren().addAll(rButton[0], rButton[1]);
+        VBox rightOptions = new VBox(50);
+        rightOptions.getChildren().addAll(rButton[2], nextButton);
+
+        HBox settingsBox = new HBox(50);
+        settingsBox.getChildren().addAll(leftOptions, rightOptions);
+
+//        Button nextButton = new Button("NEXT");
+//        nextButton.getStyleClass().add("nextButton");
+
+        centerBox.getChildren().addAll(setAILabel, settingsBox);
 
         // Assign positions
         settingsBox.setAlignment(Pos.CENTER);
@@ -256,12 +261,12 @@ public class IntroScene extends GUIMain {
         centerBox.setAlignment(Pos.CENTER);
 
         // Create empty buttons to allow centering
-        Button rightEmpty = new Button();
-        rightEmpty.setPrefSize(140,480);
-        Button bottomEmpty = new Button();
-        bottomEmpty.setPrefSize(640,100);
-        settingsPane.setRight(rightEmpty);
-        settingsPane.setBottom(bottomEmpty);
+//        Button rightEmpty = new Button();
+//        rightEmpty.setPrefSize(140,480);
+//        Button bottomEmpty = new Button();
+//        bottomEmpty.setPrefSize(640,100);
+//        settingsPane.setRight(rightEmpty);
+//        settingsPane.setBottom(bottomEmpty);
         settingsPane.setCenter(centerBox);
 
         // Finish up preparing the scene
@@ -272,33 +277,44 @@ public class IntroScene extends GUIMain {
         // Button Actions
         nextButton.setOnAction(e -> {
 
+            RadioButton setButton = (RadioButton) aiSetGroup.getSelectedToggle();
+            String aiSetValue = setButton.getText();
+
             // Second Call - which means both A.I. were configured
             if(!firstCall) {
                 Player whiteAIPl = new AI(true);
                 Player blackAIPl = new AI(false);
                 Player[] plToAdd = {whiteAIPl, blackAIPl};
-                //gameSc.setGameScene(plToAdd); // Uncomment when double AI is ready
+                gameSc.setAIBlack(getAIEquivInt(aiSetValue));
                 s.close();
+                gameSc.setGameScene(plToAdd);
                 mainStage.setScene(gameSc.getGameScene());
+                System.out.println("WHITE AI SET VALUE:" + aiSetValue);
                 System.out.println("WHITE AI VS BLACK AI");
             } else {
                 // Need to select Black A.I.'s settings as well
                 if (b) {
                     setAISettingsScene("Black", s, false, false);
+                    gameSc.setAIWhite(getAIEquivInt(aiSetValue));
+                    System.out.println("WHITE AI SET VALUE:" + aiSetValue);
                     System.out.println("Creating Black AI");
                 // No need for extra A.I. settings, start the game
                 } else {
                     if (c.equals("White")) {
                         Player blackHPl = new Human(true);
                         Player whiteAIPl = new AI(false);
-                        Player[] plToAdd = {blackHPl, whiteAIPl};
+                        Player[] plToAdd = {whiteAIPl, blackHPl};
+                        gameSc.setAIWhite(getAIEquivInt(aiSetValue));
                         gameSc.setGameScene(plToAdd);
+                        System.out.println("WHITE AI SET VALUE:" + aiSetValue);
                         System.out.println("WHITE AI VS BLACK HUMAN");
                     } else {
                         Player whiteHPl = new Human(false);
                         Player blackAIPl = new AI(true);
                         Player[] plToAdd = {whiteHPl, blackAIPl};
+                        gameSc.setAIBlack(getAIEquivInt(aiSetValue));
                         gameSc.setGameScene(plToAdd);
+                        System.out.println("BLACK AI SET VALUE:" + aiSetValue);
                         System.out.println("WHITE HUMAN VS BLACK AI");
                     }
                     s.close();
@@ -306,6 +322,14 @@ public class IntroScene extends GUIMain {
                 }
             }
         });
+    }
+
+    private int getAIEquivInt(String radioValue) {
+        int equivInt;
+        if(radioValue.equals("Baseline (Random) Agent")) { equivInt = 0; }
+        else if(radioValue.equals("ExpectiMax")) { equivInt = 2; }
+        else { equivInt = 2; }
+        return equivInt;
     }
 
     public Scene getIntroScene() { return introScene; }
