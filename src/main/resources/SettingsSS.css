@@ -1,0 +1,71 @@
+/* ROOT CONFIGURATION */
+.root {
+    -fx-background-image: url('set.jpg');
+    -fx-background-size: cover;
+}
+
+/* COMPONENTS CONFIGURATION */
+.settingsLabel1 {
+    -fx-font: 55px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#ff0000 20%, #ff8c00 65%);
+    -fx-border-color: white;
+    -fx-border-width: 1 0 1 0;
+}
+
+.settingsLabel2 {
+    -fx-font: 30px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: black;
+    -fx-border-color: white;
+    -fx-border-width: 1 0 1 0;
+}
+
+.settingsLabel3 {
+    -fx-font: 25px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: black;
+    -fx-border-color: white;
+    -fx-border-width: 1 0 1 0;
+}
+
+.nextButton {
+    -fx-font: 25px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #2b8d04;
+    -fx-background-radius: 10px;
+}
+
+.nextButton:hover {
+    -fx-background-image: url('arrow.png');
+    -fx-background-size: 90px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+
+.radio-button {
+    -fx-font: 20px SansSerifBold;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#ffffff 20%, #ff8c00 65%);
+}
+
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+    -fx-padding: 4px;
+}
+.radio-button .radio:selected {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+
+.radio-button .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 8px;
+}
