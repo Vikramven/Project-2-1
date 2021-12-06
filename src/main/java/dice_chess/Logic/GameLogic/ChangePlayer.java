@@ -1,11 +1,12 @@
-package Logic.GameLogic;
-import Logic.LogicGame;
-import Logic.MoveLogic.Move;
+package dice_chess.Logic.GameLogic;
+import dice_chess.Logic.LogicGame;
+import dice_chess.Logic.MoveLogic.Move;
 
 public class ChangePlayer {
 
     /**
      * Change the player in the logic and in the GUI
+     * @param l LogicGame object
      */
     public void changePlayer(LogicGame l) {
         l.currentSpot = null;

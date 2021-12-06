@@ -11,8 +11,8 @@ public class King extends Piece {
 
     public boolean castling = true;
 
-    //Todo I think the initial cost function was for the black portion of the board
-    private int[][] whiteCost = {{10, 15, 10, 50, 10, 15, 10, 10},
+    //TODO improve this in the PHASE 3
+    private final int[][] whiteCost = {{10, 15, 10, 50, 10, 15, 10, 10},
                             {10, -10, 0, 0, 0, 0, 0, 10},
                             {5, -10, -15, -15, -15, -15, -10, 5},
                             {5, -10, -15, -15, -15, -15, -10, 5},
@@ -21,7 +21,7 @@ public class King extends Piece {
                             {-5, -10, -10, -10, -10, -10, -10, -5},
                             { -5, -5, -5, -5, -5, -5, -5, -5}};
 
-    private int[][] blackCost = {{-5, -5, -5, -5, -5, -5, -5, -5},
+    private final int[][] blackCost = {{-5, -5, -5, -5, -5, -5, -5, -5},
             {-5, -10, -10, -10, -10, -10, -10, -5},
             {-5, -10, -15, -15, -15, -15, -10, -5},
             {-5, -10, -15, -15, -15, -15, -10, -5},

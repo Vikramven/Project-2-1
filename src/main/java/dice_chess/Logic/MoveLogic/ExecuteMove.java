@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ExecuteMove {
 
     //Parts of _dice_chess.Logic
-    private GuiMove gm = new GuiMove();
-    private PawnPromotion pp = new PawnPromotion();
-    private KingCastling kc = new KingCastling();
+    private final GuiMove gm = new GuiMove();
+    private final PawnPromotion pp = new PawnPromotion();
+    private final KingCastling kc = new KingCastling();
 
     /**
      * Execution the move
@@ -23,8 +23,8 @@ public class ExecuteMove {
      * @param finalX where player moves x coordinate
      * @param finalY where player moves y coordinate
      */
-    public void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY, LogicGame l) {
-        boolean flag = movePiece(finalX, finalY, l, true, false);
+    public void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY, LogicGame l, boolean noGuiForAI) {
+        boolean flag = movePiece(finalX, finalY, l, true, false, noGuiForAI);
         if(flag) {
             gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
 //            for (int j = 0; j < 6; j++) {
@@ -47,7 +47,7 @@ public class ExecuteMove {
      * @param y Y coordinate which choose the player
      * @return true = player chose (clicked on) a legal move / false = player did not choose a legal move
      */
-    public boolean movePiece(int x, int y, LogicGame l, boolean GUI, boolean AI) {
+    public boolean movePiece(int x, int y, LogicGame l, boolean GUI, boolean AI, boolean guiForAI) {
 
         for (int i = 0; i < l.allLegalMoves.size(); i++) {
             if(x == l.allLegalMoves.get(i).getX() && y == l.allLegalMoves.get(i).getY()){
@@ -73,7 +73,7 @@ public class ExecuteMove {
                         l.currentSpot.getPiece().getColor(), oldX, oldY, x, y);
 
                 if(l.currentSpot.getPiece().getName().equals("Pawn")){
-                    pp.checkPawnPromotion(l.currentSpot, l, AI);
+                    pp.checkPawnPromotion(l.currentSpot, l, guiForAI);
                 }
 
                 if(l.currentSpot.getPiece().getName().equals("King")){

@@ -10,40 +10,70 @@ import java.util.ArrayList;
 
 public abstract class Piece implements PieceMove {
 
+    //The color of the piece
     protected boolean black;
 
+    //The name of the piece
     protected String name, imageURL;
 
+    //The name int of the piece
     protected int nameInt;
+
 
     public Piece(boolean black) {
         this.black = black;
     }
 
+    /**
+     * Get the String color of the piece
+     * @return the String color of the piece
+     */
     public String isColor() {
         if(black)
             return "Black";
         return "White";
     }
 
+    /**
+     * Get the color of the piece
+     * @return the color of the piece
+     */
     public boolean getColor(){
         return black;
     }
 
+    /**
+     * Assign the white color for the piece
+     */
     public void setWhite() {
         black = false;
     }
 
+    /**
+     * Assign the black color for the piece
+     */
     public void setBlack() {
         black = true;
     }
 
+    /**
+     * Get the String name of the piece
+     * @return the String name of the piece
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get the String image URL of the piece
+     * @return the String image URL of the piece
+     */
     public String getImageURL() { return imageURL; }
 
+    /**
+     * Get the name int of the piece
+     * @return the name int of the piece
+     */
     public int getNameInt() {
         return nameInt;
     }

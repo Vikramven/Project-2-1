@@ -11,6 +11,14 @@ import java.util.Optional;
 
 public class WinGui {
 
+    /**
+     * Win interface appears when someone wins the game
+     * @param l LogicGame object
+     * @param oldY Y coordinate where is located the piece
+     * @param oldX X coordinate where is located the piece
+     * @param y Y coordinate where the piece is moving
+     * @param x X coordinate where the piece is moving
+     */
     public void winGui(LogicGame l, int oldY, int oldX, int y, int x){
         l.winFlag = true;
         String colorWin = l.currentSpot.getPiece().isColor();

@@ -11,10 +11,8 @@ public class Rook extends Piece {
 
     private boolean castling = true;
 
-    //TODO set costs for best move of bishop
-    //TODO cost matrix is not done yet
-    //int[][] cost = new int[8][8];
-    private int[][] whiteCost = {{0, 0, 0, 0, 0, 0, 0, 0},
+    //TODO improve this in the PHASE 3
+    private final int[][] whiteCost = {{0, 0, 0, 0, 0, 0, 0, 0},
                                  {0, 0, 0, 0, 0, 0, 0, 0},
                                  {15, 5, 10, 0, 0, 10, 5, 15},
                                  {15, 5, 10, 0, 0, 10, 5, 15},
@@ -23,7 +21,7 @@ public class Rook extends Piece {
                                  {15, 5, 15, 15, 15, 15, 5, 15},
                                  {15, 5, 15, 15, 15, 15, 5, 15}};
 
-    private int[][] blackCost = {{15, 5, 15, 15, 15, 15, 5, 15},
+    private final int[][] blackCost = {{15, 5, 15, 15, 15, 15, 5, 15},
             {15, 5, 15, 15, 15, 15, 15, 15},
             {15, 5, 10, 0, 0, 10, 5, 15},
             {15, 5, 10, 0, 0, 10, 5, 15},

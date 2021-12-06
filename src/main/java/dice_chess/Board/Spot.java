@@ -6,12 +6,21 @@ import javafx.scene.control.*;
 
 public class Spot extends Button{
 
+    //X coordinate
     private int x;
 
+    //Y coordinate
     private int y;
 
+    //Piece object
     private Piece piece;
 
+    /**
+     * Constructor for the piece
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param piece the piece
+     */
     public Spot(int x, int y, Piece piece) {
         this.x = x;
         this.y = y;

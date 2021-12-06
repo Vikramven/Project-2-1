@@ -2,33 +2,23 @@ package dice_chess.Players;
 
 public abstract class Player {
 
-    private boolean blackSide;
-    private boolean human;
+    //Color of the player
+    private final boolean blackSide;
 
+    //Determine if the player is human or AI
+    private final boolean human;
+
+    /**
+     * Constructor for the player
+     * @param blackSide the color side of the player
+     * @param human determine who plays AI or Human
+     */
     public Player(boolean blackSide, boolean human) {
         this.blackSide = blackSide;
         this.human = human;
     }
 
-    public String isColorSide() {
-        if(blackSide)
-            return "Black";
-        return "White";
-    }
-
-    public boolean isBlackSide() {
-        return blackSide;
-    }
-
-    public void setColorSide(boolean colorSide) {
-        this.blackSide = colorSide;
-    }
-
     public boolean isHuman() {
         return human;
-    }
-
-    public void setHuman(boolean human) {
-        this.human = human;
     }
 }

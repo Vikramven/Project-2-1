@@ -1,21 +1,20 @@
-package Logic;
+package dice_chess.Logic;
 
-import Board.*;
-import GUI.GUIMain;
-import GUI.GameScene;
-import GUI.IntroScene;
-import Logic.AI.ExecuteMovesAI;
-import Logic.AI.Expectimax;
-import Logic.AI.MiniMax;
-import Logic.GameLogic.ChangePlayer;
-import Logic.GameLogic.DiceLogic;
-import Logic.HintLogic.ButtonHighlight;
-import Logic.MoveLogic.ExecuteMove;
-import Logic.MoveLogic.Move;
-import Logic.RandomAgent.RandomAgent;
-import Pieces.*;
-import Players.Human;
-import Players.Player;
+import dice_chess.Board.*;
+import dice_chess.GUI.GUIMain;
+import dice_chess.GUI.GameScene;
+import dice_chess.GUI.IntroScene;
+import dice_chess.Logic.AI.ExecuteMovesAI;
+import dice_chess.Logic.AI.Expectimax;
+import dice_chess.Logic.AI.MiniMax;
+import dice_chess.Logic.GameLogic.ChangePlayer;
+import dice_chess.Logic.GameLogic.DiceLogic;
+import dice_chess.Logic.HintLogic.ButtonHighlight;
+import dice_chess.Logic.MoveLogic.ExecuteMove;
+import dice_chess.Logic.MoveLogic.Move;
+import dice_chess.Logic.RandomAgent.RandomAgent;
+import dice_chess.Pieces.*;
+import dice_chess.Players.Player;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -153,7 +152,7 @@ public class LogicGame extends GUIMain {
                         // Check if it is not the same piece
                         if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) {
                             if (tmp_spot == null) { // tmp_spot = null means that spot is empty
-                                em.executeMove(iniX, iniY, finalX, finalY, this); // Execute the move of the player
+                                em.executeMove(iniX, iniY, finalX, finalY, this, false); // Execute the move of the player
                             } else {
                                 // Check if tmp_spot has the same color as player
                                 if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
@@ -167,7 +166,7 @@ public class LogicGame extends GUIMain {
                                     }
                                 // This condition works if the piece is enemy
                                 } else {
-                                    em.executeMove(iniX, iniY, finalX, finalY, this);
+                                    em.executeMove(iniX, iniY, finalX, finalY, this, false);
                                 }
                             }
                         }
@@ -177,7 +176,7 @@ public class LogicGame extends GUIMain {
             }
         }
 
-
+        //If the white is the AI player, when we run the AI algorithms
         //AI move
         if(!playerWhite.isHuman()) {
             Move AImove = null;

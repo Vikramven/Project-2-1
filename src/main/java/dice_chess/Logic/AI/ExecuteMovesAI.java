@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class ExecuteMovesAI {
 
+    /**
+     * Execute the move which was calculate by AI or Agent
+     * @param l LogicGame object
+     * @param move the move to execute
+     */
     public void executeMovesAI(LogicGame l, Move move){
 
         int currentX = move.getPieceSpotX();
@@ -23,7 +28,7 @@ public class ExecuteMovesAI {
         l.allLegalMoves = new ArrayList<>();
         l.allLegalMoves.add(move);
 
-        l.em.executeMove(l.iniX, l.iniY, moveX, moveY, l);
+        l.em.executeMove(l.iniX, l.iniY, moveX, moveY, l, true);
 
         l.allLegalMoves = new ArrayList<>();
         l.currentSpot = null;

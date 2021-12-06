@@ -4,16 +4,22 @@ import dice_chess.Pieces.Piece;
 
 public class Move {
 
+    //X coordinate where to move
     private int x;
 
+    //Y coordinate where to move
     private int y;
 
+    //The piece with which we move
     private Piece piece;
 
+    //The cost of this move
     private int cost;
 
+    //X coordinate where the piece is located
     private int pieceSpotX;
 
+    //Y coordinate where the piece is located
     private int pieceSpotY;
 
     public Move(int x, int y, Piece piece, int cost, int pieceSpotX, int pieceSpotY) {
@@ -25,18 +31,34 @@ public class Move {
         this.pieceSpotY = pieceSpotY;
     }
 
+    /**
+     * Get the piece X coordinate
+     * @return X coordinate of the piece
+     */
     public int getPieceSpotX() {
         return pieceSpotX;
     }
 
+    /**
+     * Set the piece X coordinates
+     * @param pieceSpotX X coordinate of the piece
+     */
     public void setPieceSpotX(int pieceSpotX) {
         this.pieceSpotX = pieceSpotX;
     }
 
+    /**
+     * Get the piece Y coordinate
+     * @return Y coordinate of the piece
+     */
     public int getPieceSpotY() {
         return pieceSpotY;
     }
 
+    /**
+     * Set the piece Y coordinates
+     * @param pieceSpotY Y coordinate of the piece
+     */
     public void setPieceSpotY(int pieceSpotY) {
         this.pieceSpotY = pieceSpotY;
     }
@@ -89,10 +111,18 @@ public class Move {
         this.piece = piece;
     }
 
+    /**
+     * Get the cost
+     * @return the cost
+     */
     public int getCost() {
         return cost;
     }
 
+    /**
+     * Set the cost
+     * @param cost the cost
+     */
     public void setCost(int cost) {
         this.cost = cost;
     }

@@ -1,8 +1,9 @@
 package dice_chess.Logic.AI;
 
 import dice_chess.Board.*;
-import dice_chess.Logic.LogicGame;
+
 import dice_chess.Logic.MoveLogic.Move;
+import dice_chess.Logic.*;
 import dice_chess.Pieces.Piece;
 
 import java.util.ArrayList;
@@ -86,10 +87,6 @@ public class MiniMax {
     public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece,
                            int depth, boolean firstDepth, boolean max, double alpha, double beta) {
 
-
-        l.allLegalMoves = null;
-
-
         if (node.getDepth() == depth)
             return node;
 
@@ -106,31 +103,38 @@ public class MiniMax {
             // Simulation moves of children
             for (int i = 0; i < children.size(); i++) {
 
+                //Cloning the state of the board
                 Board cloneBoard = board.clone();
-
                 PieceHeap clonePieceHeap = pieceHeap.clone();
-
                 Node childNode = children.get(i);
 
+                //Simulating the move
                 Move move = childNode.getMove();
 
+                //Reset the state of the board
                 l.board = cloneBoard;
                 l.board.pieceHeap = clonePieceHeap;
                 l.dicePiece = dicePiece;
 
+                //Get the piece from the simulated board
                 l.currentSpot = l.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
 
+                //Add the move to the logic game
                 l.allLegalMoves = new ArrayList<>();
                 l.allLegalMoves.add(move);
 
-                l.em.movePiece(move.getX(), move.getY(), l, false, true);
+                //Simulate the move
+                l.em.movePiece(move.getX(), move.getY(), l, false, true, true);
 
+                //Reset our states
                 l.currentSpot = null;
+                l.allLegalMoves = null;
 
                 // l.board.print();
                 Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece,
                         depth, false, false, alpha, beta);
 
+                //If on the first depth it find the win move, if execute it, without continue creating the tree
                 if(firstDepth){
                     if(childNode.getCost() > 950.0){
                         return childNode;
@@ -158,25 +162,32 @@ public class MiniMax {
             // Simulation moves of children
             for (int i = 0; i < children.size(); i++) {
 
+                //Cloning the state of the board
                 Board cloneBoard = board.clone();
                 PieceHeap clonePieceHeap = pieceHeap.clone();
-
                 Node childNode = children.get(i);
 
+                //Simulating the move
                 Move move = childNode.getMove();
 
+                //Reset the state of the board
                 l.board = cloneBoard;
                 l.board.pieceHeap = clonePieceHeap;
                 l.dicePiece = dicePiece;
 
+                //Get the piece from the simulated board
                 l.currentSpot = l.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
 
+                //Add the move to the logic game
                 l.allLegalMoves = new ArrayList<>();
                 l.allLegalMoves.add(move);
 
-                l.em.movePiece(move.getX(), move.getY(), l, false, true);
+                //Simulate the move
+                l.em.movePiece(move.getX(), move.getY(), l, false, true, true);
 
+                //Reset our states
                 l.currentSpot = null;
+                l.allLegalMoves = null;
 
                 // l.board.print();
                 Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece,

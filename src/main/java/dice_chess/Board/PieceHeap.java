@@ -4,20 +4,33 @@ import java.util.LinkedList;
 
 public class PieceHeap {
 
+    //Piece Heap for the white side
     LinkedList<Coordinate>[] whitePieces = new LinkedList[6];
 
+    //Piece Heap for the black side
     LinkedList<Coordinate>[] blackPieces = new LinkedList[6];
 
+    /**
+     * Creating the Piece Heap with pieces
+     */
     public PieceHeap(){
         createWhitePieceHeap();
         createBlackPieceHeap();
     }
 
+    /**
+     * Constructor for the cloning
+     * @param w white Piece Heap
+     * @param b black Piece Heap
+     */
     public PieceHeap(LinkedList<Coordinate>[] w, LinkedList<Coordinate>[] b){
         this.whitePieces = w;
         this.blackPieces = b;
     }
 
+    /**
+     * Creating white Piece Heaps
+     */
     private void createWhitePieceHeap(){
         for (int i = 0; i < whitePieces.length; i++) {
             whitePieces[i] = new LinkedList<>();
@@ -43,6 +56,9 @@ public class PieceHeap {
 
     }
 
+    /**
+     * Creating black Piece Heaps
+     */
     private void createBlackPieceHeap(){
         for (int i = 0; i < blackPieces.length; i++) {
             blackPieces[i] = new LinkedList<>();
@@ -68,10 +84,11 @@ public class PieceHeap {
     }
 
     /**
-     *  What is the use of the int x here? i thought getallpieces returns a whole list
-     *  x relates to i when it's called, see piece class, so if i=0, for example, that means it's a bishop, and it then gets enemy moves of all bishops
+     * Gets the Linked List of coordinates of the exact piece
+     * @param x the int name of the piece
+     * @param black the color of the piece
+     * @return Linked List of coordinates
      */
-
     public LinkedList<Coordinate> getAllPieces(int x, boolean black){
            if(!black)
                return whitePieces[x];
@@ -80,12 +97,11 @@ public class PieceHeap {
     }
 
     /**
-     *
-     * @param Piece which decides the depth? idk check again
-     * @param black condition for deciding which list to pop from
-     * @param x desired locations in the heap
-     * @param y desired locations in the heap
-     * Does pop piece remove any element u want to? what does i represent? the piece in the list or the depth of the piece in the list?
+     * Pops the piece from our Piece Heap
+     * @param Piece the int name of the piece
+     * @param black the color of the piece
+     * @param x X coordinate where is located the piece
+     * @param y Y coordinate where is located the piece
      */
     public void popPiece(int Piece, boolean black, int x, int y){
         LinkedList<Coordinate> allPiece;
@@ -105,7 +121,12 @@ public class PieceHeap {
     }
 
     /**
-     *What does this method do?
+     * When we have the pawn promotion, we need to change pawn to another piece
+     * @param Piece the name int of the pawn
+     * @param black the color of the piece
+     * @param x X coordinate of the pawn
+     * @param y Y coordinate of the pawn
+     * @param changePiece the name int of the piece which we want to change
      */
     public void pawn(int Piece, boolean black, int x, int y, int changePiece){
         popPiece(Piece, black, x, y);
@@ -116,6 +137,15 @@ public class PieceHeap {
             blackPieces[changePiece].add(new Coordinate(x, y));
     }
 
+    /**
+     * We need to change coordinates of the piece, when we execute the move with this piece
+     * @param Piece the name int of the piece
+     * @param black the color of the piece
+     * @param x X coordinate of the piece
+     * @param y Y coordinate of the piece
+     * @param moveX X coordinate where we move the piece
+     * @param moveY Y coordinate where we move the piece
+     */
     public void changeCoordinate(int Piece, boolean black, int x, int y, int moveX, int moveY){
         LinkedList<Coordinate> allPiece;
         if(!black)
@@ -135,6 +165,11 @@ public class PieceHeap {
         }
     }
 
+    /**
+     * Clone Piece Heaps to avoid mutations
+     * @return the clone of the object Piece Heap
+     */
+    @Override
     public PieceHeap clone(){
         LinkedList<Coordinate>[] newWhitePieces = new LinkedList[6];
 

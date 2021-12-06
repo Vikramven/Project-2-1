@@ -6,6 +6,9 @@ public class Board {
 
     private Spot[][] board;
 
+    /**
+     * Piece heap helps to get exact coordinates of pieces on the board
+     */
     public PieceHeap pieceHeap = new PieceHeap();
 
     /**
@@ -126,6 +129,11 @@ public class Board {
         }
     }
 
+    /**
+     * Clone the object Board to avoid mutations
+     * @return the clone of the object Board
+     */
+    @Override
     public Board clone(){
         Spot[][] newBoard = new Spot[8][8];
 

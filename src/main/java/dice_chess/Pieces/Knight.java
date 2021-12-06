@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class Knight extends Piece {
 
-    //TODO
-    private int[][] blackCost = {{0, 0, 0, 15, 15, 0, 0, 0},
+    //TODO improve this in the PHASE 3
+    private final int[][] blackCost = {{0, 0, 0, 15, 15, 0, 0, 0},
                                  {0, 15, 15, 0, 0, 15, 15, 0},
                             {0, 0, 15, 15, 15, 15, 0, 0},
                             {5, 0, 0, 0, 0, 0, 0, 0},
@@ -18,7 +18,7 @@ public class Knight extends Piece {
                             {0, 0, 0, 0, 0, 0, 0, 0},
                             { 0, 0, 0, 0, 0, 0, 0, 0}};
 
-    private int[][] whiteCost = {{ 0, 0, 0, 0, 0, 0, 0, 0},
+    private final int[][] whiteCost = {{ 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
             {15, 0, 15, 0, 0, 15, 0, 15},
             {5, 0, 0, 0, 0, 0, 0, 0},

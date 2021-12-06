@@ -1,10 +1,9 @@
-package Logic.EvaluationFunction;
+package dice_chess.Logic.EvaluationFunction;
 
-import Board.*;
-import Board.PieceHeap;
-import Logic.MoveLogic.Move;
-import Pieces.Piece;
-import Pieces.Queen;
+import dice_chess.Board.*;
+import dice_chess.Board.PieceHeap;
+import dice_chess.Logic.MoveLogic.Move;
+import dice_chess.Pieces.Piece;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

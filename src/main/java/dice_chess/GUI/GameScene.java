@@ -121,7 +121,7 @@ public class GameScene extends GUIMain {
 
         System.out.println(players[0] + " " + players[1]);
         new LogicGame(board, buttonStateBoard, playerLabel,
-                diceImgViews, images, passButton, players[0], players[1]);
+                diceImgViews, images, passButton, players[0], players[1], 1, 0);
 
         gamePane.setCenter(boardPane);
     }

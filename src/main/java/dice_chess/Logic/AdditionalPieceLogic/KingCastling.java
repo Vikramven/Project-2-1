@@ -7,6 +7,11 @@ import dice_chess.Pieces.Rook;
 
 public class KingCastling {
 
+    /**
+     * Execute the castling, if we can it
+     * @param l LogicGame object
+     * @param oldY Y coordinate of the king
+     */
     public void kingCastling(LogicGame l, int oldY){
         King piece = (King) l.currentSpot.getPiece();
         int kingX = l.currentSpot.getX();

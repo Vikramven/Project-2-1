@@ -13,7 +13,9 @@ public class PawnPromotion {
 
     /**
      * Check on pawn promotion
+     * @param l LogicGame object
      * @param spot Spot of the pawn
+     * @param AI boolean variable which determine if it is AI simulation or not
      */
     public void checkPawnPromotion(Spot spot, LogicGame l, boolean AI) {
         Piece pawn = spot.getPiece();
@@ -31,15 +33,17 @@ public class PawnPromotion {
     }
 
     /**
-     * Perform EnPassant
+     * Perform pawn promotion
      * @param spot The spot of the pawn
      * @param black Color of the piece
+     * @param l LogicGame object
+     * @param noGuiForAi boolean variable which determine if it is AI simulation or not
      */
-    private void pawnPromotion(Spot spot, boolean black, LogicGame l, boolean AI) {
+    private void pawnPromotion(Spot spot, boolean black, LogicGame l, boolean noGuiForAi) {
         int random = (int)Math.floor(Math.random()*(4-1+1)+1);
 
 
-        if(!AI) random = (int) (Math.random() * 4);
+        if(!noGuiForAi) random = (int) (Math.random() * 4);
 
 
         if(!l.winFlag) {
@@ -48,7 +52,7 @@ public class PawnPromotion {
             if (random != 0) {
                 String result = promRoll(random);
 
-                if(!AI) {
+                if(!noGuiForAi) {
                     Alert resAlert = new Alert(Alert.AlertType.INFORMATION);
                     resAlert.setTitle("Random Roll Result");
                     resAlert.setHeaderText("Dice Chess 8 rolled the dice... Your pawn got promoted to a " + result + ".");

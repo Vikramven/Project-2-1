@@ -9,10 +9,8 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
 
 
-    //TODO promotion and 2 possible moves in the beginning of the game are the best moves, and the square before promotion is good good move
-    //DOUBT:WHICH IS THE BLACK SIDE
-
-    private int[][] whiteCost = {{0 , 0, 0, 0, 0, 0, 0, 0},
+    //TODO improve this in the PHASE 3
+    private final int[][] whiteCost = {{0 , 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
             {10, 0, 10, 0, 0, 10, 0, 10},
             {0, 5, 0, 15, 15, 0, 5, 0},
@@ -21,7 +19,7 @@ public class Pawn extends Piece {
             {10, 10, 10, 10, 10, 10, 10, 10},
             { 15, 15, 15, 15, 15, 15, 15, 15}};
 
-    private int[][] blackCost = {{ 15, 15, 15, 15, 15, 15, 15, 15},
+    private final int[][] blackCost = {{ 15, 15, 15, 15, 15, 15, 15, 15},
             {10, 10, 10, 10, 10, 10, 10, 10},
             {5,  5,  5,  5,  5,  5,  5,  5},
             {0, 0, 0, 0, 0, 0, 0, 0},

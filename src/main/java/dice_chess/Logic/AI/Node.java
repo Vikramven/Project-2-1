@@ -22,10 +22,13 @@ public class Node {
     //Depth of the node
     private int depth;
 
+    //Determine if it is the Chance Node
     private boolean chanceNode = false;
 
+    //Determine the name int of the Chance Node
     private int chancePiece;
 
+    //Determine if the node is the root or not
     private boolean root = false;
 
     /**
@@ -66,6 +69,9 @@ public class Node {
         this.depth = 0;
     }
 
+    /**
+     * Adding the chance nodes to the node
+     */
     public void addChanceNodes(){
         for (int i = 0; i < 6; i++) {
             children.add(new Node(this, i));
@@ -89,7 +95,6 @@ public class Node {
             children.add(new Node(move.get(i), this));
         }
     }
-
 
     /**
      * Gets move
@@ -135,11 +140,11 @@ public class Node {
         return parent;
     }
 
+    /**
+     * Gets the name int of the Chance Node
+     * @return the name int of the piece
+     */
     public int getChancePiece() {
         return chancePiece;
-    }
-
-    public void setChancePiece(int chancePiece) {
-        this.chancePiece = chancePiece;
     }
 }

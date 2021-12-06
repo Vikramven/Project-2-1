@@ -8,10 +8,9 @@ import java.util.ArrayList;
 
 public class Bishop extends Piece {
 
-    //TODO set costs for best moves of bishop
-    //int[][] cost = new int[8][8];
 
-    private int[][] blackCost = {{10, 0, 0, 15, 15, 0, 0, 10},//bishop can't move in the first row, so keep it 0
+    //TODO improve this in the PHASE 3
+    private final int[][] blackCost = {{10, 0, 0, 15, 15, 0, 0, 10},//bishop can't move in the first row, so keep it 0
                                  {5, 10, 15, 15, 15, 15, 10, 5},
                                  {-5, 10, 0, 0, 15, 0, 10, -5},
                                  {5, 10, 0, 0, 0, 15, 0, 5},
@@ -20,7 +19,8 @@ public class Bishop extends Piece {
                                  {-5, 5, 15, 10, 15, 10, 5, -5},
                                  { 0, 0, 0, 0, 0, 0, 0, 0}};
 
-    private int[][] whiteCost = {{ 0, 0, 0, 0, 0, 0, 0, 0},//bishop can't move in the first row, so keep it 0
+
+    private final int[][] whiteCost = {{ 0, 0, 0, 0, 0, 0, 0, 0},//bishop can't move in the first row, so keep it 0
             {-5, 5, 15, 10, 15, 10, 5, -5},
             {-5, 15, 10, 0, 0, 10, 10, -5},
             {5, 0, 10, 0, 0, 0, 15, 5},
