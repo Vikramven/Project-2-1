@@ -184,8 +184,10 @@ public class LogicGame extends GUIMain {
             System.out.println("White AI");
             if(AIwhite == 1)
                 AImove = expectimax.calculateBestMoves(this);
-            else if(AIblack == 0)
+            else if(AIwhite == 0)
                 AImove = randomAgent.executeRandomMove(this, dicePiece, blackMove);
+            else if(AIwhite == 2)
+                AImove = miniMax.calculateBestMoves(this);
 
             if(AImove != null) {
                 executeMovesAI.executeMovesAI(this, AImove);

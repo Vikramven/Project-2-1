@@ -27,6 +27,8 @@ public class ChangePlayer {
                     AImove = l.expectimax.calculateBestMoves(l);
                 else if(l.AIblack == 0)
                     AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
+                else if(l.AIblack == 2)
+                    AImove = l.miniMax.calculateBestMoves(l);
 
                 if(AImove != null) {
                     l.executeMovesAI.executeMovesAI(l, AImove);
@@ -53,6 +55,8 @@ public class ChangePlayer {
                     AImove = l.expectimax.calculateBestMoves(l);
                 else if(l.AIwhite == 0)
                     AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
+                else if(l.AIwhite == 2)
+                    AImove = l.miniMax.calculateBestMoves(l);
 
                 if(AImove != null) {
                     l.executeMovesAI.executeMovesAI(l, AImove);

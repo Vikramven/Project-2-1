@@ -32,7 +32,7 @@ public class Expectimax {
         Node tree = new Node();
 
         // Creating a tree
-        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 3,
+        Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 4,
                 true, true);
 
 
@@ -120,6 +120,8 @@ public class Expectimax {
 
                 Node childNode = children.get(i);
 
+                if(childNode.getDepth() % 2 == 0)
+                    childNode.setCost(-childNode.getCost());
                 //Simulating the move
                 Move move = childNode.getMove();
 

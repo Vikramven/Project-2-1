@@ -72,7 +72,7 @@ public class EvaluationFunction {
 
 
             //TODO decide which value
-            cost[badX][badY] = -30;
+            cost[badX][badY] = -10;
 
         }
 
@@ -89,102 +89,102 @@ public class EvaluationFunction {
     public int getPieceBishop(int check){
         switch (check) {
             case 0: //Bishop
-                return  20; // put value for bishop
+                return  10;
             case 1: //Knight
-                return  20;
+                return  10;
             case 2: //King
                 return  1000;
             case 3: //Pawn
-                return 15;
+                return 5;
             case 4: //Queen
-                return  30;
+                return  20;
             case 5: //Rook
-                return  25;
+                return  15;
         }
         return 0;
     }
     public int getPieceQueen(int check){
         switch (check) {
             case 0: //Bishop
-                return  20;
+                return  10;
             case 1: //Knight
-                return  20;
+                return  10;
             case 2: //King
                 return  1000;
             case 3: //Pawn
-                return 15;
+                return 5;
             case 4: //Queen
-                return  30;
+                return  20;
             case 5: //Rook
-                return  25;
+                return  15;
         }
         return 0;
     }
     public int getPieceKnight(int check){
         switch (check) {
             case 0: //Bishop
-                return  20;
+                return  10;
             case 1: //Knight
-                return  20;
+                return  10;
             case 2: //King
                 return  1000;
             case 3: //Pawn
-                return 15;
+                return 5;
             case 4: //Queen
-                return  30;
+                return  20;
             case 5: //Rook
-                return  25;
+                return  15;
         }
         return 0;
     }
     public int getPieceRook(int check){
         switch (check) {
             case 0: //Bishop
-                return  20;
+                return  10;
             case 1: //Knight
-                return  20;
+                return  10;
             case 2: //King
                 return  1000;
             case 3: //Pawn
-                return 15;
+                return 5;
             case 4: //Queen
-                return  30;
+                return  20;
             case 5: //Rook
-                return  25;
+                return  15;
         }
         return 0;
     }
     public int getPiecePawn(int check){
         switch (check) {
             case 0: //Bishop
-                return  20;
+                return  10;
             case 1: //Knight
-                return  20;
+                return  10;
             case 2: //King
                 return  1000;
             case 3: //Pawn
-                return 15;
+                return 5;
             case 4: //Queen
-                return  30;
+                return  20;
             case 5: //Rook
-                return  25;
+                return  15;
         }
         return 0;
     }
     public int getPieceKing(int check){
         switch (check) {
             case 0: //Bishop
-                return  20;
+                return  10;
             case 1: //Knight
-                return  20;
+                return  10;
             case 2: //King
                 return  1000;
             case 3: //Pawn
-                return 15;
+                return 5;
             case 4: //Queen
-                return  30;
+                return  20;
             case 5: //Rook
-                return  25;
+                return  15;
         }
         return 0;
     }

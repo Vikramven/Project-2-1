@@ -14,8 +14,8 @@ public class Pawn extends Piece {
 
     private int[][] whiteCost = {{0 , 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
-            {15, 0, 15, 0, 0, 15, 0, 15},
-            {0, 15, 0, 15, 15, 0, 15, 0},
+            {10, 0, 10, 0, 0, 10, 0, 10},
+            {0, 5, 0, 15, 15, 0, 5, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},//DOUBT: NEUTRAL OR CHANGE THE VALUES?
             {5,  5,  5,  5,  5,  5,  5,  5},
             {10, 10, 10, 10, 10, 10, 10, 10},
@@ -25,8 +25,8 @@ public class Pawn extends Piece {
             {10, 10, 10, 10, 10, 10, 10, 10},
             {5,  5,  5,  5,  5,  5,  5,  5},
             {0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 15, 0, 15, 15, 0, 15, 0},
-            {15, 0, 15, 0, 0, 15, 0, 15},
+            {0, 5, 0, 15, 15, 0, 5, 0},
+            {10, 0, 10, 0, 0, 10, 0, 10},
             {0, 0, 0, 0, 0, 0, 0, 0},
             {0 , 0, 0, 0, 0, 0, 0, 0}};
 
@@ -100,8 +100,11 @@ public class Pawn extends Piece {
             if(isObstaclePawn(board.getSpot(newX, y)))
                 break;
 
-            int costMove = costDynamic[newX][y] + blackCost[newX][y];
-
+            int costMove;
+            if(black)
+                costMove = costDynamic[newX][y] + blackCost[newX][y];
+            else
+                costMove = costDynamic[newX][y] + whiteCost[newX][y];
 
             legalMoves.add(new Move(newX, y, this, costMove, x, y));
         }

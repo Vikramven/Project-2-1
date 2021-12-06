@@ -19,12 +19,12 @@ public class PawnPromotion {
         Piece pawn = spot.getPiece();
         if(pawn.isColor().equals("White")){
             if(spot.getX() == 7 && !l.winFlag) {
-                l.getGameSc().addMoveToHist("WHITE PROMOTION:");
+                if(!AI) l.getGameSc().addMoveToHist("WHITE PROMOTION:");
                 pawnPromotion(spot, false, l, AI);
             }
         } else {
             if(spot.getX() == 0 && !l.winFlag) {
-                l.getGameSc().addMoveToHist("BLACK PROMOTION:");
+                if(!AI) l.getGameSc().addMoveToHist("BLACK PROMOTION:");
                 pawnPromotion(spot, true, l, AI);
             }
         }

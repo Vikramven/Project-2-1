@@ -59,6 +59,10 @@ public class MiniMax {
 
 
         // Find the best move
+        if(bestMove.getParent() == null)
+            return null;
+
+
         while(!bestMove.getParent().isRoot()) {
             bestMove = bestMove.getParent();
         }
@@ -229,7 +233,8 @@ public class MiniMax {
 
                 ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceHeap, true);
 
-                node.addChildren(allMovesPiece);
+                if(allMovesPiece != null)
+                    node.addChildren(allMovesPiece);
 
             }
         }

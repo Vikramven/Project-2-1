@@ -35,9 +35,14 @@ public class Node {
      */
     public Node(Move move, Node parent){
         this.move = move;
-        this.cost = move.getCost();
+        if(!parent.chanceNode) {
+            this.cost = move.getCost() + parent.cost;
+        }else{
+            this.cost = move.getCost() + parent.parent.cost;
+        }
         this.parent = parent;
         this.depth = parent.getDepth() + 1;
+
     }
 
     /**
