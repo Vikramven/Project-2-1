@@ -130,7 +130,7 @@ public class Pawn extends Piece {
                 costMove = costDynamic[newX][left] + blackCost[newX][left];
             else
                 costMove = costDynamic[newX][left] + whiteCost[newX][left];
-            isObstacle(board.getSpot(newX, left), legalMoves, costMove, x, y);
+            isObstacle(board.getSpot(newX, left), legalMoves, costMove, x, y, this);
         }
 
         int right = y + 1;
@@ -140,7 +140,7 @@ public class Pawn extends Piece {
                 costMove = costDynamic[newX][right] + blackCost[newX][right];
             else
                 costMove = costDynamic[newX][right] + whiteCost[newX][right];
-            isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y);
+            isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y, this);
         }
     }
 

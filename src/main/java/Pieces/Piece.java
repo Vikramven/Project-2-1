@@ -55,11 +55,11 @@ public abstract class Piece implements PieceMove {
      * @param legalMoves Arraylist with all possible legal move
      * @return true = obstacle: false = no obstacle
      */
-    protected boolean isObstacle(Spot spot, ArrayList<Move> legalMoves, int costPiece, int x, int y){
+    protected boolean isObstacle(Spot spot, ArrayList<Move> legalMoves, int costPiece, int x, int y, Piece piece){
 
         if(spot != null) {
             if (!spot.getPiece().isColor().equals(isColor())) {
-                legalMoves.add(new Move(spot.getX(), spot.getY(), spot.getPiece(), costPiece, x, y));
+                legalMoves.add(new Move(spot.getX(), spot.getY(), piece, costPiece, x, y));
             }
             return true;
         }

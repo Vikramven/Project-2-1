@@ -12,23 +12,23 @@ public class King extends Piece {
     public boolean castling = true;
 
     //Todo I think the initial cost function was for the black portion of the board
-    private int[][] whiteCost = {{10, 15, 10, 10, 10, 15, 10, 10},
+    private int[][] whiteCost = {{10, 15, 10, 50, 10, 15, 10, 10},
                             {10, -10, -10, -10, -10, -10, -10, 10},
                             {5, -10, -15, -15, -15, -15, -10, 5},
                             {5, -10, -15, -15, -15, -15, -10, 5},
                             {-5, -10, -15, -15, -15, -15, -10, -5},
                             {-5, -10, -15, -15, -15, -15, -10, -5},
                             {-5, -10, -10, -10, -10, -10, -10, -5},
-                            { -5, -5, -5, +15, -5, -5, -5, -5}};
+                            { -5, -5, -5, -5, -5, -5, -5, -5}};
 
-    private int[][] blackCost = {{-5, -5, -5, +15, -5, -5, -5, -5},
+    private int[][] blackCost = {{-5, -5, -5, -5, -5, -5, -5, -5},
             {-5, -10, -10, -10, -10, -10, -10, -5},
             {-5, -10, -15, -15, -15, -15, -10, -5},
             {-5, -10, -15, -15, -15, -15, -10, -5},
             {5, -10, -15, -15, -15, -15, -10, 5},
             {5, -10, -15, -15, -15, -15, -10, 5},
             {10, -10, -10, -10, -10, -10, -10, 10},
-            {10, 15, 10, 10, 10, 15, 10, 10 }};
+            {10, 15, 10, 50, 10, 15, 10, 10 }};
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -113,7 +113,7 @@ public class King extends Piece {
         else
             costMove = costDynamic[x][y] + whiteCost[x][y];
 
-        if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY))
+        if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY, this))
             return;
 
         legalMoves.add(new Move(x, y, this, costMove, spotX, spotY));

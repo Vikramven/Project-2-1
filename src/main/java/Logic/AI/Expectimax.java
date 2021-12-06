@@ -33,7 +33,7 @@ public class Expectimax {
 
         // Creating a tree
         Node bestMove = createTree(tree, l, l.blackMove, l.board, l.board.pieceHeap, l.dicePiece, 3,
-                true);
+                true, true);
 
 
 ////         Check the tree by prints
@@ -92,7 +92,7 @@ public class Expectimax {
      * @param depth Maximum Depth of the tree
      */
     public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece,
-                           int depth, boolean max) {
+                           int depth, boolean max, boolean firstDepth) {
 
 
         l.allLegalMoves = null;
@@ -137,7 +137,13 @@ public class Expectimax {
                 l.currentSpot = null;
 
                 Node evalNode = createTree(childNode, l, !player, l.board, l.board.pieceHeap, 0,
-                            depth, false);
+                            depth, false, false);
+                
+                if(firstDepth){
+                    if(childNode.getCost() > 950.0){
+                        return childNode;
+                    }
+                }
 
                 if(evalNode.getCost() > maxValueOfNode.getCost() ) {
                             maxValueOfNode = evalNode;
@@ -167,7 +173,7 @@ public class Expectimax {
 
 
                 Node evalNode = createTree(currentChanceNode, l, !player, l.board, l.board.pieceHeap, currentChanceNode.getChancePiece(),
-                        depth, true);
+                        depth, true, false);
 
                 double totalCost = 0;
                 LinkedList<Node> childrenOfChance = currentChanceNode.getChildren();

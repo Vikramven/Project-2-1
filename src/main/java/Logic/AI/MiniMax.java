@@ -77,10 +77,10 @@ public class MiniMax {
      * @param pieceHeap Where pieces are located (Simulation)
      * @param dicePiece Piece on the dice (Simulations)
      * @param depth Maximum Depth of the tree
-     * @param firstChildren boolean for the first depth
+     * @param firstDepth boolean for the first depth
      */
     public Node createTree(Node node, LogicGame l, boolean player, Board board, PieceHeap pieceHeap, int dicePiece,
-                           int depth, boolean firstChildren, boolean max, double alpha, double beta) {
+                           int depth, boolean firstDepth, boolean max, double alpha, double beta) {
 
 
         l.allLegalMoves = null;
@@ -90,7 +90,7 @@ public class MiniMax {
             return node;
 
         // Create children for the node
-        createChildren(l, player, node, firstChildren);
+        createChildren(l, player, node, firstDepth);
 
         LinkedList<Node> children = node.getChildren();
 
@@ -126,6 +126,12 @@ public class MiniMax {
                 // l.board.print();
                 Node evalNode = createTree(children.get(i), l, !player, l.board, l.board.pieceHeap, l.dicePiece,
                         depth, false, false, alpha, beta);
+
+                if(firstDepth){
+                    if(childNode.getCost() > 950.0){
+                        return childNode;
+                    }
+                }
 
                 // If evaluating value is larger than our maxValue up until this point
                 if(evalNode.getCost() >= maxValue.getCost() ) {

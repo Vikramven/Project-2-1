@@ -150,7 +150,7 @@ public class Knight extends Piece {
         else
             costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
 
-        if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
+        if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y, this))
             return;
 
         legalMoves.add(new Move(newX, newY, this, costMove, x, y));

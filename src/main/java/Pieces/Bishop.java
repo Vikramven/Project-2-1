@@ -111,7 +111,7 @@ public class Bishop extends Piece {
                     costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
                 }
 
-                if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y))
+                if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y, this))
                     return;
 
                 legalMoves.add(new Move(newX, newY, piece, costMove, x, y));
