@@ -22,7 +22,7 @@ public class ChangePlayer {
 
             //AI move
             if(!l.playerBlack.isHuman()) {
-                System.out.println("Black AI");
+                //System.out.println("Black AI");
                 Move AImove = null;
                 if(l.AIblack == 1)
                     AImove = l.expectimax.calculateBestMoves(l, l.depth);
@@ -51,7 +51,7 @@ public class ChangePlayer {
             //AI move
             if(!l.playerWhite.isHuman()) {
                 Move AImove = null;
-                System.out.println("White AI");
+                //System.out.println("White AI");
                 if(l.AIwhite == 1)
                     AImove = l.expectimax.calculateBestMoves(l, l.depth);
                 else if(l.AIwhite == 0)

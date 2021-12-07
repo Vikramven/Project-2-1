@@ -194,7 +194,10 @@ public class IntroScene extends GUIMain {
         // Button Actions
         nextButton.setOnAction(e -> {
 
-            int depthValue = Integer.parseInt(depthField.getText());
+            int depthValue = 3;
+            if(!depthField.getText().equals(""))
+                depthValue = Integer.parseInt(depthField.getText());
+
             gameSc.setDepth(depthValue);
 
             // Access Selected Radio Buttons
@@ -336,9 +339,13 @@ public class IntroScene extends GUIMain {
 
     private int getAIEquivInt(String radioValue) {
         int equivInt;
-        if(radioValue.equals("Baseline (Random) Agent")) { equivInt = 0; }
-        else if(radioValue.equals("ExpectiMax")) { equivInt = 2; }
-        else { equivInt = 2; }
+        if(radioValue.equals("Baseline (Random) Agent")) {
+            equivInt = 0;
+        } else if(radioValue.equals("ExpectiMax")) {
+            equivInt = 1;
+        } else {
+            equivInt = 2;
+        }
         return equivInt;
     }
 

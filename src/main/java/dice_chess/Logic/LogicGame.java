@@ -106,6 +106,9 @@ public class LogicGame extends GUIMain {
         this.AIblack = AIblack;
         this.depth = depth;
 
+        System.out.println("White AI = " + AIwhite);
+        System.out.println("Black AI = " + AIblack);
+
         //Set Up the game = roll dice and set an action to the pass button
         setUpGame();
 
@@ -183,7 +186,7 @@ public class LogicGame extends GUIMain {
         //AI move
         if(!playerWhite.isHuman()) {
             Move AImove = null;
-            System.out.println("White AI");
+            //System.out.println("White AI");
             if(AIwhite == 1)
                 AImove = expectimax.calculateBestMoves(this, depth);
             else if(AIwhite == 0)

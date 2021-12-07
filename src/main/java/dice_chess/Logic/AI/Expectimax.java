@@ -118,11 +118,6 @@ public class Expectimax {
                 PieceMap clonePieceMap = pieceMap.clone();
                 Node childNode = children.get(i);
 
-                //If opponent moves with the positive impact for him, for us it is the negative impact
-                if(childNode.getDepth() % 2 == 0)
-                    childNode.setCost(-childNode.getCost());
-
-
                 //Simulating the move
                 Move move = childNode.getMove();
 
@@ -194,7 +189,7 @@ public class Expectimax {
                 for (int j = 0; j < childrenOfChance.size(); j++) {
                     totalCost += childrenOfChance.get(j).getCost();
                 }
-                currentChanceNode.setCost(totalCost / 6.0);
+                currentChanceNode.setCost(totalCost / currentChanceNode.getChildren().size() / 6.0);
 
                 evalNode.setCost(evalNode.getCost() + currentChanceNode.getCost());
 

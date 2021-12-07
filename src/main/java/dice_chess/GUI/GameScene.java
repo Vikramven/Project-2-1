@@ -121,7 +121,7 @@ public class GameScene extends GUIMain {
             boardPane.getRowConstraints().add(new RowConstraints(screenBounds.getHeight()/10));
         }
 
-        System.out.println(players[0] + " " + players[1]);
+        System.out.println("\n" + players[0] + " " + players[1]);
         new LogicGame(board, buttonStateBoard, playerLabel,
                 diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack, depth);
 
