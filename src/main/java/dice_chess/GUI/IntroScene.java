@@ -54,52 +54,7 @@ public class IntroScene extends GUIMain {
     private void setIntroButtonsActions() {
 
         beginButton.setOnAction(e -> {
-//            Alert modeSel = new Alert(Alert.AlertType.CONFIRMATION);
-//            modeSel.setTitle("Dice Chess 8 - Game Mode Selection");
-//            modeSel.setHeaderText("Select which game mode you'd like to play.");
-//            modeSel.initOwner(mainStage);
-//
-//            ButtonType twoPlButton = new ButtonType("Multiplayer");
-//            ButtonType vsAIButton = new ButtonType("Against the AI");
-//            ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
-//
-//            modeSel.getButtonTypes().setAll(twoPlButton, vsAIButton, closeButton);
-//
-//            Optional<ButtonType> result = modeSel.showAndWait();
-              // Human vs Human
-//            if (result.get() == twoPlButton) {
-//
-//                Player whitePl = new Human(false);
-//                Player blackPl = new Human(true);
-//                Player[] plToAdd = {whitePl, blackPl};
-//                gameSc.setGameScene(plToAdd);
-//                mainStage.setScene(gameSc.getGameScene());
-              // AI vs Human
-//            } else if (result.get() == vsAIButton) {
-//                Alert colSel = new Alert(Alert.AlertType.CONFIRMATION);
-//                colSel.setTitle("Dice Chess 8 - Side Color Selection");
-//                colSel.setHeaderText("Select which side color you'd like to take.");
-//                colSel.initOwner(mainStage);
-//
-//                ButtonType blackSide = new ButtonType("Black Side");
-//                ButtonType whiteSide = new ButtonType("White Side");
-//
-//                colSel.getButtonTypes().setAll(blackSide, whiteSide);
-//
-//                Optional<ButtonType> newResult = colSel.showAndWait();
-//                if(newResult.get() == blackSide) {
-//                    Player humanPl = new Human(true);
-//                    Player aiPl = new AI(false);
-//                    Player[] plToAdd = {humanPl, aiPl};
-//                    gameSc.setGameScene(plToAdd);
-//                } else if(newResult.get() == whiteSide) {
-//                    Player humanPl = new Human(false);
-//                    Player aiPl = new AI(true);
-//                    Player[] plToAdd = {aiPl, humanPl};
-//                    gameSc.setGameScene(plToAdd);
-//                }
-//                mainStage.setScene(gameSc.getGameScene());
-//            }
+
             // Create Popup Stage
             Stage settingsStage = new Stage(); settingsStage.setTitle("Game Settings");
 //            settingsStage.setWidth(640);
@@ -194,36 +149,47 @@ public class IntroScene extends GUIMain {
         // Button Actions
         nextButton.setOnAction(e -> {
 
-            int depthValue = 3;
-            if(!depthField.getText().equals(""))
-                depthValue = Integer.parseInt(depthField.getText());
+            boolean showGameFlag;
 
-            gameSc.setDepth(depthValue);
+            try {
+                int depthValue = Integer.parseInt(depthField.getText());
+                showGameFlag = true;
+                gameSc.setDepth(depthValue);
+            } catch(NumberFormatException exception) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Please insert an integer value for the depth.");
+                showGameFlag = false;
+                alert.initOwner(s);
+                alert.show();
+            }
 
-            // Access Selected Radio Buttons
-            RadioButton selWhite = (RadioButton) whiteGroup.getSelectedToggle();
-            RadioButton selBlack = (RadioButton) blackGroup.getSelectedToggle();
-            String whiteGroupValue = selWhite.getText();
-            String blackGroupValue = selBlack.getText();
+            if(showGameFlag) {
 
-            // White A.I. vs Human
-            if(whiteGroupValue.equals("A.I.") && blackGroupValue.equals("Human")) {
-                setAISettingsScene("White",s,false,true);
-            // Black A.I. vs Human
-            } else if(whiteGroupValue.equals("Human") && blackGroupValue.equals("A.I.")) {
-                setAISettingsScene("Black",s,false,true);
-            // Both A.I.
-            } else if(whiteGroupValue.equals("A.I.") && blackGroupValue.equals("A.I.")) {
-                setAISettingsScene("White",s,true,true);
-            // Both Human Choices (Multiplayer)
-            } else {
-                Player whitePl = new Human(false);
-                Player blackPl = new Human(true);
-                Player[] plToAdd = {whitePl, blackPl};
-                gameSc.setGameScene(plToAdd);
-                s.close();
-                mainStage.setScene(gameSc.getGameScene());
-                System.out.println("WHITE HUMAN VS BLACK HUMAN");
+                // Access Selected Radio Buttons
+                RadioButton selWhite = (RadioButton) whiteGroup.getSelectedToggle();
+                RadioButton selBlack = (RadioButton) blackGroup.getSelectedToggle();
+                String whiteGroupValue = selWhite.getText();
+                String blackGroupValue = selBlack.getText();
+
+                // White A.I. vs Human
+                if (whiteGroupValue.equals("A.I.") && blackGroupValue.equals("Human")) {
+                    setAISettingsScene("White", s, false, true);
+                    // Black A.I. vs Human
+                } else if (whiteGroupValue.equals("Human") && blackGroupValue.equals("A.I.")) {
+                    setAISettingsScene("Black", s, false, true);
+                    // Both A.I.
+                } else if (whiteGroupValue.equals("A.I.") && blackGroupValue.equals("A.I.")) {
+                    setAISettingsScene("White", s, true, true);
+                    // Both Human Choices (Multiplayer)
+                } else {
+                    Player whitePl = new Human(false);
+                    Player blackPl = new Human(true);
+                    Player[] plToAdd = {whitePl, blackPl};
+                    gameSc.setGameScene(plToAdd);
+                    s.close();
+                    mainStage.setScene(gameSc.getGameScene());
+                    System.out.println("WHITE HUMAN VS BLACK HUMAN");
+                }
             }
         });
     }
