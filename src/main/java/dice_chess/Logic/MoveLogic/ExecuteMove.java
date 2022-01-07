@@ -26,7 +26,7 @@ public class ExecuteMove {
     public void executeMove(AtomicInteger iniX, AtomicInteger iniY, int finalX, int finalY, LogicGame l, boolean noGuiForAI) {
         boolean flag = movePiece(finalX, finalY, l, true, false, noGuiForAI);
         if(flag) {
-            gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
+            if(l.GUI) gm.movePieceGUI(iniX, iniY, finalX, finalY, l);
 //            for (int j = 0; j < 6; j++) {
 //                LinkedList<Coordinate> coordinates = l.board.pieceMap.getAllPieces(j, !l.player.isBlackSide());
 //                System.out.println("PIECE = " + j);

@@ -16,7 +16,7 @@ public class DiceLogic {
      */
     public void rollDice(LogicGame l) {
         int random = (int) (Math.random() * 6);
-        l.diceImgViews.setImage(l.images.get(random));
+        if(l.GUI) l.diceImgViews.setImage(l.images.get(random));
         l.dicePiece = random;
     }
 

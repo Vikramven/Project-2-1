@@ -1,6 +1,6 @@
 package dice_chess.Players;
 
-public abstract class Player {
+public class Player {
 
     //Color of the player
     private final boolean blackSide;
@@ -20,5 +20,9 @@ public abstract class Player {
 
     public boolean isHuman() {
         return human;
+    }
+
+    public Player clone(){
+        return new Player(blackSide, human);
     }
 }

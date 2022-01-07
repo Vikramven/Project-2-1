@@ -3,6 +3,7 @@ package dice_chess.GUI;
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
 import dice_chess.Logic.LogicGame;
+import dice_chess.Players.AI;
 import dice_chess.Players.Player;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
@@ -127,7 +128,7 @@ public class GameScene extends GUIMain {
         System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
         new LogicGame(board, buttonStateBoard, playerLabel,
                 diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack, depth);
-
+//        new LogicGame(board, new AI(false), new AI(true), 2, 1, 3, 0, 0);
         gamePane.setCenter(boardPane);
     }
 

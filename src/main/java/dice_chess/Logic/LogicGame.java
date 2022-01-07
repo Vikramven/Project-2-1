@@ -46,20 +46,20 @@ public class LogicGame extends GUIMain implements Encodable {
     public Board board;
 
     // Clickable spots on the board
-    public final Button[][] buttonBoard;
+    public Button[][] buttonBoard = null;
 
     // Player label which shows who move
-    public final Label playerPass;
+    public Label playerPass = null;
 
     // Pieces from rolling dice
     public int dicePiece;
 
     // Images of pieces
-    public final ImageView diceImgViews;
-    public final ArrayList<Image> images;
+    public ImageView diceImgViews = null;
+    public ArrayList<Image> images = null;
 
     // Pass button (Change the player move)
-    public final Button passButton;
+    public Button passButton = null;
 
     // Boolean that allows other methods to know whether we have a winner or not
     public boolean winFlag = false;
@@ -70,6 +70,12 @@ public class LogicGame extends GUIMain implements Encodable {
     public int AIblack;
 
     public int depth;
+
+    public boolean GUI = true;
+
+    public int whiteWin;
+
+    public int blackWin;
 
 
     //Parts of logic
@@ -83,6 +89,31 @@ public class LogicGame extends GUIMain implements Encodable {
     public final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
     public final Expectimax expectimax = new Expectimax();
     public final RandomAgent randomAgent = new RandomAgent();
+
+    public LogicGame(Board board, Player playerWhite, Player playerBlack, int AIwhite,
+                     int AIblack, int depth, int whiteWin, int blackWin){
+        this.board = board;
+        this.playerWhite = playerWhite;
+        this.playerBlack = playerBlack;
+        this.AIwhite = AIwhite;
+        this.AIblack = AIblack;
+        this.depth = depth;
+        this.whiteWin = whiteWin;
+        this.blackWin = blackWin;
+        this.GUI = false;
+
+        System.out.println("White AI = " + AIwhite);
+        System.out.println("Black AI = " + AIblack);
+
+        System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
+
+        //Set Up the game = roll dice and set an action to the pass button
+        setUpGame();
+
+        //Assign action to every clickable spot on the board
+        startLogicGameAction();
+
+    }
 
     /**
      * Constructor for the logic game
@@ -123,7 +154,7 @@ public class LogicGame extends GUIMain implements Encodable {
         dl.rollDice(this);
 
         //Action to the pass button
-        passButton.setOnAction(e -> {
+        if(GUI) passButton.setOnAction(e -> {
             dl.rollDice(this);
             cp.changePlayer(this);
         });
@@ -134,53 +165,55 @@ public class LogicGame extends GUIMain implements Encodable {
 
     private void startLogicGameAction() {
 
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                int finalX = x;
-                int finalY = y;
+        if(GUI) {
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    int finalX = x;
+                    int finalY = y;
 
-                buttonBoard[x][y].setOnAction(e -> {
+                    buttonBoard[x][y].setOnAction(e -> {
 
-                    if(currentSpot == null) { //currentSpot = null means that player did not choose the piece yet
-                        currentSpot = board.getSpot(finalX, finalY); // Get the spot from the board
-                        if(currentSpot != null) { // Check if it is not null
-                            // Check if this piece is from the dice pieces
-                            if(dl.rightPiece(currentSpot.getPiece(), this)) {
-                                iniX.set(currentSpot.getX());
-                                iniY.set(currentSpot.getY());
-                                choicePiece(); // Assign the choice of the player
-                            } else {
-                                currentSpot = null;
-                            }
-                        }
-                    } else {
-
-                        Spot tmp_spot = board.getSpot(finalX, finalY); // Get the spot from the board
-
-                        // Check if it is not the same piece
-                        if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) {
-                            if (tmp_spot == null) { // tmp_spot = null means that spot is empty
-                                em.executeMove(iniX, iniY, finalX, finalY, this, false); // Execute the move of the player
-                            } else {
-                                // Check if tmp_spot has the same color as player
-                                if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
-                                    currentSpot = board.getSpot(finalX, finalY); //Change the current piece to another piece
-                                    // Check if this piece is from the dice pieces
-                                    if(dl.rightPiece(currentSpot.getPiece(), this))
-                                        choicePiece(); // Assign the choice of the player
-                                    else {
-                                        currentSpot = null;
-                                        bh.removeHighlightButtons(this); //Remove highlighted buttons
-                                    }
-                                // This condition works if the piece is enemy
+                        if (currentSpot == null) { //currentSpot = null means that player did not choose the piece yet
+                            currentSpot = board.getSpot(finalX, finalY); // Get the spot from the board
+                            if (currentSpot != null) { // Check if it is not null
+                                // Check if this piece is from the dice pieces
+                                if (dl.rightPiece(currentSpot.getPiece(), this)) {
+                                    iniX.set(currentSpot.getX());
+                                    iniY.set(currentSpot.getY());
+                                    choicePiece(); // Assign the choice of the player
                                 } else {
-                                    em.executeMove(iniX, iniY, finalX, finalY, this, false);
+                                    currentSpot = null;
+                                }
+                            }
+                        } else {
+
+                            Spot tmp_spot = board.getSpot(finalX, finalY); // Get the spot from the board
+
+                            // Check if it is not the same piece
+                            if (currentSpot.getX() != finalX || currentSpot.getY() != finalY) {
+                                if (tmp_spot == null) { // tmp_spot = null means that spot is empty
+                                    em.executeMove(iniX, iniY, finalX, finalY, this, false); // Execute the move of the player
+                                } else {
+                                    // Check if tmp_spot has the same color as player
+                                    if (tmp_spot.getPiece().isColor().equals(currentSpot.getPiece().isColor())) {
+                                        currentSpot = board.getSpot(finalX, finalY); //Change the current piece to another piece
+                                        // Check if this piece is from the dice pieces
+                                        if (dl.rightPiece(currentSpot.getPiece(), this))
+                                            choicePiece(); // Assign the choice of the player
+                                        else {
+                                            currentSpot = null;
+                                            bh.removeHighlightButtons(this); //Remove highlighted buttons
+                                        }
+                                        // This condition works if the piece is enemy
+                                    } else {
+                                        em.executeMove(iniX, iniY, finalX, finalY, this, false);
+                                    }
                                 }
                             }
                         }
-                    }
-                    //System.out.println("TEST " + iniX + " " + iniY + " " + finalX + " " + finalY);
-                });
+                        //System.out.println("TEST " + iniX + " " + iniY + " " + finalX + " " + finalY);
+                    });
+                }
             }
         }
 
@@ -210,7 +243,7 @@ public class LogicGame extends GUIMain implements Encodable {
      */
     private void choicePiece() {
         if(allLegalMoves != null) {
-            bh.removeHighlightButtons(this);
+            if(GUI) bh.removeHighlightButtons(this);
             allLegalMoves = null;
         }
 
@@ -221,7 +254,7 @@ public class LogicGame extends GUIMain implements Encodable {
         if (allLegalMoves == null) {
             currentSpot = null;
         } else {
-            bh.highlightButtons(this);
+            if(GUI) bh.highlightButtons(this);
         }
     }
 

@@ -1,5 +1,6 @@
 package dice_chess.Logic.DQN;
 
+import dice_chess.Board.Board;
 import dice_chess.Board.Coordinate;
 import dice_chess.Board.Spot;
 import dice_chess.GUI.GameScene;
@@ -52,12 +53,8 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
     @Override
     public LogicGame reset() {
-        GameScene gameSc = logicGame.getGameSc();
-        Stage mainStage = logicGame.getMainStage();
-        gameSc.setGameScene(gameSc.getPlayers());
-        mainStage.setScene(gameSc.getGameScene());
-        mainStage.setFullScreen(true);
-        mainStage.setResizable(false);
+        logicGame = new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
+                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin);
         return logicGame;
     }
 
@@ -88,6 +85,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
     @Override
     public MDP<LogicGame, Integer, DiscreteSpace> newInstance() {
-        return new DiceChessGameMdp(reset(), blackSide);
+        return new DiceChessGameMdp(new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
+                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin), blackSide);
     }
 }
