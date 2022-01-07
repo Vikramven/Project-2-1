@@ -25,6 +25,10 @@ public class ChangePlayer {
 
 
             if(l.winFlag) {
+
+                if(!l.playerWhite.isHuman() && l.AIblack == 3)
+                    return;
+
                 if(l.GUI) {
                     GameScene gameSc = l.getGameSc();
                     gameSc.whiteWin++;
@@ -73,6 +77,10 @@ public class ChangePlayer {
             l.blackMove = false;
 
             if(l.winFlag) {
+
+                if(!l.playerWhite.isHuman() && l.AIblack == 3)
+                    return;
+
                 if(l.GUI) {
                     GameScene gameSc = l.getGameSc();
                     gameSc.blackWin++;

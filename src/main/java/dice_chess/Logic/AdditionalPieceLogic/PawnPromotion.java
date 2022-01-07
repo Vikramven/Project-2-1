@@ -61,25 +61,29 @@ public class PawnPromotion {
                 }
 
                 switch (result) {
-                    case "Knight" -> {
+                    case "Knight" : {
                         Knight knight = new Knight(black);
                         l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 1);
                         spot.setPiece(knight);
+                        break;
                     }
-                    case "Bishop" -> {
+                    case "Bishop" : {
                         Bishop bishop = new Bishop(black);
                         l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 0);
                         spot.setPiece(bishop);
+                        break;
                     }
-                    case "Queen" -> {
+                    case "Queen" : {
                         Queen queen = new Queen(black);
                         l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 4);
                         spot.setPiece(queen);
+                        break;
                     }
-                    case "Rook" -> {
+                    case "Rook" : {
                         Rook rook = new Rook(black);
                         l.board.pieceMap.pawn(spot.getPiece().getNameInt(), spot.getPiece().getColor(), spot.getX(), spot.getY(), 5);
                         spot.setPiece(rook);
+                        break;
                     }
                 }
             } else {
@@ -126,14 +130,26 @@ public class PawnPromotion {
      * @return The name of the piece associated with the inputted iterator
      */
     private String promRoll(int iterator) {
-        return switch (iterator) {
-            case 0 -> "Pawn: FREE CHOICE";
-            case 1 -> "Knight";
-            case 2 -> "Bishop";
-            case 3 -> "Queen";
-            case 4 -> "Rook";
-            default -> null;
-        };
+        switch (iterator) {
+            case 0 : {
+                return "Pawn: FREE CHOICE";
+            }
+            case 1 : {
+                return "Knight";
+            }
+            case 2 : {
+                return "Bishop";
+            }
+            case 3 : {
+                return "Queen";
+            }
+            case 4 : {
+                return "Rook";
+            }
+            default : {
+                return null;
+            }
+        }
     }
 
 }

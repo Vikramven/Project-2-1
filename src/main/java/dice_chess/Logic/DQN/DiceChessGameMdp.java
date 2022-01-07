@@ -1,20 +1,15 @@
 package dice_chess.Logic.DQN;
 
 import dice_chess.Board.Board;
-import dice_chess.Board.Coordinate;
-import dice_chess.Board.Spot;
-import dice_chess.GUI.GameScene;
-import dice_chess.GUI.IntroScene;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.ExecuteMovesAI;
 import dice_chess.Logic.MoveLogic.Move;
-import dice_chess.Pieces.Piece;
-import javafx.stage.Stage;
 import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.space.ArrayObservationSpace;
 import org.deeplearning4j.rl4j.space.DiscreteSpace;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
+
 
 import java.util.ArrayList;
 
@@ -27,6 +22,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     private boolean blackSide;
     private ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
     private ActionSpace as = new ActionSpace();
+    private int gameCount = 0;
 
 
     public DiceChessGameMdp(LogicGame logicGame, boolean blackSide) {
@@ -55,6 +51,10 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     public LogicGame reset() {
         logicGame = new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
                 logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin);
+        gameCount++;
+
+        System.out.println("GAME #" + gameCount);
+
         return logicGame;
     }
 
@@ -66,14 +66,26 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     @Override
     public StepReply<LogicGame> step(Integer action) {
         if(isDone()){ //TODO when we can start game with DQN  !!!!CHANGE WIN CONDITION!!!!
+            logicGame.board.print();
             new StepReply<>(logicGame, -50, isDone(), null);
+        }
+
+
+        if(actionSpace.size() == 0){
+            logicGame.dl.rollDice(logicGame);
+            logicGame.cp.changePlayer(logicGame);
+            logicGame.board.print();
+            return new StepReply<>(logicGame, 0, isDone(), null);
         }
 
         Move move = actionSpace.get(action);
 
+
         double reward = move.getCost();
 
         executeMovesAI.executeMovesAI(logicGame, move);
+
+        logicGame.board.print();
 
         return new StepReply<>(logicGame, reward, isDone(), null);
     }

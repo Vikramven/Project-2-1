@@ -1,0 +1,42 @@
+plugins {
+    id 'application'
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls','javafx.fxml', 'javafx.media' ]
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+
+dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.0-alpha5'
+    implementation group: 'org.deeplearning4j', name: 'deeplearning4j-nn', version: '1.0.0-M1.1'
+    implementation group: 'org.deeplearning4j', name: 'rl4j', version: '1.0.0-M1.1'
+    implementation group: 'org.deeplearning4j', name: 'rl4j-api', version: '1.0.0-M1.1'
+    implementation group: 'org.deeplearning4j', name: 'rl4j-core', version: '1.0.0-M1.1'
+    implementation group: 'org.nd4j', name: 'nd4j-backends', version: '1.0.0-M1.1'
+    implementation group: 'org.nd4j', name: 'nd4j-native-platform', version: '1.0.0-M1.1'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+}
+
+application {
+    mainClassName = 'dice_chess.Run'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
