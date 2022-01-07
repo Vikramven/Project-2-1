@@ -66,8 +66,8 @@ public class IntroScene extends GUIMain {
 
             setPlayerSelScene(settingsStage);
 
-            mainStage.setFullScreen(true);
-            mainStage.setResizable(false);
+            mainStage.setFullScreen(false);
+            mainStage.setResizable(true);
             mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         });
 

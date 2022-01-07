@@ -2,7 +2,12 @@ package dice_chess.Logic.GameLogic;
 
 import dice_chess.Logic.LogicGame;
 import dice_chess.Pieces.Piece;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 public class DiceLogic {
 
@@ -10,11 +15,9 @@ public class DiceLogic {
      * Randomly roll the dice
      */
     public void rollDice(LogicGame l) {
-        for (ImageView diceImgView : l.diceImgViews) {
-            int random = (int) (Math.random() * 6);
-            diceImgView.setImage(l.images.get(random));
-            l.dicePiece = random;
-        }
+        int random = (int) (Math.random() * 6);
+        l.diceImgViews.setImage(l.images.get(random));
+        l.dicePiece = random;
     }
 
 

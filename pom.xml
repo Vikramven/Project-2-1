@@ -84,6 +84,11 @@
         <artifactId>javafx-fxml</artifactId>
         <version>${javafx.version}</version>
     </dependency>
+    <dependency>
+        <groupId>org.deeplearning4j</groupId>
+        <artifactId>rl4j-api</artifactId>
+        <version>1.0.0-beta7</version>
+    </dependency>
 
 </dependencies>
 

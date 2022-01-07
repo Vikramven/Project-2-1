@@ -1,7 +1,6 @@
-package dice_chess.Logic.AI;
+package dice_chess.Logic.MoveLogic;
 
 import dice_chess.Logic.LogicGame;
-import dice_chess.Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
 

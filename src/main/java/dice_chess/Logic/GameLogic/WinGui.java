@@ -14,21 +14,12 @@ public class WinGui {
     /**
      * Win interface appears when someone wins the game
      * @param l LogicGame object
-     * @param oldY Y coordinate where is located the piece
-     * @param oldX X coordinate where is located the piece
-     * @param y Y coordinate where the piece is moving
-     * @param x X coordinate where the piece is moving
      */
-    public void winGui(LogicGame l, int oldY, int oldX, int y, int x){
-        l.winFlag = true;
-        String colorWin = l.currentSpot.getPiece().isColor();
+    public void winGui(LogicGame l, String colorWin){
 
         GameScene gameSc = l.getGameSc();
         Stage mainStage = l.getMainStage();
         IntroScene introSc = l.getIntroSc();
-
-        gameSc.addMoveToHist(colorWin + " " + l.currentSpot.getPiece().getName() + " (WM) -> "
-                + (oldY+1) + " " + (oldX+1) + " to " + (y+1) + " " + (x+1));
 
         Alert winAlert = new Alert(Alert.AlertType.CONFIRMATION);
         winAlert.setTitle("We have a winner!");

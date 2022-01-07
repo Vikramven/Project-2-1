@@ -4,7 +4,7 @@ import dice_chess.Board.*;
 import dice_chess.GUI.GUIMain;
 import dice_chess.GUI.GameScene;
 import dice_chess.GUI.IntroScene;
-import dice_chess.Logic.AI.ExecuteMovesAI;
+import dice_chess.Logic.MoveLogic.ExecuteMovesAI;
 import dice_chess.Logic.AI.Expectimax;
 import dice_chess.Logic.AI.MiniMax;
 import dice_chess.Logic.GameLogic.ChangePlayer;
@@ -20,11 +20,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.deeplearning4j.rl4j.space.Encodable;
+import org.nd4j.linalg.api.ndarray.INDArray;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LogicGame extends GUIMain {
+public class LogicGame extends GUIMain implements Encodable {
 
     // Current spot
     public Spot currentSpot = null;
@@ -53,7 +55,7 @@ public class LogicGame extends GUIMain {
     public int dicePiece;
 
     // Images of pieces
-    public final ImageView[] diceImgViews;
+    public final ImageView diceImgViews;
     public final ArrayList<Image> images;
 
     // Pass button (Change the player move)
@@ -92,7 +94,7 @@ public class LogicGame extends GUIMain {
      * @param passButton Pass button (Change the player move)
      */
     public LogicGame(Board board, Button[][] buttonBoard, Label playerPass,
-                     ImageView[] diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack, int AIwhite,
+                     ImageView diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack, int AIwhite,
                      int AIblack, int depth) {
         this.board = board;
         this.buttonBoard = buttonBoard;
@@ -235,4 +237,23 @@ public class LogicGame extends GUIMain {
         return introSc;
     }
 
+    @Override
+    public double[] toArray() {
+        return new double[0];
+    }
+
+    @Override
+    public boolean isSkipped() {
+        return false;
+    }
+
+    @Override
+    public INDArray getData() {
+        return null;
+    }
+
+    @Override
+    public Encodable dup() {
+        return null;
+    }
 }

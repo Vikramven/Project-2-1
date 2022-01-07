@@ -28,9 +28,10 @@ public class GameScene extends GUIMain {
     private VBox menuBox, histBox, scrollBox;
     private HBox diceBox, playerBox;
     private ArrayList<Image> images;
-    private ImageView diceImgViews[];
+    private ImageView diceImgViews;
     private Button passButton, backButton, rulesButton;
     private Label playerLabel = new Label("White" + " vs " + "Black");
+    public int whiteWin, blackWin = 0;
 
     public GameScene() {
         // Empty.
@@ -122,6 +123,8 @@ public class GameScene extends GUIMain {
         }
 
         System.out.println("\n" + players[0] + " " + players[1]);
+
+        System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
         new LogicGame(board, buttonStateBoard, playerLabel,
                 diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack, depth);
 
@@ -156,7 +159,7 @@ public class GameScene extends GUIMain {
 
         dicePane = new StackPane();
         diceBox = new HBox(screenBounds.getWidth()/20.5);
-        diceImgViews = new ImageView[3];
+        diceImgViews = new ImageView();
         images = new ArrayList<>();
         images.add(new Image(GameScene.class.getResourceAsStream("/white_bishop.png")));
         images.add(new Image(GameScene.class.getResourceAsStream("/white_knight.png")));
@@ -164,14 +167,13 @@ public class GameScene extends GUIMain {
         images.add(new Image(GameScene.class.getResourceAsStream("/white_pawn.png")));
         images.add(new Image(GameScene.class.getResourceAsStream("/white_queen.png")));
         images.add(new Image(GameScene.class.getResourceAsStream("/white_rook.png")));
-        for(int i = 0; i < diceImgViews.length; i++) {
-            diceImgViews[i] = new ImageView(images.get(i));
-            diceImgViews[i].setFitHeight(screenBounds.getHeight()/11.5);
-            diceImgViews[i].setFitWidth(screenBounds.getWidth()/20.5);
-        }
+
+        diceImgViews = new ImageView(images.get(1));
+        diceImgViews.setFitHeight(screenBounds.getHeight()/11.5);
+        diceImgViews.setFitWidth(screenBounds.getWidth()/20.5);
 
         diceBox.setAlignment(Pos.TOP_CENTER);
-        diceBox.getChildren().add(diceImgViews[2]);
+        diceBox.getChildren().add(diceImgViews);
 
         dicePane.getChildren().add(diceBox);
 
@@ -260,8 +262,8 @@ public class GameScene extends GUIMain {
                 if (result.get() == ButtonType.OK){
                     setGameScene(players);
                     mainStage.setScene(introSc.getIntroScene());
-                    mainStage.setFullScreen(true);
-                    mainStage.setResizable(false);
+                    mainStage.setFullScreen(false);
+                    mainStage.setResizable(true);
                 }
             }
         });

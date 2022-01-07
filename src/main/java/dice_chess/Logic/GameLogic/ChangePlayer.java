@@ -1,6 +1,8 @@
 package dice_chess.Logic.GameLogic;
+import dice_chess.GUI.GameScene;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
+import javafx.stage.Stage;
 
 public class ChangePlayer {
 
@@ -20,8 +22,23 @@ public class ChangePlayer {
                             "-fx-text-fill: linear-gradient(from 65px 65px to 100px 100px, #ff8000, #32cd32);");
             l.blackMove = true;
 
+
+            if(l.winFlag) {
+                GameScene gameSc = l.getGameSc();
+                gameSc.whiteWin++;
+                if (l.playerWhite.isHuman()) {
+                    new WinGui().winGui(l, "White");
+                } else if (!l.playerWhite.isHuman() && !l.playerBlack.isHuman()) {
+                    System.out.println("White AI win");
+                    reset(l);
+                } else if(!l.playerWhite.isHuman() && l.playerBlack.isHuman()){
+                    new WinGui().winGui(l, "White AI");
+                }
+                return;
+            }
+
             //AI move
-            if(!l.playerBlack.isHuman()) {
+            if(!l.playerBlack.isHuman() && !l.winFlag) {
                 //System.out.println("Black AI");
                 Move AImove = null;
                 if(l.AIblack == 1)
@@ -31,14 +48,13 @@ public class ChangePlayer {
                 else if(l.AIblack == 2)
                     AImove = l.miniMax.calculateBestMoves(l, l.depth);
 
-                if(AImove != null) {
+                if(AImove != null && !l.winFlag) {
                     l.executeMovesAI.executeMovesAI(l, AImove);
                 } else {
                     l.dl.rollDice(l);
                     l.cp.changePlayer(l);
                 }
             }
-
 
         } else {
             l.playerPass.setStyle(
@@ -47,9 +63,22 @@ public class ChangePlayer {
                             "-fx-text-fill: linear-gradient(from 60px 60px to 100px 100px, #32cd32, #ff8000);");
             l.blackMove = false;
 
+            if(l.winFlag) {
+                GameScene gameSc = l.getGameSc();
+                gameSc.blackWin++;
+                if (l.playerBlack.isHuman()) {
+                    new WinGui().winGui(l, "Black");
+                } else if (!l.playerBlack.isHuman() && !l.playerWhite.isHuman()) {
+                    System.out.println("Black AI win");
+                    reset(l);
+                } else if(!l.playerBlack.isHuman() && l.playerWhite.isHuman()){
+                    new WinGui().winGui(l, "Black AI");
+                }
+                return;
+            }
 
             //AI move
-            if(!l.playerWhite.isHuman()) {
+            if(!l.playerWhite.isHuman() && !l.winFlag) {
                 Move AImove = null;
                 //System.out.println("White AI");
                 if(l.AIwhite == 1)
@@ -59,16 +88,24 @@ public class ChangePlayer {
                 else if(l.AIwhite == 2)
                     AImove = l.miniMax.calculateBestMoves(l, l.depth);
 
-                if(AImove != null) {
+                if(AImove != null && !l.winFlag) {
                     l.executeMovesAI.executeMovesAI(l, AImove);
                 } else {
                     l.dl.rollDice(l);
                     l.cp.changePlayer(l);
                 }
             }
-
         }
 
         l.bh.removeHighlightButtons(l); // Remove Highlight buttons
+    }
+
+    private void reset(LogicGame logicGame){
+        GameScene gameSc = logicGame.getGameSc();
+        Stage mainStage = logicGame.getMainStage();
+        gameSc.setGameScene(gameSc.getPlayers());
+        mainStage.setScene(gameSc.getGameScene());
+        mainStage.setFullScreen(true);
+        mainStage.setResizable(false);
     }
 }

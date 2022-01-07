@@ -60,8 +60,9 @@ public class ExecuteMove {
                 if(win != null){
                     Piece winPiece = win.getPiece();
                     if(winPiece.getName().equals("King")){
-                        if(!AI)
-                            new WinGui().winGui(l, oldY, oldX, y, x);
+                        if(!AI) {
+                            l.winFlag = true;
+                        }
                     }
                     l.board.pieceMap.popPiece(winPiece.getNameInt(), !l.blackMove, x, y);
                 }
