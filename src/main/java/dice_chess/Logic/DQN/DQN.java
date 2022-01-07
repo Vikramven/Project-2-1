@@ -8,6 +8,7 @@ import dice_chess.Players.Human;
 import org.deeplearning4j.rl4j.learning.configuration.QLearningConfiguration;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.network.configuration.DQNDenseNetworkConfiguration;
+import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.learning.config.Nadam;
 
 
@@ -25,7 +26,7 @@ public class DQN {
                 .seed(1337L)
                 .maxEpochStep(stepPerEpoch)
                 .maxStep(stepPerEpoch * maxGames)
-                .updateStart(0)
+                .updateStart(10)
                 .rewardFactor(1.0)
                 .gamma(0.99)
                 .errorClamp(1.0)
@@ -33,17 +34,18 @@ public class DQN {
                 .minEpsilon(0.0)
                 .epsilonNbStep(128)
                 .expRepMaxSize(128 * 16)
+                .doubleDQN(false)
                 .build();
 
 
         DQNDenseNetworkConfiguration conf = DQNDenseNetworkConfiguration.builder()
-                .updater(new Nadam(Math.pow(10, -3.5)))
-                .numHiddenNodes(20)
-                .numLayers(6)
+                .updater(new Adam(0.4))
+                .numHiddenNodes(64)
+                .numLayers(10)
                 .build();
 
         Board board = new Board();
-        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), 2, 3, 3, 0, 0);
+        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), 1, 3, 3, 0, 0);
 
         DiceChessGameMdp mdp = new DiceChessGameMdp(logicGame, true);
 

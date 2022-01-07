@@ -42,9 +42,12 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
             actionSpace = as.actionSpace(logicGame, blackSide);
 
+            if(actionSpace.size() == 0)
+                return new DiscreteSpace(1);
+
             return new DiscreteSpace(actionSpace.size());
         }
-        return new DiscreteSpace(0);
+        return new DiscreteSpace(1);
     }
 
     @Override
@@ -83,9 +86,16 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
         double reward = move.getCost();
 
+        logicGame.currentSpot = logicGame.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
+
+        //Add the move to the logic game
+        logicGame.allLegalMoves = new ArrayList<>();
+        logicGame.allLegalMoves.add(move);
+
         executeMovesAI.executeMovesAI(logicGame, move);
 
         logicGame.board.print();
+
 
         return new StepReply<>(logicGame, reward, isDone(), null);
     }

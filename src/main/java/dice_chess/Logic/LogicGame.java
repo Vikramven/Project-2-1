@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.deeplearning4j.rl4j.space.Encodable;
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -272,7 +273,26 @@ public class LogicGame extends GUIMain implements Encodable {
 
     @Override
     public double[] toArray() {
-        return new double[0];
+        double[] boardArray = new double[64];
+
+        int point = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Spot spot = board.getSpot(i, j);
+
+                if(spot == null)
+                    boardArray[point] = -0.6;
+                else {
+                    Piece piece = spot.getPiece();
+                    if(piece.getColor())
+                        boardArray[point] = -piece.getNameInt() / 10.0;
+                    else
+                        boardArray[point] = piece.getNameInt() / 10.0;
+                }
+                point++;
+            }
+        }
+        return boardArray;
     }
 
     @Override
@@ -282,11 +302,12 @@ public class LogicGame extends GUIMain implements Encodable {
 
     @Override
     public INDArray getData() {
-        return null;
+        return Nd4j.create(toArray());
     }
 
     @Override
     public Encodable dup() {
-        return null;
+        return new LogicGame(new Board(), playerWhite.clone(), playerBlack.clone(),
+                AIwhite, AIblack, depth, whiteWin, blackWin);
     }
 }
