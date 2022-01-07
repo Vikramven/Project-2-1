@@ -127,10 +127,10 @@ public class GameScene extends GUIMain {
         System.out.println("\n" + players[0] + " " + players[1]);
 
         System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
-//        new LogicGame(board, buttonStateBoard, playerLabel,
-//                diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack, depth);
+        new LogicGame(board, buttonStateBoard, playerLabel,
+                diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack, depth);
 //        new LogicGame(board, new AI(false), new AI(true), 2, 1, 3, 0, 0);
-        new DQN();
+//        new DQN();
         gamePane.setCenter(boardPane);
     }
 
