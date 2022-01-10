@@ -89,7 +89,7 @@ public class ExecuteMove {
                     rook.setCastling(false);
                 }
 
-                if(!l.winFlag && GUI) {
+                if(!l.winFlag && GUI && l.GUI) {
                     l.getGameSc().addMoveToHist(l.currentSpot.getPiece().isColor() + " " + l.currentSpot.getPiece().getName() +
                             " -> " + (oldY+1) + " " + (oldX+1) + " to " + (y+1) + " " + (x+1));
                 }

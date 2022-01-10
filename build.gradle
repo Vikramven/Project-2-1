@@ -33,6 +33,18 @@ application {
     mainClassName = 'dice_chess.Run'
 }
 
+task runDqn(type: JavaExec) {
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'dice_chess.RunDQN'
+}
+
+task runWithout(type: JavaExec) {
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'dice_chess.RunWithoutGUI'
+}
+
 test {
     useJUnitPlatform()
     testLogging {
