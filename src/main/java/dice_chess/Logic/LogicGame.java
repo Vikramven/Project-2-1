@@ -4,6 +4,7 @@ import dice_chess.Board.*;
 import dice_chess.GUI.GUIMain;
 import dice_chess.GUI.GameScene;
 import dice_chess.GUI.IntroScene;
+import dice_chess.Logic.DQN.ActionSpace;
 import dice_chess.Logic.MoveLogic.ExecuteMovesAI;
 import dice_chess.Logic.AI.Expectimax;
 import dice_chess.Logic.AI.MiniMax;
@@ -281,13 +282,13 @@ public class LogicGame extends GUIMain implements Encodable {
                 Spot spot = board.getSpot(i, j);
 
                 if(spot == null)
-                    boardArray[point] = -0.6;
+                    boardArray[point] = 0;
                 else {
                     Piece piece = spot.getPiece();
                     if(piece.getColor())
-                        boardArray[point] = -piece.getNameInt() / 10.0;
+                        boardArray[point] = -piece.getNameInt() - 1;
                     else
-                        boardArray[point] = piece.getNameInt() / 10.0;
+                        boardArray[point] = piece.getNameInt() + 1;
                 }
                 point++;
             }
@@ -297,11 +298,13 @@ public class LogicGame extends GUIMain implements Encodable {
 
     @Override
     public boolean isSkipped() {
-        return false;
+        ArrayList<Move> tmp = new ActionSpace().actionSpace(this, blackMove);
+        return tmp.size() == 0;
     }
 
     @Override
     public INDArray getData() {
+//        System.out.println(Nd4j.create(toArray()));
         return Nd4j.create(toArray());
     }
 

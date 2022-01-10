@@ -17,7 +17,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
 
     private ArrayObservationSpace<LogicGame> gameArrayObservationSpace;
-    private ArrayList<Move> actionSpace;
+    private ArrayList<Move> actionSpace = new ArrayList<>();
     private LogicGame logicGame;
     private boolean blackSide;
     private ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
@@ -70,6 +70,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     public StepReply<LogicGame> step(Integer action) {
         if(isDone()){ //TODO when we can start game with DQN  !!!!CHANGE WIN CONDITION!!!!
             logicGame.board.print();
+            logicGame.whiteWin++;
             new StepReply<>(logicGame, -50, isDone(), null);
         }
 
@@ -77,12 +78,13 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
         if(actionSpace.size() == 0){
             logicGame.dl.rollDice(logicGame);
             logicGame.cp.changePlayer(logicGame);
-            logicGame.board.print();
+//            logicGame.board.print();
             return new StepReply<>(logicGame, 0, isDone(), null);
         }
 
         Move move = actionSpace.get(action);
 
+        actionSpace = new ArrayList<>();
 
         double reward = move.getCost();
 
@@ -94,7 +96,16 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
         executeMovesAI.executeMovesAI(logicGame, move);
 
-        logicGame.board.print();
+        if(isDone())
+            logicGame.blackWin++;
+
+//        logicGame.board.print();
+
+        if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0) {
+            reward = -50;
+            logicGame.whiteWin++;
+            logicGame.blackWin--;
+        }
 
 
         return new StepReply<>(logicGame, reward, isDone(), null);

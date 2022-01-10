@@ -19,29 +19,29 @@ public class DQN {
 
     public DQN() {
 
-        int stepPerEpoch = 1000;
-        int maxGames = 1000;
+        int stepPerEpoch = 16;
 
         QLearningConfiguration qConfig = QLearningConfiguration.builder()
-                .seed(1337L)
-                .maxEpochStep(stepPerEpoch)
-                .maxStep(stepPerEpoch * maxGames)
+                .seed(123L)
+                .maxEpochStep(200)
+                .maxStep(15000)
+                .expRepMaxSize(150000)
+                .batchSize(128)
+                .targetDqnUpdateFreq(500)
                 .updateStart(10)
-                .rewardFactor(1.0)
+                .rewardFactor(0.01)
                 .gamma(0.99)
                 .errorClamp(1.0)
-                .batchSize(16)
-                .minEpsilon(0.0)
-                .epsilonNbStep(128)
-                .expRepMaxSize(128 * 16)
-                .doubleDQN(false)
+                .minEpsilon(0.1f)
+                .epsilonNbStep(1000)
+                .doubleDQN(true)
                 .build();
 
 
         DQNDenseNetworkConfiguration conf = DQNDenseNetworkConfiguration.builder()
-                .updater(new Adam(0.4))
-                .numHiddenNodes(64)
-                .numLayers(10)
+                .updater(new Adam(0.7))
+                .numHiddenNodes(764)
+                .numLayers(4)
                 .build();
 
         Board board = new Board();
