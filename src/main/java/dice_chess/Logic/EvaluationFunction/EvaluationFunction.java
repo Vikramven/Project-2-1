@@ -10,7 +10,6 @@ import java.util.LinkedList;
 
 public class EvaluationFunction {
 
-
     /**
      *
      Problem:cost is static, we need to determine what the best possible moves are, but how do we do that? cannot be random?
@@ -51,126 +50,19 @@ public class EvaluationFunction {
             int check=move.getPiece().getNameInt();
 
 
-            //TODO decide which values for every piece
-            //TODO write the inverse matrix method
-            //TODO junit testing
-                switch (piece.getNameInt()) {
-                    case 0: //Bishop
-                        cost[goodX][goodY] = getPieceBishop(check); // put value for bishop
-                    case 1: //Knight
-                        cost[goodX][goodY] = getPieceKnight(check);
-                    case 2: //King
-                        cost[goodX][goodY] = getPieceKing(check);
-                    case 3: //Pawn
-                        cost[goodX][goodY] = getPiecePawn(check);
-                    case 4: //Queen
-                        cost[goodX][goodY] = getPieceQueen(check);
-                    case 5: //Rook
-                        cost[goodX][goodY] = getPieceRook(check);
-                }
+
+            cost[goodX][goodY] = getEvaluateAttack(check);
 
 
-            //TODO decide which value
             cost[badX][badY] = -10;
 
         }
 
-//        System.out.println();
-//        for (int i = 0; i < cost.length; i++) {
-//            for (int j = 0; j < cost.length; j++) {
-//                System.out.print(cost[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
         return cost;
     }
-    //TODO print this method for every piece
-    public int getPieceBishop(int check){
-        switch (check) {
-            case 0: //Bishop
-                return  10;
-            case 1: //Knight
-                return  10;
-            case 2: //King
-                return  1000;
-            case 3: //Pawn
-                return 5;
-            case 4: //Queen
-                return  20;
-            case 5: //Rook
-                return  15;
-        }
-        return 0;
-    }
-    public int getPieceQueen(int check){
-        switch (check) {
-            case 0: //Bishop
-                return  10;
-            case 1: //Knight
-                return  10;
-            case 2: //King
-                return  1000;
-            case 3: //Pawn
-                return 5;
-            case 4: //Queen
-                return  20;
-            case 5: //Rook
-                return  15;
-        }
-        return 0;
-    }
-    public int getPieceKnight(int check){
-        switch (check) {
-            case 0: //Bishop
-                return  10;
-            case 1: //Knight
-                return  10;
-            case 2: //King
-                return  1000;
-            case 3: //Pawn
-                return 5;
-            case 4: //Queen
-                return  20;
-            case 5: //Rook
-                return  15;
-        }
-        return 0;
-    }
-    public int getPieceRook(int check){
-        switch (check) {
-            case 0: //Bishop
-                return  10;
-            case 1: //Knight
-                return  10;
-            case 2: //King
-                return  1000;
-            case 3: //Pawn
-                return 5;
-            case 4: //Queen
-                return  20;
-            case 5: //Rook
-                return  15;
-        }
-        return 0;
-    }
-    public int getPiecePawn(int check){
-        switch (check) {
-            case 0: //Bishop
-                return  10;
-            case 1: //Knight
-                return  10;
-            case 2: //King
-                return  1000;
-            case 3: //Pawn
-                return 5;
-            case 4: //Queen
-                return  20;
-            case 5: //Rook
-                return  15;
-        }
-        return 0;
-    }
-    public int getPieceKing(int check){
+
+
+    public int getEvaluateAttack(int check){
         switch (check) {
             case 0: //Bishop
                 return  10;

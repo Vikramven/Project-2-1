@@ -78,34 +78,18 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
             return new StepReply<>(logicGame, -5, isDone(), "Illegal");
         }
 
-        Move move = actionSpace.get(action);
-
-        actionSpace = new ArrayList<>();
-
-        logicGame.currentSpot = logicGame.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
-
-        //Add the move to the logic game
-        logicGame.allLegalMoves = new ArrayList<>();
-        logicGame.allLegalMoves.add(move);
-
-        executeMovesAI.executeMovesAI(logicGame, move);
 
 //        logicGame.board.print();
 
-        double reward = move.getCost();
+        double reward = executeAction(action);
 
         if(isDone() && logicGame.board.pieceMap.getAllPieces(2, !blackSide).size() == 0) {
             logicGame.board.print();
             logicGame.blackWin++;
             reward += 100000;
-        }
-
-//        logicGame.board.print();
-
-        if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0 && isDone()) {
+        } else if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0 && isDone()) {
             reward += -100000;
             logicGame.whiteWin++;
-            logicGame.blackWin--;
         }
 
 
@@ -121,5 +105,21 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     public MDP<LogicGame, Integer, DiscreteSpace> newInstance() {
         return new DiceChessGameMdp(new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
                 logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin), blackSide);
+    }
+
+    private int executeAction(Integer action){
+        Move move = actionSpace.get(action);
+
+        actionSpace = new ArrayList<>();
+
+        logicGame.currentSpot = logicGame.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
+
+        //Add the move to the logic game
+        logicGame.allLegalMoves = new ArrayList<>();
+        logicGame.allLegalMoves.add(move);
+
+        executeMovesAI.executeMovesAI(logicGame, move);
+
+        return move.getCost();
     }
 }
