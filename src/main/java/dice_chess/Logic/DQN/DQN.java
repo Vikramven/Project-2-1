@@ -13,6 +13,7 @@ import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscret
 import org.deeplearning4j.rl4j.network.configuration.DQNDenseNetworkConfiguration;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.util.DataManager;
+import org.deeplearning4j.rl4j.util.DataManagerTrainingListener;
 import org.deeplearning4j.rl4j.util.IDataManager;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.learning.config.Nadam;
@@ -24,14 +25,14 @@ import java.io.IOException;
 public class DQN {
 
 
-    public DQN() {
+    public DQN(int AI, String text) throws IOException {
 
         int stepPerEpoch = 16;
 
         QLearningConfiguration qConfig = QLearningConfiguration.builder()
                 .seed(123L)
-                .maxEpochStep(3000)
-                .maxStep(800000)
+                .maxEpochStep(1500)
+                .maxStep(1000000)
                 .expRepMaxSize(100000)
                 .batchSize(32)
                 .targetDqnUpdateFreq(100)
@@ -53,7 +54,7 @@ public class DQN {
 
 
         Board board = new Board();
-        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), 1, 3, 3, 0, 0);
+        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), AI, 3, 3, 0, 0);
 
         DiceChessGameMdp mdp = new DiceChessGameMdp(logicGame, true);
 
@@ -61,8 +62,11 @@ public class DQN {
 //
 //        DQNPolicy<LogicGame> policy = DQNPolicy.load("dice-chess-dqn.bin");
 
+        IDataManager dataManager = new DataManager(true);
+
 
         QLearningDiscreteDense<LogicGame> dqn = new QLearningDiscreteDense<LogicGame>(mdp, conf, qConfig);
+        dqn.addListener(new DataManagerTrainingListener(dataManager));
 
         System.out.println();
         dqn.train();
@@ -70,7 +74,7 @@ public class DQN {
         mdp.close();
 
         try {
-            dqn.getPolicy().save("dice-chess-dqn.bin");
+            dqn.getPolicy().save(text);
         } catch (IOException e) {
             e.printStackTrace();
         }

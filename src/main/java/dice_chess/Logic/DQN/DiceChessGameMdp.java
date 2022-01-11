@@ -61,14 +61,6 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
     @Override
     public StepReply<LogicGame> step(Integer action) {
-        if(isDone()){ //TODO when we can start game with DQN  !!!!CHANGE WIN CONDITION!!!!
-            System.out.println("GGGGGGGGGGGGGGGGGGGGQQQQQQ");
-            logicGame.board.print();
-            logicGame.whiteWin++;
-            new StepReply<>(logicGame, -1000, isDone(), null);
-        }
-
-
 
         if(action == 63 && actionSpace.size() == 0){
             logicGame.dl.rollDice(logicGame);
@@ -76,21 +68,19 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
             if(isDone()) {
                 logicGame.board.print();
                 logicGame.whiteWin++;
-                return new StepReply<>(logicGame, -1000, isDone(), "Skip");
+                return new StepReply<>(logicGame, -100000, isDone(), "Skip");
             }
 
-            return new StepReply<>(logicGame, -2, isDone(), "Skip");
+            return new StepReply<>(logicGame, -1, isDone(), "Skip");
         }
 
         if(actionSpace.size() <= action){
-            return new StepReply<>(logicGame, -100, isDone(), "Illegal");
+            return new StepReply<>(logicGame, -5, isDone(), "Illegal");
         }
 
         Move move = actionSpace.get(action);
 
         actionSpace = new ArrayList<>();
-
-        double reward = move.getCost();
 
         logicGame.currentSpot = logicGame.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
 
@@ -102,15 +92,18 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
 //        logicGame.board.print();
 
-        if(isDone()) {
+        double reward = move.getCost();
+
+        if(isDone() && logicGame.board.pieceMap.getAllPieces(2, !blackSide).size() == 0) {
             logicGame.board.print();
             logicGame.blackWin++;
+            reward += 100000;
         }
 
 //        logicGame.board.print();
 
-        if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0) {
-            reward = -1000;
+        if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0 && isDone()) {
+            reward += -100000;
             logicGame.whiteWin++;
             logicGame.blackWin--;
         }
