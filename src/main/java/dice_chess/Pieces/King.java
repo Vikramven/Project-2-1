@@ -113,6 +113,9 @@ public class King extends Piece {
         else
             costMove = costDynamic[x][y] + whiteCost[x][y];
 
+
+        costMove -= pythagorasKingEvaluation(board, black, x, y);
+
         if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY, this))
             return;
 
@@ -192,6 +195,7 @@ public class King extends Piece {
         else{
             costMove = whiteCost[MoveX][MoveY];
         }
+
         legalMoves.add(new Move(MoveX, MoveY, this, costMove, x, y));
     }
 

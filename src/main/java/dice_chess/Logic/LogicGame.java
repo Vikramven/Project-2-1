@@ -274,7 +274,7 @@ public class LogicGame extends GUIMain implements Encodable {
 
     @Override
     public double[] toArray() {
-        double[] boardArray = new double[64];
+        double[] boardArray = new double[65];
 
         int point = 0;
         for (int i = 0; i < 8; i++) {
@@ -282,22 +282,26 @@ public class LogicGame extends GUIMain implements Encodable {
                 Spot spot = board.getSpot(i, j);
 
                 if(spot == null)
-                    boardArray[point] = 0;
+                    boardArray[point] = -1;
                 else {
                     Piece piece = spot.getPiece();
                     if(piece.getColor())
-                        boardArray[point] = -piece.getNameInt() - 1;
+                        boardArray[point] = piece.getNameInt() + 8;
                     else
                         boardArray[point] = piece.getNameInt() + 1;
                 }
                 point++;
             }
         }
+
+        boardArray[point] = dicePiece + 1;
+
         return boardArray;
     }
 
     @Override
     public boolean isSkipped() {
+        System.out.println("SSSSSSSSSSSSSSSSS");
         ArrayList<Move> tmp = new ActionSpace().actionSpace(this, blackMove);
         return tmp.size() == 0;
     }
@@ -309,7 +313,8 @@ public class LogicGame extends GUIMain implements Encodable {
     }
 
     @Override
-    public Encodable dup() {
+    public Encodable dup() { //TODO
+        System.out.println("GGGGGGGGGGGGGG");
         return new LogicGame(new Board(), playerWhite.clone(), playerBlack.clone(),
                 AIwhite, AIblack, depth, whiteWin, blackWin);
     }

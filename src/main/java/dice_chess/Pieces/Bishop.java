@@ -111,6 +111,8 @@ public class Bishop extends Piece {
                     costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
                 }
 
+                costMove += pythagorasKingEvaluation(board, black, newX, newY);
+
                 if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y, this))
                     return;
 

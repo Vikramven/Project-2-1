@@ -28,7 +28,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     public DiceChessGameMdp(LogicGame logicGame, boolean blackSide) {
         this.logicGame = logicGame;
         this.blackSide = blackSide;
-        gameArrayObservationSpace = new ArrayObservationSpace<>(new int[]{64});
+        gameArrayObservationSpace = new ArrayObservationSpace<>(new int[]{65});
     }
 
     @Override
@@ -38,16 +38,9 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
     @Override
     public DiscreteSpace getActionSpace() {
-        if(logicGame.blackMove == blackSide){
+        actionSpace = as.actionSpace(logicGame, blackSide);
 
-            actionSpace = as.actionSpace(logicGame, blackSide);
-
-            if(actionSpace.size() == 0)
-                return new DiscreteSpace(1);
-
-            return new DiscreteSpace(actionSpace.size());
-        }
-        return new DiscreteSpace(1);
+        return new DiscreteSpace(139);
     }
 
     @Override
@@ -69,17 +62,23 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     @Override
     public StepReply<LogicGame> step(Integer action) {
         if(isDone()){ //TODO when we can start game with DQN  !!!!CHANGE WIN CONDITION!!!!
+            System.out.println("GGGGGGGGGGGGGGGGGGGGQQQQQQ");
             logicGame.board.print();
             logicGame.whiteWin++;
-            new StepReply<>(logicGame, -50, isDone(), null);
+            new StepReply<>(logicGame, -1000, isDone(), null);
         }
 
 
-        if(actionSpace.size() == 0){
+        if(actionSpace.size() == 0 || actionSpace.size() <= action){
             logicGame.dl.rollDice(logicGame);
             logicGame.cp.changePlayer(logicGame);
-//            logicGame.board.print();
-            return new StepReply<>(logicGame, 0, isDone(), null);
+            if(isDone()) {
+                logicGame.board.print();
+                logicGame.whiteWin++;
+                return new StepReply<>(logicGame, -1000, isDone(), "Skip");
+            }
+
+            return new StepReply<>(logicGame, -10, isDone(), "Skip");
         }
 
         Move move = actionSpace.get(action);
@@ -96,19 +95,23 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
         executeMovesAI.executeMovesAI(logicGame, move);
 
-        if(isDone())
+//        logicGame.board.print();
+
+        if(isDone()) {
+            logicGame.board.print();
             logicGame.blackWin++;
+        }
 
 //        logicGame.board.print();
 
         if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0) {
-            reward = -50;
+            reward = -1000;
             logicGame.whiteWin++;
             logicGame.blackWin--;
         }
 
 
-        return new StepReply<>(logicGame, reward, isDone(), null);
+        return new StepReply<>(logicGame, reward, isDone(), "Move");
     }
 
     @Override

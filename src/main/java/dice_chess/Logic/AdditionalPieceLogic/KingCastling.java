@@ -22,10 +22,10 @@ public class KingCastling {
             int longOrShort = kingY - oldY;
             if (longOrShort == 2) { // Long Castling
                 changeRook(7, 4, kingX, black, l);
-                l.getGameSc().addMoveToHist("CASTLING: Long");
+                if(l.GUI) l.getGameSc().addMoveToHist("CASTLING: Long");
             } else if(longOrShort == -2){ // Short Castling
                 changeRook(0, 2, kingX, black, l);
-                l.getGameSc().addMoveToHist("CASTLING: Short");
+                if(l.GUI) l.getGameSc().addMoveToHist("CASTLING: Short");
             }
         }
         piece.setCastling(false);

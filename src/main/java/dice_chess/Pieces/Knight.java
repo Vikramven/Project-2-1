@@ -11,8 +11,8 @@ public class Knight extends Piece {
     //TODO improve this in the PHASE 3
     private final int[][] blackCost = {{0, 0, 0, 15, 15, 0, 0, 0},
                                  {0, 15, 15, 0, 0, 15, 15, 0},
-                            {0, 0, 15, 15, 15, 15, 0, 0},
-                            {5, 0, 0, 0, 0, 0, 0, 0},
+                            {0, 0, 10, 10, 10, 10, 0, 0},
+                            {5, 10, 0, 10, 0, 10, 0, 10},
                             {5, 0, 0, 0, 0, 0, 0, 0},
                             {15, 0, 15, 0, 0, 15, 0, 15},
                             {0, 0, 0, 0, 0, 0, 0, 0},
@@ -22,8 +22,8 @@ public class Knight extends Piece {
             {0, 0, 0, 0, 0, 0, 0, 0},
             {15, 0, 15, 0, 0, 15, 0, 15},
             {5, 0, 0, 0, 0, 0, 0, 0},
-            {5, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 15, 15, 15, 15, 0, 0},
+            {5, 10, 0, 10, 0, 10, 0, 10},
+            {0, 0, 10, 10, 10, 10, 0, 0},
             {0, 15, 15, 0, 0, 15, 15, 0},
             {0, 0, 0, 15, 15, 0, 0, 0}};
 
@@ -149,6 +149,9 @@ public class Knight extends Piece {
             costMove = costDynamic[newX][newY] + blackCost[newX][newY];
         else
             costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
+
+
+        costMove += pythagorasKingEvaluation(board, black, newX, newY);
 
         if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y, this))
             return;

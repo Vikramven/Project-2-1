@@ -7,6 +7,7 @@ import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Board.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public abstract class Piece implements PieceMove {
 
@@ -120,5 +121,22 @@ public abstract class Piece implements PieceMove {
             return allLegalMoves(board, spot, cost);
         }
         return null;
+    }
+
+
+    public double pythagorasKingEvaluation(Board board, boolean color, int x, int y){
+        LinkedList<Coordinate> listCoordinateKing = board.pieceMap.getAllPieces(2, !color);
+
+        if(listCoordinateKing.size() != 0) {
+            Coordinate coordinateKing = listCoordinateKing.get(0);
+
+            int a = Math.abs(x - coordinateKing.x);
+            int b = Math.abs(y - coordinateKing.y);
+            double c = Math.pow(a, 2) + Math.pow(b, 2);
+            c = Math.sqrt(c) * 2;
+
+            return 15 - c;
+        }
+        return 0;
     }
 }
