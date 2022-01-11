@@ -6,11 +6,14 @@ import dice_chess.Players.AI;
 import dice_chess.Players.Human;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.deeplearning4j.rl4j.learning.ILearning;
 import org.deeplearning4j.rl4j.learning.configuration.QLearningConfiguration;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.network.configuration.DQNDenseNetworkConfiguration;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
+import org.deeplearning4j.rl4j.util.DataManager;
+import org.deeplearning4j.rl4j.util.IDataManager;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.learning.config.Nadam;
 
@@ -26,18 +29,19 @@ public class DQN {
         int stepPerEpoch = 16;
 
         QLearningConfiguration qConfig = QLearningConfiguration.builder()
-                .seed(1337L)
-                .maxEpochStep(200)
-                .maxStep(15000)
-                .expRepMaxSize(150000)
+                .seed(123L)
+                .maxEpochStep(3000)
+                .maxStep(800000)
+                .expRepMaxSize(100000)
                 .batchSize(32)
-                .targetDqnUpdateFreq(500)
+                .targetDqnUpdateFreq(100)
                 .updateStart(10)
                 .rewardFactor(1.0)
                 .gamma(0.99)
-                .errorClamp(1.0)
+                .errorClamp(100.0)
                 .minEpsilon(0.1f)
-                .epsilonNbStep(1000)
+                .epsilonNbStep(10)
+                .doubleDQN(true)
                 .build();
 
 
@@ -56,6 +60,7 @@ public class DQN {
 //        MultiLayerNetwork multiLayerNetwork = MultiLayerNetwork.load(new File("dice-chess-dqn.bin"), true);
 //
 //        DQNPolicy<LogicGame> policy = DQNPolicy.load("dice-chess-dqn.bin");
+
 
         QLearningDiscreteDense<LogicGame> dqn = new QLearningDiscreteDense<LogicGame>(mdp, conf, qConfig);
 

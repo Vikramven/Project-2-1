@@ -294,7 +294,7 @@ public class LogicGame extends GUIMain implements Encodable {
             }
         }
 
-        boardArray[point] = dicePiece + 1;
+        boardArray[point] = (dicePiece + 1) * 100;
 
         return boardArray;
     }

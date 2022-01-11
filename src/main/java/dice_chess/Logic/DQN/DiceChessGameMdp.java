@@ -40,7 +40,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     public DiscreteSpace getActionSpace() {
         actionSpace = as.actionSpace(logicGame, blackSide);
 
-        return new DiscreteSpace(139);
+        return new DiscreteSpace(64);
     }
 
     @Override
@@ -69,7 +69,8 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
         }
 
 
-        if(actionSpace.size() == 0 || actionSpace.size() <= action){
+
+        if(action == 63 && actionSpace.size() == 0){
             logicGame.dl.rollDice(logicGame);
             logicGame.cp.changePlayer(logicGame);
             if(isDone()) {
@@ -78,7 +79,11 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
                 return new StepReply<>(logicGame, -1000, isDone(), "Skip");
             }
 
-            return new StepReply<>(logicGame, -10, isDone(), "Skip");
+            return new StepReply<>(logicGame, -2, isDone(), "Skip");
+        }
+
+        if(actionSpace.size() <= action){
+            return new StepReply<>(logicGame, -100, isDone(), "Illegal");
         }
 
         Move move = actionSpace.get(action);
