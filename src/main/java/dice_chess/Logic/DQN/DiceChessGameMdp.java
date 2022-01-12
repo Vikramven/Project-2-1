@@ -68,27 +68,29 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
             if(isDone()) {
                 logicGame.board.print();
                 logicGame.whiteWin++;
-                return new StepReply<>(logicGame, -100000, isDone(), "Skip");
+                return new StepReply<>(logicGame, -10000, isDone(), "Skip");
             }
 
-            return new StepReply<>(logicGame, -1, isDone(), "Skip");
+            return new StepReply<>(logicGame, -5, isDone(), "Skip");
         }
 
         if(actionSpace.size() <= action){
-            return new StepReply<>(logicGame, -5, isDone(), "Illegal");
+            return new StepReply<>(logicGame, -30, isDone(), "Illegal");
         }
 
 
 //        logicGame.board.print();
+
 
         double reward = executeAction(action);
 
         if(isDone() && logicGame.board.pieceMap.getAllPieces(2, !blackSide).size() == 0) {
             logicGame.board.print();
             logicGame.blackWin++;
-            reward += 100000;
+            reward += 10000;
         } else if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0 && isDone()) {
-            reward += -100000;
+            logicGame.board.print();
+            reward += -10000;
             logicGame.whiteWin++;
         }
 
