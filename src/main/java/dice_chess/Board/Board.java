@@ -129,6 +129,8 @@ public class Board {
         }
     }
 
+    public Spot[][] getBoard() { return board; }
+
     /**
      * Clone the object Board to avoid mutations
      * @return the clone of the object Board
