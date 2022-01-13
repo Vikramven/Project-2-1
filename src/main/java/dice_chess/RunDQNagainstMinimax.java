@@ -11,7 +11,7 @@ public class RunDQNagainstMinimax {
         Platform.startup(() ->
         {
             try {
-                new DQN(2, "dqn-chess-game-minimax");
+                new DQN(2, "dqn-chess-game-minimax.bin");
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -2,9 +2,12 @@ package dice_chess.Pieces;
 
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
+import dice_chess.Logic.EvaluationFunction.EvaluationFunction;
+import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class King extends Piece {
 
@@ -29,6 +32,13 @@ public class King extends Piece {
             {5, -10, -15, -15, -15, -15, -10, 5},
             {10, 0, 0, 0, 0, 0, 0, 10},
             {10, 15, 10, 50, 10, 15, 10, 10 }};
+
+    public int[][] getPositionCost(){
+        if(black)
+            return blackCost;
+
+        return whiteCost;
+    }
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -43,16 +53,18 @@ public class King extends Piece {
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param spot The spot where is located the piece
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
+    public ArrayList<Move> allLegalMoves(LogicGame l, Spot spot, int evalFunction) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int spotX = spot.getX();
         int spotY = spot.getY();
+
+        EvaluationFunction ef = new EvaluationFunction(evalFunction, black, l);
 
         int top = spotX+1;
         int down = spotX-1;
@@ -61,63 +73,56 @@ public class King extends Piece {
 
         //   |
         //   K
-        moveKing(board, legalMoves, top, spotY, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, top, spotY, spotX, spotY, ef);
 
         //    /
         //   K
-        moveKing(board, legalMoves, top, right, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, top, right, spotX, spotY, ef);
 
         //  \
         //   K
-        moveKing(board, legalMoves, top, left, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, top, left, spotX, spotY, ef);
 
         //   K
         //   |
-        moveKing(board, legalMoves, down, spotY, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, down, spotY, spotX, spotY, ef);
 
         //   K
         //    \
-        moveKing(board, legalMoves, down, right, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, down, right, spotX, spotY, ef);
 
         //   K
         //  /
-        moveKing(board, legalMoves, down, left, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, down, left, spotX, spotY, ef);
 
         // - K
-        moveKing(board, legalMoves, spotX, left, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, spotX, left, spotX, spotY, ef);
 
         //   K -
-        moveKing(board, legalMoves, spotX, right, spotX, spotY, costDynamic);
+        moveKing(l, legalMoves, spotX, right, spotX, spotY, ef);
 
         if(castling)
-            castlingMove(board, legalMoves, spotX, spotY);
+            castlingMove(l.board, legalMoves, spotX, spotY, ef, l);
 
         return legalMoves;
     }
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l Logic Game
      * @param legalMoves All possible legal move
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void moveKing(Board board, ArrayList<Move> legalMoves, int x, int y, int spotX, int spotY, int[][] costDynamic){
+    private void moveKing(LogicGame l, ArrayList<Move> legalMoves, int x, int y, int spotX, int spotY, EvaluationFunction ef){
 
         if(isBoardBounds(x) || isBoardBounds(y))
             return;
 
-        int costMove;
-        if(black)
-            costMove = costDynamic[x][y] + blackCost[x][y];
-        else
-            costMove = costDynamic[x][y] + whiteCost[x][y];
-
-
-        costMove -= pythagorasKingEvaluation(board, black, x, y);
-
-        if(isObstacle(board.getSpot(x, y), legalMoves, costMove, spotX, spotY, this))
+        if(isObstacle(l.board.getSpot(x, y), legalMoves, spotX, spotY, this, ef, l))
             return;
+
+        double costMove = ef.evaluateMove(spotX, spotY, this, black, x, y, l);
 
         legalMoves.add(new Move(x, y, this, costMove, spotX, spotY));
     }
@@ -129,11 +134,11 @@ public class King extends Piece {
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void castlingMove(Board board, ArrayList<Move> legalMoves, int x, int y){
+    private void castlingMove(Board board, ArrayList<Move> legalMoves, int x, int y, EvaluationFunction ef, LogicGame l){
 
-        moveShortCastling(board, legalMoves, x, y);
+        moveShortCastling(board, legalMoves, x, y, ef, l);
 
-        moveLongCastling(board, legalMoves, x, y);
+        moveLongCastling(board, legalMoves, x, y, ef, l);
 
     }
 
@@ -144,7 +149,7 @@ public class King extends Piece {
      * @param x X coordinates
      * @param y Y coordinates
      */
-    private void moveShortCastling(Board board, ArrayList<Move> legalMoves, int x, int y){
+    private void moveShortCastling(Board board, ArrayList<Move> legalMoves, int x, int y, EvaluationFunction ef, LogicGame l){
         if(checkRooks(board, false))
             return;
 
@@ -155,9 +160,9 @@ public class King extends Piece {
         }
 
         if(!black){
-            addCastling(legalMoves, x, y, 0, 1);
+            addCastling(legalMoves, x, y, 0, 1, ef, l);
         } else {
-            addCastling(legalMoves, x, y, 7, 1);
+            addCastling(legalMoves, x, y, 7, 1, ef, l);
         }
 
     }
@@ -169,7 +174,7 @@ public class King extends Piece {
      * @param x X coordinates
      * @param y Y coordinates
      */
-    private void moveLongCastling(Board board, ArrayList<Move> legalMoves, int x, int y){
+    private void moveLongCastling(Board board, ArrayList<Move> legalMoves, int x, int y, EvaluationFunction ef, LogicGame l){
         if(checkRooks(board, true))
             return;
 
@@ -180,21 +185,15 @@ public class King extends Piece {
         }
 
         if(!black){
-            addCastling(legalMoves, x, y, 0, 5);
+            addCastling(legalMoves, x, y, 0, 5, ef, l);
         } else {
-            addCastling(legalMoves, x, y, 7, 5);
+            addCastling(legalMoves, x, y, 7, 5, ef, l);
         }
     }
 
 
-    private void addCastling(ArrayList<Move> legalMoves, int x, int y, int MoveX, int MoveY){
-        int costMove;
-        if(black) {
-            costMove = blackCost[MoveX][MoveY];
-        }
-        else{
-            costMove = whiteCost[MoveX][MoveY];
-        }
+    private void addCastling(ArrayList<Move> legalMoves, int x, int y, int MoveX, int MoveY, EvaluationFunction ef, LogicGame l){
+        double costMove = ef.evaluateMove(x, y, this, black, MoveX, MoveY, l);
 
         legalMoves.add(new Move(MoveX, MoveY, this, costMove, x, y));
     }

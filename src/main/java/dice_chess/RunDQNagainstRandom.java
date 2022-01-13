@@ -11,7 +11,7 @@ public class RunDQNagainstRandom {
         Platform.startup(() ->
         {
             try {
-                new DQN(0, "dqn-chess-game-random");
+                new DQN(0, "dqn-chess-game-random.bin");
             } catch (IOException e) {
                 e.printStackTrace();
             }

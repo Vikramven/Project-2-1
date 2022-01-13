@@ -3,6 +3,7 @@ package dice_chess.Pieces;
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
 import dice_chess.Logic.EvaluationFunction.EvaluationFunction;
+import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Board.*;
 
@@ -85,11 +86,12 @@ public abstract class Piece implements PieceMove {
      * @param legalMoves Arraylist with all possible legal move
      * @return true = obstacle: false = no obstacle
      */
-    protected boolean isObstacle(Spot spot, ArrayList<Move> legalMoves, int costPiece, int x, int y, Piece piece){
+    protected boolean isObstacle(Spot spot, ArrayList<Move> legalMoves, int x, int y, Piece piece, EvaluationFunction ef, LogicGame l){
 
         if(spot != null) {
             if (!spot.getPiece().isColor().equals(isColor())) {
-                legalMoves.add(new Move(spot.getX(), spot.getY(), piece, costPiece, x, y));
+                double costMove = ef.evaluateMove(x, y, this, black, spot.getX(), spot.getY(), l);
+                legalMoves.add(new Move(spot.getX(), spot.getY(), piece, costMove, x, y));
             }
             return true;
         }
@@ -110,15 +112,10 @@ public abstract class Piece implements PieceMove {
     /**
      * Check if player move with the correct piece
      */
-    public ArrayList<Move> checkPlayerMove(Board board, Spot spot, boolean player, PieceMap enemyPieces, boolean costAI){
+    public ArrayList<Move> checkPlayerMove(LogicGame l, Spot spot, boolean player, int evalFunction){
         if(spot.getPiece().getColor() == player){
 
-            int[][] cost = new int[8][8];
-
-            if(costAI)
-                cost = new EvaluationFunction().evaluateTheBoard(enemyPieces, player,board, spot.getPiece());
-
-            return allLegalMoves(board, spot, cost);
+            return allLegalMoves(l, spot, evalFunction);
         }
         return null;
     }

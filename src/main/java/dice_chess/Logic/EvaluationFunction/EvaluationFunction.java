@@ -2,27 +2,102 @@ package dice_chess.Logic.EvaluationFunction;
 
 import dice_chess.Board.*;
 import dice_chess.Board.PieceMap;
-import dice_chess.Logic.DQN.DQN;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
-import dice_chess.Pieces.Piece;
-import dice_chess.Players.AI;
-import dice_chess.Players.Human;
-import javafx.application.Platform;
+import dice_chess.Pieces.*;
 
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class EvaluationFunction {
 
-    public EvaluationFunction()  {
-        Board board = new Board();
-        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), 3, 3, 3, 0, 0);
+    private double[][] costDynamic;
 
-        System.out.println(getShannonEvalScore(logicGame.board, logicGame.board.pieceMap, !logicGame.blackMove));
+    private final int evalFun;
 
+    /**
+     * 0 - no evaluation function
+     * 1 - position + (position+threats)
+     * 2 - Shannon evaluation function
+     * @param evalFun evaluation function, which we will use
+     */
+
+    public EvaluationFunction(int evalFun, boolean player, LogicGame l){
+        this.evalFun = evalFun;
+
+        if(evalFun == 1)
+            evaluateTheBoard(player, l);
+    }
+
+    public double evaluateMove(int x, int y, Piece piece, boolean black, int moveX, int moveY, LogicGame l){
+
+        double cost = 0;
+        if(evalFun == 1) {
+            cost = firstEvaluationApproach(x, y, piece.getNameInt(), black);
+        } else if (evalFun == 2){
+
+
+            cost = secondEvaluationApproach(l, piece, x, y, moveX, moveY);
+        }
+
+        return cost;
+    }
+
+
+    private double firstEvaluationApproach(int x, int y, int pieceInt, boolean black){
+        switch (pieceInt){
+            case 0 : {
+                return costDynamic[x][y] + new Bishop(black).getPositionCost()[x][y];
+            }
+            case 1 : {
+                return costDynamic[x][y] + new Knight(black).getPositionCost()[x][y];
+            }
+            case 2 : {
+                return costDynamic[x][y] + new King(black).getPositionCost()[x][y];
+            }
+            case 3 : {
+                return costDynamic[x][y] + new Pawn(black).getPositionCost()[x][y];
+            }
+            case 5 : {
+                return costDynamic[x][y] + new Rook(black).getPositionCost()[x][y];
+            }
+        }
+
+        return 0;
+    }
+
+    private double secondEvaluationApproach(LogicGame l, Piece piece, int x, int y, int moveX, int moveY){
+        //Cloning the state of the board
+        Board cloneBoard = l.board.clone();
+        PieceMap clonePieceMap = l.board.pieceMap.clone();
+        int cloneDicePiece = l.dicePiece;
+
+        //Simulating the move
+        Move move = new Move(moveX, moveY, piece, 0, x, y);
+
+        //Get the piece from the simulated board
+        l.currentSpot = l.board.getSpot(move.getPieceSpotX(), move.getPieceSpotY());
+
+        //Add the move to the logic game
+        l.allLegalMoves = new ArrayList<>();
+        l.allLegalMoves.add(move);
+
+        //Simulate the move
+        l.em.movePiece(move.getX(), move.getY(), l, false, true, true);
+
+        //Reset our states
+        l.allLegalMoves = null;
+        l.currentSpot = null;
+
+        double cost = getShannonEvalScore(l.board.pieceMap, piece.getColor(), l);
+
+        //Reset our states
+        l.board = cloneBoard;
+        l.board.pieceMap = clonePieceMap;
+        l.dicePiece = cloneDicePiece;
+
+
+        return cost;
     }
 
     /**
@@ -34,23 +109,22 @@ public class EvaluationFunction {
 
      seems to be correct
      */
-    public int[][] evaluateTheBoard(PieceMap enemyPieces, boolean player, Board board, Piece piece) {
+    private void evaluateTheBoard(boolean player, LogicGame l) {
         ArrayList<Move> movesEnemy = new ArrayList<>();
-        int[][] emptyCost = new int[8][8];
         for (int i = 0; i < 6; i++) { //6 pieces
-            LinkedList<Coordinate> pieces = enemyPieces.getAllPieces(i, !player);
+            LinkedList<Coordinate> pieces = l.board.pieceMap.getAllPieces(i, !player);
             for (int j = 0; j < pieces.size(); j++) {
                 Coordinate coordinate = pieces.get(j);
 
-                Spot spot = board.getSpot(coordinate.x, coordinate.y);
+                Spot spot = l.board.getSpot(coordinate.x, coordinate.y);
 
-                piece = spot.getPiece();
+                Piece piece = spot.getPiece();
 
-                movesEnemy.addAll(piece.allLegalMoves(board,spot, emptyCost));
+                movesEnemy.addAll(piece.allLegalMoves(l, spot, 0));
             }
         }
 
-        int[][] cost = new int[8][8];
+        costDynamic = new double[8][8];
 
         for (int i = 0; i < movesEnemy.size(); i++) {
             Move move = movesEnemy.get(i);
@@ -63,16 +137,13 @@ public class EvaluationFunction {
 
             int check = move.getPiece().getNameInt();
 
-            cost[goodX][goodY] = getEvaluateAttack(check);
+            costDynamic[goodX][goodY] = getEvaluateAttack(check);
 
-            cost[badX][badY] = -10;
-
+            costDynamic[badX][badY] = -10;
         }
-
-        return cost;
     }
 
-    public int getEvaluateAttack(int check) {
+    private int getEvaluateAttack(int check) {
         switch (check) {
             case 0: // Bishop
                 return  10;
@@ -91,25 +162,13 @@ public class EvaluationFunction {
     }
 
 
-    public static void main(String[] args) {
-        Platform.startup(() ->
-        {
-            new EvaluationFunction();
-        });
-    }
-
     /**
      * Do we have to assign values to a board matrix w/ this evaluation like we did w/ the prev one OR
      * is it a single value evaluation, bcs it seems so in the link
      * @param player current player's (getting evaluated) color
      * @return evaluation of the board (score) in relation to the side to move
      */
-    public double getShannonEvalScore(Board board, PieceMap pieceMap, boolean player) {
-
-        // Testing, should output 8, 2 and 1 initially
-        System.out.println("Pawn " + pieceCount(pieceMap,3, player));
-        System.out.println("Rook " + pieceCount(pieceMap,5, player));
-        System.out.println("King " + pieceCount(pieceMap,2, player));
+    private double getShannonEvalScore(PieceMap pieceMap, boolean player, LogicGame l) {
 
         // PieceInt Sequence
         // 0 Bishop | 1 Knight | 2 King | 3 Pawn | 4 Queen | 5 Rook
@@ -122,10 +181,8 @@ public class EvaluationFunction {
 
         // Compute Mobility (i.e. nrLegalMoves) Score
         // TODO: Adjust to crtMob, the countMob() method only counts for opposing players as it is
-        int crtMob = countMobility(pieceMap, player, board);
-        int oppMob = countMobility(pieceMap, !player, board);
-        System.out.println("CrtPlayer Moves " + crtMob);
-        System.out.println("OppPlayer Moves " + oppMob);
+        int crtMob = countMobility(pieceMap, player, l);
+        int oppMob = countMobility(pieceMap, !player, l);
 
         double mobScore = 0.1 * compSideDiff(crtMob, oppMob);
 
@@ -138,21 +195,20 @@ public class EvaluationFunction {
         return pieceMap.getAllPieces(pieceInt, player).size();
     }
 
-    private int countMobility(PieceMap enemyPieces, boolean black, Board board) {
+    private int countMobility(PieceMap enemyPieces, boolean black, LogicGame l) {
 
         ArrayList<Move> movesEnemy = new ArrayList<>();
-        int[][] emptyCost = new int[8][8];
 
         for (int i = 0; i < 6; i++) { // 6 pieces
             LinkedList<Coordinate> pieces = enemyPieces.getAllPieces(i, black);
             for (int j = 0; j < pieces.size(); j++) {
                 Coordinate coordinate = pieces.get(j);
 
-                Spot spot = board.getSpot(coordinate.x, coordinate.y);
+                Spot spot = l.board.getSpot(coordinate.x, coordinate.y);
 
                 Piece piece = spot.getPiece();
 
-                movesEnemy.addAll(piece.allLegalMoves(board,spot, emptyCost));
+                movesEnemy.addAll(piece.allLegalMoves(l, spot, 0));
             }
         }
         return movesEnemy.size();

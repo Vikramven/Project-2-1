@@ -2,6 +2,8 @@ package dice_chess.Pieces;
 
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
+import dice_chess.Logic.EvaluationFunction.EvaluationFunction;
+import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
@@ -29,6 +31,13 @@ public class Bishop extends Piece {
             {5, 10, 15, 15, 15, 15, 10, 5},
             {10, 0, 0, 15, 15, 0, 0, 10}};
 
+    public int[][] getPositionCost(){
+        if(black)
+            return blackCost;
+
+        return whiteCost;
+    }
+
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -45,47 +54,49 @@ public class Bishop extends Piece {
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param spot The spot where is located the piece
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
+    public ArrayList<Move> allLegalMoves(LogicGame l, Spot spot, int evalFunction) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
 
+        EvaluationFunction ef = new EvaluationFunction(evalFunction, black, l);
+
         //   B
         //  /
         // /
-        moveBishop(board, legalMoves, x, y, true, true, this, costDynamic);
+        moveBishop(l, legalMoves, x, y, true, true, this, ef);
         // \
         //  \
         //    B
-        moveBishop(board, legalMoves, x, y, true, false, this, costDynamic);
+        moveBishop(l, legalMoves, x, y, true, false, this, ef);
         //B
         //  \
         //   \
-        moveBishop(board, legalMoves, x, y, false, true, this, costDynamic);
+        moveBishop(l, legalMoves, x, y, false, true, this, ef);
         //   /
         //  /
         // B
-        moveBishop(board, legalMoves, x, y, false, false, this, costDynamic);
+        moveBishop(l, legalMoves, x, y, false, false, this, ef);
         
         return legalMoves;
     }
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l Logic Game
      * @param legalMoves all possible legal moves
      * @param x X coordinate
      * @param y Y coordinate
      * @param minusX goes minus X coordinate
      * @param minusY goes minus Y coordinate
      */
-    protected void moveBishop(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, Piece piece, int[][] costDynamic){
+    protected void moveBishop(LogicGame l, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY, Piece piece, EvaluationFunction ef){
         for (int i = 1; i < 8; i++) {
                 int newX;
                 int newY;
@@ -103,18 +114,10 @@ public class Bishop extends Piece {
                 if(isBoardBounds(newX) || isBoardBounds(newY))
                     return;
 
-                int costMove=0;
-                if(black){
-                    costMove = costDynamic[newX][newY] + blackCost[newX][newY];
-                }
-                else{
-                    costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
-                }
-
-                costMove += pythagorasKingEvaluation(board, black, newX, newY);
-
-                if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y, this))
+                if(isObstacle(l.board.getSpot(newX, newY), legalMoves, x, y, this, ef, l))
                     return;
+
+                double costMove = ef.evaluateMove(x, y, this, black, newX, newY, l);
 
                 legalMoves.add(new Move(newX, newY, piece, costMove, x, y));
         }

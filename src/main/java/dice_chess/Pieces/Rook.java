@@ -2,6 +2,8 @@ package dice_chess.Pieces;
 
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
+import dice_chess.Logic.EvaluationFunction.EvaluationFunction;
+import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
@@ -30,6 +32,13 @@ public class Rook extends Piece {
             {0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0}};
 
+    public int[][] getPositionCost(){
+        if(black)
+            return blackCost;
+
+        return whiteCost;
+    }
+
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -44,36 +53,38 @@ public class Rook extends Piece {
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param spot The spot where is located the piece
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
+    public ArrayList<Move> allLegalMoves(LogicGame l, Spot spot, int evalFunction) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
 
+        EvaluationFunction ef = new EvaluationFunction(evalFunction, black, l);
+
         //--R
-        moveRook(board, legalMoves, x, y, true, true, true, this, costDynamic);
+        moveRook(l, legalMoves, x, y, true, true, true, this, ef);
         //R--
-        moveRook(board, legalMoves, x, y, false, false, true, this, costDynamic);
+        moveRook(l, legalMoves, x, y, false, false, true, this, ef);
         //  R
         //  |
         //  |
-        moveRook(board, legalMoves, x, y, false, true, false, this, costDynamic) ;
+        moveRook(l, legalMoves, x, y, false, true, false, this, ef) ;
         //  |
         //  |
         //  R
-        moveRook(board, legalMoves, x, y, false, false, false, this, costDynamic);
+        moveRook(l, legalMoves, x, y, false, false, false, this, ef);
 
         return legalMoves;
     }
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l Logic Game
      * @param legalMoves all possible legal moves
      * @param x X coordinate
      * @param y Y coordinate
@@ -81,8 +92,8 @@ public class Rook extends Piece {
      * @param minusY goes minus Y coordinate or not
      * @param horizontal goes horizontal or not
      */
-    protected void moveRook(Board board, ArrayList<Move> legalMoves, int x, int y,
-                            boolean minusX, boolean minusY, boolean horizontal, Piece piece, int[][] costDynamic){
+    protected void moveRook(LogicGame l, ArrayList<Move> legalMoves, int x, int y,
+                            boolean minusX, boolean minusY, boolean horizontal, Piece piece, EvaluationFunction ef){
         for (int i = 1; i < 8; i++) {
 
                 int newX = x;
@@ -107,18 +118,10 @@ public class Rook extends Piece {
                         return;
                 }
 
-                int costMove=0;
-                if(black){
-                    costMove = costDynamic[newX][newY] + blackCost[newX][newY];
-                }
-                else{
-                    costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
-                }
-
-                costMove += pythagorasKingEvaluation(board, black, newX, newY);
-
-                if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y, this))
+                if(isObstacle(l.board.getSpot(newX, newY), legalMoves, x, y, this, ef, l))
                     return;
+
+                double costMove = ef.evaluateMove(x, y, this, black, newX, newY, l);
 
                 legalMoves.add(new Move(newX, newY, piece, costMove, x, y));
         }

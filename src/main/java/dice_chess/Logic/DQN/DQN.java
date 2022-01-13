@@ -54,12 +54,13 @@ public class DQN {
 
 
         Board board = new Board();
-        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), AI, 3, 3, 0, 0);
+        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), AI, 3, 3, 0, 0, true);
 
         DiceChessGameMdp mdp = new DiceChessGameMdp(logicGame, true);
 
-//        MultiLayerNetwork multiLayerNetwork = MultiLayerNetwork.load(new File("dice-chess-dqn.bin"), true);
-//
+        MultiLayerNetwork multiLayerNetwork = MultiLayerNetwork.load(new File("dice-chess-dqn.bin"), true);
+
+
 //        DQNPolicy<LogicGame> policy = DQNPolicy.load("dice-chess-dqn.bin");
 
         IDataManager dataManager = new DataManager(true);

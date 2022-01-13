@@ -2,6 +2,8 @@ package dice_chess.Pieces;
 
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
+import dice_chess.Logic.EvaluationFunction.EvaluationFunction;
+import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
@@ -22,17 +24,18 @@ public class Queen extends Piece {
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param spot The spot where is located the piece
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
+    public ArrayList<Move> allLegalMoves(LogicGame l, Spot spot, int evalFunction) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
 
+        EvaluationFunction ef = new EvaluationFunction(evalFunction, black, l);
 
         //Extend moves from Bishop
         Bishop moveLikeBishop = new Bishop(black);
@@ -40,35 +43,35 @@ public class Queen extends Piece {
         //   Q
         //  /
         // /
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, true, true, this, costDynamic);
+        moveLikeBishop.moveBishop(l, legalMoves, x, y, true, true, this, ef);
         // \
         //  \
         //    Q
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, true, false, this, costDynamic);
+        moveLikeBishop.moveBishop(l, legalMoves, x, y, true, false, this, ef);
         //Q
         //  \
         //   \
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, false, true, this, costDynamic);
+        moveLikeBishop.moveBishop(l, legalMoves, x, y, false, true, this, ef);
         //   /
         //  /
         // Q
-        moveLikeBishop.moveBishop(board, legalMoves, x, y, false, false, this, costDynamic);
+        moveLikeBishop.moveBishop(l, legalMoves, x, y, false, false, this, ef);
 
         //Extend moves from Rook
         Rook moveLikeRook = new Rook(black);
 
         //--Q
-        moveLikeRook.moveRook(board, legalMoves, x, y, true, true, true, this, costDynamic);
+        moveLikeRook.moveRook(l, legalMoves, x, y, true, true, true, this, ef);
         //Q--
-        moveLikeRook.moveRook(board, legalMoves, x, y, false, false, true, this, costDynamic);
+        moveLikeRook.moveRook(l, legalMoves, x, y, false, false, true, this, ef);
         //  Q
         //  |
         //  |
-        moveLikeRook.moveRook(board, legalMoves, x, y, false, true, false, this, costDynamic) ;
+        moveLikeRook.moveRook(l, legalMoves, x, y, false, true, false, this, ef) ;
         //  |
         //  |
         //  Q
-        moveLikeRook.moveRook(board, legalMoves, x, y, false, false, false, this, costDynamic);
+        moveLikeRook.moveRook(l, legalMoves, x, y, false, false, false, this, ef);
 
         return legalMoves;
     }

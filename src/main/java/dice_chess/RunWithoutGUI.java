@@ -11,7 +11,7 @@ public class RunWithoutGUI {
 
         Platform.startup(() ->
         {
-            new LogicGame(new Board(), new AI(false), new AI(true), 2, 1, 3, 0, 0);
+            new LogicGame(new Board(), new AI(false), new AI(true), 2, 1, 3, 0, 0, true);
         });
     }
 }

@@ -34,7 +34,7 @@ public class RandomAgent {
 
             Piece piece = spot.getPiece();
 
-            ArrayList<Move> allMovesPieceOfCurrentPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceMap, true);
+            ArrayList<Move> allMovesPieceOfCurrentPiece = piece.checkPlayerMove(l, spot, player, 0);
 
             allMovesPiece.addAll(allMovesPieceOfCurrentPiece);
         }

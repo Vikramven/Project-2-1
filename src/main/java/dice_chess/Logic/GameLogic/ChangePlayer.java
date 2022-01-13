@@ -136,7 +136,7 @@ public class ChangePlayer {
             mainStage.setResizable(false);
         } else {
             new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
-                    logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin);
+                    logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin, true);
         }
     }
 }

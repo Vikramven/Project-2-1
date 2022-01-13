@@ -46,7 +46,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     @Override
     public LogicGame reset() {
         logicGame = new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
-                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin);
+                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin, true);
         gameCount++;
 
         System.out.println("GAME #" + gameCount);
@@ -106,10 +106,10 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     @Override
     public MDP<LogicGame, Integer, DiscreteSpace> newInstance() {
         return new DiceChessGameMdp(new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
-                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin), blackSide);
+                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin, true), blackSide);
     }
 
-    private int executeAction(Integer action){
+    private double executeAction(Integer action){
         Move move = actionSpace.get(action);
 
         actionSpace = new ArrayList<>();

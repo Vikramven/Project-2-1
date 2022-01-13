@@ -14,7 +14,7 @@ public class Move {
     private Piece piece;
 
     //The cost of this move
-    private int cost;
+    private double cost;
 
     //X coordinate where the piece is located
     private int pieceSpotX;
@@ -22,7 +22,7 @@ public class Move {
     //Y coordinate where the piece is located
     private int pieceSpotY;
 
-    public Move(int x, int y, Piece piece, int cost, int pieceSpotX, int pieceSpotY) {
+    public Move(int x, int y, Piece piece, double cost, int pieceSpotX, int pieceSpotY) {
         this.x = x;
         this.y = y;
         this.piece = piece;
@@ -115,7 +115,7 @@ public class Move {
      * Get the cost
      * @return the cost
      */
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 
@@ -123,7 +123,7 @@ public class Move {
      * Set the cost
      * @param cost the cost
      */
-    public void setCost(int cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 

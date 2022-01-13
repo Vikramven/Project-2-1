@@ -39,6 +39,7 @@ public class ExecuteMove {
 //            }
                 l.dl.rollDice(l);
                 l.cp.changePlayer(l);
+
             }
         }
     }

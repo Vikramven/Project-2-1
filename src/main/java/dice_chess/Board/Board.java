@@ -21,8 +21,9 @@ public class Board {
     /**
      * Constructor which clone the game
      */
-    public Board(Spot[][] board){
+    public Board(Spot[][] board, PieceMap pieceMap){
         this.board = board;
+        this.pieceMap = pieceMap;
     }
 
     /**
@@ -145,6 +146,9 @@ public class Board {
                     newBoard[i][j] = null;
             }
         }
-        return new Board(newBoard);
+
+        PieceMap newPieceMap = pieceMap.clone();
+
+        return new Board(newBoard, newPieceMap);
     }
 }

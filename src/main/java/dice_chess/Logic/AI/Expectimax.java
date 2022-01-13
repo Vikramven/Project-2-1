@@ -103,7 +103,7 @@ public class Expectimax {
         if(max) {
 
             // Create children for the node
-            createChildren(l, player, node, dicePiece);
+            createChildren(l.clone(), player, node, dicePiece);
 
             LinkedList<Node> children = node.getChildren();
 
@@ -145,7 +145,7 @@ public class Expectimax {
 
                 //If on the first depth it find the win move, if execute it, without continue creating the tree
                 if(firstDepth){
-                    if(childNode.getCost() > 950.0){
+                    if(childNode.getCost() > 190){
                         return childNode;
                     }
                 }
@@ -224,7 +224,7 @@ public class Expectimax {
 
             Piece piece = spot.getPiece();
 
-            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l.board, spot, player, l.board.pieceMap, true);
+            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l, spot, player, 2);
 
             if(allMovesPiece != null)
                 node.addChildren(allMovesPiece);

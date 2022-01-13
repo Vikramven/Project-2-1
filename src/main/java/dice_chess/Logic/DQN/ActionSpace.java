@@ -22,8 +22,7 @@ public class ActionSpace {
 
             Piece piece = spot.getPiece();
 
-            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(logicGame.board, spot, blackSide,
-                    logicGame.board.pieceMap, true);
+            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(logicGame, spot, blackSide, 2);
 
             actionSpace.addAll(allMovesPiece);
         }

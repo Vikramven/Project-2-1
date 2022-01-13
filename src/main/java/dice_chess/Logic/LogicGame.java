@@ -93,7 +93,7 @@ public class LogicGame extends GUIMain implements Encodable {
     public final RandomAgent randomAgent = new RandomAgent();
 
     public LogicGame(Board board, Player playerWhite, Player playerBlack, int AIwhite,
-                     int AIblack, int depth, int whiteWin, int blackWin){
+                     int AIblack, int depth, int whiteWin, int blackWin, boolean DEBUG){
         this.board = board;
         this.playerWhite = playerWhite;
         this.playerBlack = playerBlack;
@@ -104,16 +104,18 @@ public class LogicGame extends GUIMain implements Encodable {
         this.blackWin = blackWin;
         this.GUI = false;
 
-        System.out.println("White AI = " + AIwhite);
-        System.out.println("Black AI = " + AIblack);
-
-        System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
+        if(DEBUG) {
+            System.out.println("White AI = " + AIwhite);
+            System.out.println("Black AI = " + AIblack);
+            System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
+        }
 
         //Set Up the game = roll dice and set an action to the pass button
         setUpGame();
 
         //Assign action to every clickable spot on the board
-        startLogicGameAction();
+        if(DEBUG) startLogicGameAction();
+
 
     }
 
@@ -150,6 +152,7 @@ public class LogicGame extends GUIMain implements Encodable {
         //Assign action to every clickable spot on the board
         startLogicGameAction();
     }
+
 
     private void setUpGame() {
         //Rolling dice
@@ -251,7 +254,7 @@ public class LogicGame extends GUIMain implements Encodable {
 
         Piece piece = currentSpot.getPiece();
         //System.out.println(piece.getName());
-        allLegalMoves = piece.checkPlayerMove(board, currentSpot, blackMove, board.pieceMap, false);
+        allLegalMoves = piece.checkPlayerMove(this, currentSpot, blackMove, 0);
 
         if (allLegalMoves == null) {
             currentSpot = null;
@@ -270,6 +273,12 @@ public class LogicGame extends GUIMain implements Encodable {
 
     public IntroScene getIntroSc(){
         return introSc;
+    }
+
+    public LogicGame clone(){
+        Board newBoard = board.clone();
+        return new LogicGame(newBoard, playerWhite.clone(), playerBlack.clone(),
+                AIwhite, AIblack, depth, whiteWin, blackWin, false);
     }
 
     @Override
@@ -316,6 +325,6 @@ public class LogicGame extends GUIMain implements Encodable {
     public Encodable dup() { //TODO
         System.out.println("GGGGGGGGGGGGGG");
         return new LogicGame(new Board(), playerWhite.clone(), playerBlack.clone(),
-                AIwhite, AIblack, depth, whiteWin, blackWin);
+                AIwhite, AIblack, depth, whiteWin, blackWin, false);
     }
 }

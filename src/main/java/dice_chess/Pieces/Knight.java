@@ -2,6 +2,8 @@ package dice_chess.Pieces;
 
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
+import dice_chess.Logic.EvaluationFunction.EvaluationFunction;
+import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 
 import java.util.ArrayList;
@@ -27,6 +29,13 @@ public class Knight extends Piece {
             {0, 15, 15, 0, 0, 15, 15, 0},
             {0, 0, 0, 15, 15, 0, 0, 0}};
 
+    public int[][] getPositionCost(){
+        if(black)
+            return blackCost;
+
+        return whiteCost;
+    }
+
     /**
      * Constructor
      * @param black Define the color for the piece
@@ -41,58 +50,59 @@ public class Knight extends Piece {
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param spot The spot where is located the piece
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
+    public ArrayList<Move> allLegalMoves(LogicGame l, Spot spot, int evalFunction) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
 
+        EvaluationFunction ef = new EvaluationFunction(evalFunction, black, l);
 
         //    - -
         //      |
         //      |
         //      K
-        moveKnight(board, legalMoves, x, y, true, true, true, true, costDynamic);
+        moveKnight(l, legalMoves, x, y, true, true, true, true, ef);
 
         //      K
         //      |
         //      |
         //    - -
-        moveKnight(board, legalMoves, x, y, false, false, true, true, costDynamic);
+        moveKnight(l, legalMoves, x, y, false, false, true, true, ef);
 
 
         //  |
         //  - - - K
-        moveKnight(board, legalMoves, x, y, false, true, false, true, costDynamic) ;
+        moveKnight(l, legalMoves, x, y, false, true, false, true, ef) ;
 
         //        |
         //  K - - -
-        moveKnight(board, legalMoves, x, y, false, false, false, true, costDynamic);
+        moveKnight(l, legalMoves, x, y, false, false, false, true, ef);
 
         //      - -
         //      |
         //      |
         //      K
-        moveKnight(board, legalMoves, x, y, true, true, true, false, costDynamic);
+        moveKnight(l, legalMoves, x, y, true, true, true, false, ef);
 
         //      K
         //      |
         //      |
         //      - -
-        moveKnight(board, legalMoves, x, y, false, false, true, false, costDynamic);
+        moveKnight(l, legalMoves, x, y, false, false, true, false, ef);
 
         //  - - - K
         //  |
-        moveKnight(board, legalMoves, x, y, false, true, false, false, costDynamic) ;
+        moveKnight(l, legalMoves, x, y, false, true, false, false, ef) ;
 
         //  K - - -
         //        |
-        moveKnight(board, legalMoves, x, y, false, false, false, false, costDynamic);
+        moveKnight(l, legalMoves, x, y, false, false, false, false, ef);
 
 
         return legalMoves;
@@ -100,7 +110,7 @@ public class Knight extends Piece {
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l Logic Game
      * @param legalMoves all possible legal moves
      * @param x X coordinate
      * @param y Y coordinate
@@ -109,8 +119,8 @@ public class Knight extends Piece {
      * @param horizontal goes horizontal or not
      * @param rotation define in which direction rotate the knight
      */
-    private void moveKnight(Board board, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY,
-                            boolean horizontal, boolean rotation, int[][]costDynamic){
+    private void moveKnight(LogicGame l, ArrayList<Move> legalMoves, int x, int y, boolean minusX, boolean minusY,
+                            boolean horizontal, boolean rotation, EvaluationFunction ef){
 
         int newX;
         int newY;
@@ -144,17 +154,11 @@ public class Knight extends Piece {
                 return;
         }
 
-        int costMove = 0;
-        if(black)
-            costMove = costDynamic[newX][newY] + blackCost[newX][newY];
-        else
-            costMove = costDynamic[newX][newY] + whiteCost[newX][newY];
 
-
-        costMove += pythagorasKingEvaluation(board, black, newX, newY);
-
-        if(isObstacle(board.getSpot(newX, newY), legalMoves, costMove, x, y, this))
+        if(isObstacle(l.board.getSpot(newX, newY), legalMoves, x, y, this, ef, l))
             return;
+
+        double costMove = ef.evaluateMove(x, y, this, black, newX, newY, l);
 
         legalMoves.add(new Move(newX, newY, this, costMove, x, y));
     }

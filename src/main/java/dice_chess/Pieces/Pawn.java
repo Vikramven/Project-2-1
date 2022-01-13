@@ -2,7 +2,10 @@ package dice_chess.Pieces;
 
 import dice_chess.Board.Board;
 import dice_chess.Board.Spot;
+import dice_chess.Logic.EvaluationFunction.EvaluationFunction;
+import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
+import org.apache.commons.math3.analysis.function.Log;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,13 @@ public class Pawn extends Piece {
             {0, 0, 0, 0, 0, 0, 0, 0},
             {0 , 0, 0, 0, 0, 0, 0, 0}};
 
+    public int[][] getPositionCost(){
+        if(black)
+            return blackCost;
+
+        return whiteCost;
+    }
+
 
     /**
      * Constructor
@@ -43,17 +53,18 @@ public class Pawn extends Piece {
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param spot The spot where is located the piece
      * @return all possible legal moves
      */
     @Override
-    public ArrayList<Move> allLegalMoves(Board board, Spot spot, int[][] costDynamic) {
+    public ArrayList<Move> allLegalMoves(LogicGame l, Spot spot, int evalFunction) {
         ArrayList<Move> legalMoves = new ArrayList<>();
 
         int x = spot.getX();
         int y = spot.getY();
 
+        EvaluationFunction ef = new EvaluationFunction(evalFunction, black, l);
         //3 variants of moves
 
         //first and second:             *
@@ -61,23 +72,23 @@ public class Pawn extends Piece {
         //                                                 *
         //                                                 *
         //second one is if a pawn stay on initial position P
-        movePawn(x, y, board,  legalMoves, costDynamic);
+        movePawn(x, y, l,  legalMoves, ef);
 
         //                                                              \ /
         //third variant is where enemy piece is located on it diagonal   P
-        takeEnemyPiece(x, y, board, legalMoves, costDynamic);
+        takeEnemyPiece(x, y, l, legalMoves, ef);
 
         return legalMoves;
     }
 
     /**
      *
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param legalMoves all possible legal moves
      * @param x X coordinate
      * @param y Y coordinate
      */
-    private void movePawn(int x, int y, Board board, ArrayList<Move> legalMoves, int[][]costDynamic){
+    private void movePawn(int x, int y, LogicGame l, ArrayList<Move> legalMoves, EvaluationFunction ef){
         int point = 1;
 
         if(checkInitialPosition(x))
@@ -95,14 +106,10 @@ public class Pawn extends Piece {
             if(isBoardBounds(newX))
                 break;
 
-            if(isObstaclePawn(board.getSpot(newX, y)))
+            if(isObstaclePawn(l.board.getSpot(newX, y)))
                 break;
 
-            int costMove;
-            if(black)
-                costMove = costDynamic[newX][y] + blackCost[newX][y];
-            else
-                costMove = costDynamic[newX][y] + whiteCost[newX][y];
+            double costMove = ef.evaluateMove(x, y, this, black, newX, y, l);
 
             legalMoves.add(new Move(newX, y, this, costMove, x, y));
         }
@@ -112,10 +119,10 @@ public class Pawn extends Piece {
      * Check if the pawn can take some enemy piece
      * @param x X coordinate
      * @param y Y coordinate
-     * @param board _dice_chess.Board
+     * @param l LogicGame
      * @param legalMoves all possible legal moves
      */
-    private void takeEnemyPiece(int x, int y, Board board, ArrayList<Move> legalMoves, int[][] costDynamic){
+    private void takeEnemyPiece(int x, int y, LogicGame l, ArrayList<Move> legalMoves, EvaluationFunction ef){
         int newX = x+1;
         if(black)
             newX = x-1;
@@ -125,23 +132,14 @@ public class Pawn extends Piece {
 
         int left = y - 1;
 
-        int costMove = 0;
         if(!isBoardBounds(left)) {
-            if(black)
-                costMove = costDynamic[newX][left] + blackCost[newX][left];
-            else
-                costMove = costDynamic[newX][left] + whiteCost[newX][left];
-            isObstacle(board.getSpot(newX, left), legalMoves, costMove, x, y, this);
+            isObstacle(l.board.getSpot(newX, left), legalMoves, x, y, this, ef, l);
         }
 
         int right = y + 1;
 
         if(!isBoardBounds(right)) {
-            if(black)
-                costMove = costDynamic[newX][right] + blackCost[newX][right];
-            else
-                costMove = costDynamic[newX][right] + whiteCost[newX][right];
-            isObstacle(board.getSpot(newX, right), legalMoves, costMove, x, y, this);
+            isObstacle(l.board.getSpot(newX, right), legalMoves, x, y, this, ef, l);
         }
     }
 
