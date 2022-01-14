@@ -11,7 +11,7 @@ public class RunDQNagainstExpectimax {
         Platform.startup(() ->
         {
             try {
-                new DQN(1, "dqn-chess-game-expectimax.bin");
+                new DQN(1, "dqn-chess-game-expectimax10.bin");
             } catch (IOException e) {
                 e.printStackTrace();
             }

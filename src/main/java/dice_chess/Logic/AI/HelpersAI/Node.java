@@ -1,4 +1,4 @@
-package dice_chess.Logic.AI;
+package dice_chess.Logic.AI.HelpersAI;
 
 import dice_chess.Logic.MoveLogic.Move;
 
@@ -146,5 +146,9 @@ public class Node {
      */
     public int getChancePiece() {
         return chancePiece;
+    }
+
+    public boolean isChanceNode() {
+        return chanceNode;
     }
 }

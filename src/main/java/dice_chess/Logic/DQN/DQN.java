@@ -31,9 +31,8 @@ public class DQN {
 
         QLearningConfiguration qConfig = QLearningConfiguration.builder()
                 .seed(123L)
-                .maxEpochStep(1500)
-                .maxStep(1000000)
-                .expRepMaxSize(100000)
+                .maxEpochStep(900)
+                .maxStep(900000)
                 .batchSize(32)
                 .targetDqnUpdateFreq(100)
                 .updateStart(10)
@@ -48,8 +47,8 @@ public class DQN {
 
         DQNDenseNetworkConfiguration conf = DQNDenseNetworkConfiguration.builder()
                 .updater(new Adam(0.7))
-                .numHiddenNodes(64)
-                .numLayers(4)
+                .numHiddenNodes(65)
+                .numLayers(3)
                 .build();
 
 
@@ -57,11 +56,6 @@ public class DQN {
         LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), AI, 3, 3, 0, 0, true);
 
         DiceChessGameMdp mdp = new DiceChessGameMdp(logicGame, true);
-
-        MultiLayerNetwork multiLayerNetwork = MultiLayerNetwork.load(new File("dice-chess-dqn.bin"), true);
-
-
-//        DQNPolicy<LogicGame> policy = DQNPolicy.load("dice-chess-dqn.bin");
 
         IDataManager dataManager = new DataManager(true);
 

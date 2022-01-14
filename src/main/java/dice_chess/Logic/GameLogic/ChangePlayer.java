@@ -1,6 +1,7 @@
 package dice_chess.Logic.GameLogic;
 import dice_chess.Board.Board;
 import dice_chess.GUI.GameScene;
+import dice_chess.Logic.AI.Algorithms.ExpectiMinimax;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import javafx.stage.Stage;
@@ -55,11 +56,13 @@ public class ChangePlayer {
                 //System.out.println("Black AI");
                 Move AImove = null;
                 if(l.AIblack == 1)
-                    AImove = l.expectimax.calculateBestMoves(l, l.depth);
+                    AImove = l.expectimax.calculateBestMoves(l.clone(), l.depth);
                 else if(l.AIblack == 0)
-                    AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
+                    AImove = l.randomAgent.executeRandomMove(l.clone(), l.dicePiece, l.blackMove);
                 else if(l.AIblack == 2)
-                    AImove = l.miniMax.calculateBestMoves(l, l.depth);
+                    AImove = l.miniMax.calculateBestMoves(l.clone(), l.depth);
+                else if(l.AIblack == 4)
+                    AImove = l.expectiMinimax.calculateBestMoves(l.clone(), l.depth);
 
                 if(AImove != null && !l.winFlag) {
                     l.executeMovesAI.executeMovesAI(l, AImove);
@@ -108,11 +111,13 @@ public class ChangePlayer {
                 Move AImove = null;
                 //System.out.println("White AI");
                 if(l.AIwhite == 1)
-                    AImove = l.expectimax.calculateBestMoves(l, l.depth);
+                    AImove = l.expectimax.calculateBestMoves(l.clone(), l.depth);
                 else if(l.AIwhite == 0)
-                    AImove = l.randomAgent.executeRandomMove(l, l.dicePiece, l.blackMove);
+                    AImove = l.randomAgent.executeRandomMove(l.clone(), l.dicePiece, l.blackMove);
                 else if(l.AIwhite == 2)
-                    AImove = l.miniMax.calculateBestMoves(l, l.depth);
+                    AImove = l.miniMax.calculateBestMoves(l.clone(), l.depth);
+                else if(l.AIwhite == 4)
+                    AImove = l.expectiMinimax.calculateBestMoves(l.clone(), l.depth);
 
                 if(AImove != null && !l.winFlag) {
                     l.executeMovesAI.executeMovesAI(l, AImove);

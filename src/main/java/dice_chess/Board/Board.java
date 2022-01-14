@@ -9,13 +9,14 @@ public class Board {
     /**
      * Piece heap helps to get exact coordinates of pieces on the board
      */
-    public PieceMap pieceMap = new PieceMap();
+    public PieceMap pieceMap;
 
     /**
      * Constructor which start the game
      */
     public Board(){
         this.restartGame();
+        this.pieceMap = new PieceMap();
     }
 
     /**
@@ -134,7 +135,6 @@ public class Board {
      * Clone the object Board to avoid mutations
      * @return the clone of the object Board
      */
-    @Override
     public Board clone(){
         Spot[][] newBoard = new Spot[8][8];
 

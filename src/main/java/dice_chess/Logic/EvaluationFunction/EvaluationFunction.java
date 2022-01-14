@@ -35,9 +35,7 @@ public class EvaluationFunction {
         if(evalFun == 1) {
             cost = firstEvaluationApproach(x, y, piece.getNameInt(), black);
         } else if (evalFun == 2){
-
-
-            cost = secondEvaluationApproach(l, piece, x, y, moveX, moveY);
+            cost = secondEvaluationApproach(l.clone(), piece, x, y, moveX, moveY);
         }
 
         return cost;
@@ -67,11 +65,6 @@ public class EvaluationFunction {
     }
 
     private double secondEvaluationApproach(LogicGame l, Piece piece, int x, int y, int moveX, int moveY){
-        //Cloning the state of the board
-        Board cloneBoard = l.board.clone();
-        PieceMap clonePieceMap = l.board.pieceMap.clone();
-        int cloneDicePiece = l.dicePiece;
-
         //Simulating the move
         Move move = new Move(moveX, moveY, piece, 0, x, y);
 
@@ -89,15 +82,7 @@ public class EvaluationFunction {
         l.allLegalMoves = null;
         l.currentSpot = null;
 
-        double cost = getShannonEvalScore(l.board.pieceMap, piece.getColor(), l);
-
-        //Reset our states
-        l.board = cloneBoard;
-        l.board.pieceMap = clonePieceMap;
-        l.dicePiece = cloneDicePiece;
-
-
-        return cost;
+        return getShannonEvalScore(l.board.pieceMap, piece.getColor(), l);
     }
 
     /**
@@ -206,6 +191,8 @@ public class EvaluationFunction {
 
                 Spot spot = l.board.getSpot(coordinate.x, coordinate.y);
 
+                if(spot == null)
+                    System.out.println("GGGG");
                 Piece piece = spot.getPiece();
 
                 movesEnemy.addAll(piece.allLegalMoves(l, spot, 0));

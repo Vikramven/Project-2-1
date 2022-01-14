@@ -1,6 +1,8 @@
 package dice_chess.Logic.DQN;
 
 import dice_chess.Board.Board;
+import dice_chess.Logic.AI.Algorithms.ExpectiMax;
+import dice_chess.Logic.AI.HelpersAI.Node;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.ExecuteMovesAI;
 import dice_chess.Logic.MoveLogic.Move;
@@ -65,17 +67,18 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
         if(action == 63 && actionSpace.size() == 0){
             logicGame.dl.rollDice(logicGame);
             logicGame.cp.changePlayer(logicGame);
+
             if(isDone()) {
                 logicGame.board.print();
                 logicGame.whiteWin++;
-                return new StepReply<>(logicGame, -10000, isDone(), "Skip");
+                return new StepReply<>(logicGame, -200, isDone(), "Skip");
             }
 
-            return new StepReply<>(logicGame, -5, isDone(), "Skip");
+            return new StepReply<>(logicGame, 0, isDone(), "Skip");
         }
 
         if(actionSpace.size() <= action){
-            return new StepReply<>(logicGame, -30, isDone(), "Illegal");
+            return new StepReply<>(logicGame, 0, isDone(), "Illegal");
         }
 
 
@@ -87,10 +90,9 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
         if(isDone() && logicGame.board.pieceMap.getAllPieces(2, !blackSide).size() == 0) {
             logicGame.board.print();
             logicGame.blackWin++;
-            reward += 10000;
         } else if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0 && isDone()) {
             logicGame.board.print();
-            reward += -10000;
+            reward += -200;
             logicGame.whiteWin++;
         }
 
@@ -109,8 +111,31 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
                 logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin, true), blackSide);
     }
 
+    private ExpectiMax em = new ExpectiMax();
+
     private double executeAction(Integer action){
         Move move = actionSpace.get(action);
+
+        Node node = new Node();
+
+        Node nodeMove = new Node(move, node);
+
+        LogicGame cloneLogic = logicGame.clone();
+
+        Node tmp = em.createTree(nodeMove, cloneLogic, !blackSide, cloneLogic.board, cloneLogic.dicePiece, logicGame.depth, false);
+
+        double cost = move.getCost();
+
+        while(!tmp.getParent().isRoot()) {
+            if(!tmp.isChanceNode()) {
+                if (tmp.getMove().getPiece().getColor() == blackSide)
+                    cost += tmp.getCost();
+                else
+                    cost -= tmp.getCost();
+            }
+
+            tmp = tmp.getParent();
+        }
 
         actionSpace = new ArrayList<>();
 
@@ -122,6 +147,6 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
         executeMovesAI.executeMovesAI(logicGame, move);
 
-        return move.getCost();
+        return cost;
     }
 }

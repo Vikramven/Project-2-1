@@ -115,7 +115,7 @@ public abstract class Piece implements PieceMove {
     public ArrayList<Move> checkPlayerMove(LogicGame l, Spot spot, boolean player, int evalFunction){
         if(spot.getPiece().getColor() == player){
 
-            return allLegalMoves(l, spot, evalFunction);
+            return allLegalMoves(l.clone(), spot, evalFunction);
         }
         return null;
     }
