@@ -84,7 +84,7 @@ public class ChangePlayer {
                 if(DQN_SIMULATION) return;
 
                 if(Q_LEARNER){
-
+                    QLearner.updateProbs();
                 }
 
                 if(l.GUI) {
