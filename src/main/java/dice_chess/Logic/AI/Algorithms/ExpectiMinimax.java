@@ -9,6 +9,7 @@ import dice_chess.Logic.AI.HelpersAI.SimulateMove;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Pieces.Piece;
+import static dice_chess.Constant.Constant.EVALUATION_FUNCTION_EXPECTI_MINIMAX;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -197,7 +198,7 @@ public class ExpectiMinimax{
 
             Piece piece = spot.getPiece();
 
-            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l, spot, player, 2);
+            ArrayList<Move> allMovesPiece = piece.checkPlayerMove(l, spot, player, EVALUATION_FUNCTION_EXPECTI_MINIMAX);
 
             if(allMovesPiece != null)
                 node.addChildren(allMovesPiece);

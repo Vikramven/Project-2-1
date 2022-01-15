@@ -26,6 +26,8 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     private ActionSpace as = new ActionSpace();
     private int gameCount = 0;
 
+    private final int MULTIPLIER = 100;
+
 
     public DiceChessGameMdp(LogicGame logicGame, boolean blackSide) {
         this.logicGame = logicGame;
@@ -47,8 +49,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
     @Override
     public LogicGame reset() {
-        logicGame = new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
-                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin, true);
+        logicGame = new LogicGame(new Board(), true);
         gameCount++;
 
         System.out.println("GAME #" + gameCount);
@@ -70,15 +71,15 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
             if(isDone()) {
                 logicGame.board.print();
-                logicGame.whiteWin++;
-                return new StepReply<>(logicGame, -200, isDone(), "Skip");
+                return new StepReply<>(logicGame, -500 * MULTIPLIER, isDone(), "Skip");
             }
 
-            return new StepReply<>(logicGame, 0, isDone(), "Skip");
+
+            return new StepReply<>(logicGame, -0.1 * MULTIPLIER, isDone(), "Skip");
         }
 
         if(actionSpace.size() <= action){
-            return new StepReply<>(logicGame, 0, isDone(), "Illegal");
+            return new StepReply<>(logicGame, -1 * MULTIPLIER, isDone(), "Illegal");
         }
 
 
@@ -89,15 +90,13 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
         if(isDone() && logicGame.board.pieceMap.getAllPieces(2, !blackSide).size() == 0) {
             logicGame.board.print();
-            logicGame.blackWin++;
         } else if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0 && isDone()) {
             logicGame.board.print();
-            reward += -200;
-            logicGame.whiteWin++;
+            reward += -500;
         }
 
 
-        return new StepReply<>(logicGame, reward, isDone(), "Move");
+        return new StepReply<>(logicGame, reward * MULTIPLIER, isDone(), "Move");
     }
 
     @Override
@@ -107,8 +106,7 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
     @Override
     public MDP<LogicGame, Integer, DiscreteSpace> newInstance() {
-        return new DiceChessGameMdp(new LogicGame(new Board(), logicGame.playerWhite.clone(), logicGame.playerBlack.clone(),
-                logicGame.AIwhite, logicGame.AIblack, logicGame.depth, logicGame.whiteWin, logicGame.blackWin, true), blackSide);
+        return new DiceChessGameMdp(new LogicGame(new Board(), true), blackSide);
     }
 
     private ExpectiMax em = new ExpectiMax();
@@ -122,19 +120,23 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
         LogicGame cloneLogic = logicGame.clone();
 
-        Node tmp = em.createTree(nodeMove, cloneLogic, !blackSide, cloneLogic.board, cloneLogic.dicePiece, logicGame.depth, false);
+        Node tmp = em.createTree(nodeMove, cloneLogic, !blackSide, cloneLogic.board, cloneLogic.dicePiece, 3, false);
 
         double cost = move.getCost();
 
-        while(!tmp.getParent().isRoot()) {
-            if(!tmp.isChanceNode()) {
-                if (tmp.getMove().getPiece().getColor() == blackSide)
-                    cost += tmp.getCost();
-                else
-                    cost -= tmp.getCost();
-            }
+        if(tmp != null) {
+            if(tmp.getParent() != null) {
+                while (!tmp.getParent().isRoot()) {
+                    if (!tmp.isChanceNode()) {
+                        if (tmp.getMove().getPiece().getColor() == blackSide)
+                            cost += tmp.getCost();
+                        else
+                            cost += -tmp.getCost();
+                    }
 
-            tmp = tmp.getParent();
+                    tmp = tmp.getParent();
+                }
+            }
         }
 
         actionSpace = new ArrayList<>();

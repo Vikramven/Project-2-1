@@ -16,6 +16,8 @@ import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static dice_chess.Constant.Constant.*;
+
 public class GameScene extends GUIMain {
 
     private Scene gameScene;
@@ -33,7 +35,6 @@ public class GameScene extends GUIMain {
     private ImageView diceImgViews;
     private Button passButton, backButton, rulesButton;
     private Label playerLabel = new Label("White" + " vs " + "Black");
-    public int whiteWin, blackWin = 0;
 
     public GameScene() {
         // Empty.
@@ -126,9 +127,16 @@ public class GameScene extends GUIMain {
 
         System.out.println("\n" + players[0] + " " + players[1]);
 
-        System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
+        PLAYER_WHITE = players[0];
+        PLAYER_BLACK = players[1];
+        AI_WHITE = AIWhite;
+        AI_BLACK = AIBlack;
+        DEPTH_BLACK = depth;
+        DEPTH_WHITE = depth;
+
+        DEBUG_GAME_SETTINGS = true;
         new LogicGame(board, buttonStateBoard, playerLabel,
-                diceImgViews, images, passButton, players[0], players[1], AIWhite, AIBlack, depth);
+                diceImgViews, images, passButton);
         gamePane.setCenter(boardPane);
     }
 

@@ -16,7 +16,6 @@ import dice_chess.Logic.MoveLogic.ExecuteMove;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Logic.RandomAgent.RandomAgent;
 import dice_chess.Pieces.*;
-import dice_chess.Players.Player;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -25,6 +24,8 @@ import javafx.stage.Stage;
 import org.deeplearning4j.rl4j.space.Encodable;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
+
+import static dice_chess.Constant.Constant.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,10 +37,6 @@ public class LogicGame extends GUIMain implements Encodable {
 
     // All legal possible moves
     public ArrayList<Move> allLegalMoves = null;
-
-    // Player
-    public Player playerWhite;
-    public Player playerBlack;
 
     public boolean blackMove = false;
 
@@ -67,18 +64,7 @@ public class LogicGame extends GUIMain implements Encodable {
     // Boolean that allows other methods to know whether we have a winner or not
     public boolean winFlag = false;
 
-
-    public int AIwhite;
-
-    public int AIblack;
-
-    public int depth;
-
     public boolean GUI = true;
-
-    public int whiteWin;
-
-    public int blackWin;
 
 
     //Parts of logic
@@ -94,22 +80,35 @@ public class LogicGame extends GUIMain implements Encodable {
     public final ExpectiMinimax expectiMinimax = new ExpectiMinimax();
     public final RandomAgent randomAgent = new RandomAgent();
 
-    public LogicGame(Board board, Player playerWhite, Player playerBlack, int AIwhite,
-                     int AIblack, int depth, int whiteWin, int blackWin, boolean DEBUG){
+    private void checkGameSettings(){
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~" + "\n");
+        System.out.println("WHITE:");
+        System.out.println("PLAYER is human: " + PLAYER_WHITE.isHuman());
+        System.out.println("AI: " + AI_WHITE);
+        System.out.println("Depth: " + DEPTH_WHITE + "\n");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~" + "\n");
+        System.out.println("BLACK:");
+        System.out.println("PLAYER is human: " + PLAYER_BLACK.isHuman());
+        System.out.println("AI: " + AI_BLACK);
+        System.out.println("Depth: " + DEPTH_BLACK + "\n");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~" + "\n");
+        System.out.println("EVALUATION FUNCTIONS FOR AI");
+        System.out.println("EXPECTI_MAX = " + EVALUATION_FUNCTION_EXPECTI_MAX + "\n");
+        System.out.println("EXPECTI_MINIMAX = " + EVALUATION_FUNCTION_EXPECTI_MINIMAX + "\n");
+        System.out.println("MINIMAX = " + EVALUATION_FUNCTION_MINIMAX + "\n");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~" + "\n");
+    }
+
+    public LogicGame(Board board, boolean notCLONE){
         this.board = board;
-        this.playerWhite = playerWhite;
-        this.playerBlack = playerBlack;
-        this.AIwhite = AIwhite;
-        this.AIblack = AIblack;
-        this.depth = depth;
-        this.whiteWin = whiteWin;
-        this.blackWin = blackWin;
         this.GUI = false;
 
-        if(DEBUG) {
-            System.out.println("White AI = " + AIwhite);
-            System.out.println("Black AI = " + AIblack);
-            System.out.println("White: " + whiteWin + " ++++ " + "Black: " + blackWin);
+        if(notCLONE) {
+
+            if(DEBUG_GAME_SETTINGS) {
+                checkGameSettings();
+                DEBUG_GAME_SETTINGS = false;
+            }
 
             //Set Up the game = roll dice and set an action to the pass button
             setUpGame();
@@ -129,22 +128,18 @@ public class LogicGame extends GUIMain implements Encodable {
      * @param passButton Pass button (Change the player move)
      */
     public LogicGame(Board board, Button[][] buttonBoard, Label playerPass,
-                     ImageView diceImgViews, ArrayList<Image> images, Button passButton, Player playerWhite, Player playerBlack, int AIwhite,
-                     int AIblack, int depth) {
+                     ImageView diceImgViews, ArrayList<Image> images, Button passButton) {
         this.board = board;
         this.buttonBoard = buttonBoard;
         this.playerPass = playerPass;
         this.diceImgViews = diceImgViews;
         this.images = images;
         this.passButton = passButton;
-        this.playerWhite = playerWhite;
-        this.playerBlack = playerBlack;
-        this.AIwhite = AIwhite;
-        this.AIblack = AIblack;
-        this.depth = depth;
 
-        System.out.println("White AI = " + AIwhite);
-        System.out.println("Black AI = " + AIblack);
+        if(DEBUG_GAME_SETTINGS){
+            checkGameSettings();
+            DEBUG_GAME_SETTINGS = false;
+        }
 
         //Set Up the game = roll dice and set an action to the pass button
         setUpGame();
@@ -224,19 +219,30 @@ public class LogicGame extends GUIMain implements Encodable {
 
         //If the white is the AI player, when we run the AI algorithms
         //AI move
-        if(!playerWhite.isHuman()) {
+        if(!PLAYER_WHITE.isHuman()) {
             Move AImove = null;
             //System.out.println("White AI");
-            if(AIwhite == 1)
-                AImove = expectimax.calculateBestMoves(clone(), depth);
-            else if(AIwhite == 0)
-                AImove = randomAgent.executeRandomMove(clone(), dicePiece, blackMove);
-            else if(AIwhite == 2)
-                AImove = miniMax.calculateBestMoves(clone(), depth);
-            else if(AIwhite == 4)
-                AImove = expectiMinimax.calculateBestMoves(clone(), depth);
+            switch (AI_WHITE) {
+                case 0 : {
+                    AImove = randomAgent.executeRandomMove(clone(), dicePiece, blackMove);
+                    break;
+                }
+                case 1 : {
+                    AImove = expectimax.calculateBestMoves(clone(), DEPTH_WHITE);
+                    break;
+                }
+                case 2 : {
+                    AImove = miniMax.calculateBestMoves(clone(), DEPTH_WHITE);
+                    break;
+                }
+                case 4 : {
+                    AImove = expectiMinimax.calculateBestMoves(clone(), DEPTH_WHITE);
+                    break;
+                }
+            }
 
             if(AImove != null) {
+                TOTAL_STEP_WHITE_IN_THE_GAME++;
                 executeMovesAI.executeMovesAI(this, AImove);
             } else {
                 dl.rollDice(this);
@@ -280,8 +286,7 @@ public class LogicGame extends GUIMain implements Encodable {
     public LogicGame clone(){
         Board newBoard = board.clone();
 
-        LogicGame cloneLogicGame = new LogicGame(newBoard, playerWhite.clone(), playerBlack.clone(),
-                AIwhite, AIblack, depth, whiteWin, blackWin, false);
+        LogicGame cloneLogicGame = new LogicGame(newBoard, false);
 
         cloneLogicGame.dicePiece = dicePiece;
 
@@ -319,21 +324,19 @@ public class LogicGame extends GUIMain implements Encodable {
 
     @Override
     public boolean isSkipped() {
-        System.out.println("SSSSSSSSSSSSSSSSS");
+        System.out.println("isSKipped was called");
         ArrayList<Move> tmp = new ActionSpace().actionSpace(this, blackMove);
         return tmp.size() == 0;
     }
 
     @Override
     public INDArray getData() {
-//        System.out.println(Nd4j.create(toArray()));
         return Nd4j.create(toArray());
     }
 
     @Override
-    public Encodable dup() { //TODO
-        System.out.println("GGGGGGGGGGGGGG");
-        return new LogicGame(new Board(), playerWhite.clone(), playerBlack.clone(),
-                AIwhite, AIblack, depth, whiteWin, blackWin, false);
+    public Encodable dup() {
+        System.out.println("Dup was called");
+        return new LogicGame(new Board(), false);
     }
 }

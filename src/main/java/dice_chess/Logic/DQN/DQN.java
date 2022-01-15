@@ -25,22 +25,20 @@ import java.io.IOException;
 public class DQN {
 
 
-    public DQN(int AI, String text) throws IOException {
-
-        int stepPerEpoch = 16;
+    public DQN(String text) throws IOException {
 
         QLearningConfiguration qConfig = QLearningConfiguration.builder()
                 .seed(123L)
-                .maxEpochStep(900)
-                .maxStep(900000)
+                .maxEpochStep(200)
+                .maxStep(300000)
                 .batchSize(32)
                 .targetDqnUpdateFreq(100)
                 .updateStart(10)
                 .rewardFactor(1.0)
                 .gamma(0.99)
-                .errorClamp(100.0)
+                .errorClamp(1.0)
                 .minEpsilon(0.1f)
-                .epsilonNbStep(10)
+                .epsilonNbStep(10000)
                 .doubleDQN(true)
                 .build();
 
@@ -53,7 +51,8 @@ public class DQN {
 
 
         Board board = new Board();
-        LogicGame logicGame = new LogicGame(board, new AI(false), new Human(true), AI, 3, 3, 0, 0, true);
+
+        LogicGame logicGame = new LogicGame(board, true);
 
         DiceChessGameMdp mdp = new DiceChessGameMdp(logicGame, true);
 
