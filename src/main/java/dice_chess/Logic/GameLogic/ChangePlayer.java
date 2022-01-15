@@ -1,6 +1,7 @@
 package dice_chess.Logic.GameLogic;
 import dice_chess.Board.Board;
 import dice_chess.GUI.GameScene;
+import dice_chess.Logic.Hybrid.QLearner;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.TestSimulations.GameInfo;
@@ -33,6 +34,10 @@ public class ChangePlayer {
                 }
 
                 if(DQN_SIMULATION) return;
+
+                if(Q_LEARNER){
+                    QLearner.updateProbs();
+                }
 
                 if(l.GUI) {
                     if (PLAYER_WHITE.isHuman()) {
@@ -77,6 +82,10 @@ public class ChangePlayer {
                 }
 
                 if(DQN_SIMULATION) return;
+
+                if(Q_LEARNER){
+
+                }
 
                 if(l.GUI) {
                     if (PLAYER_BLACK.isHuman()) {

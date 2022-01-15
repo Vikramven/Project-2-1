@@ -7,6 +7,8 @@ import dice_chess.Logic.AI.HelpersAI.SimulateMove;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Pieces.Piece;
+import dice_chess.Logic.Hybrid.Tuple;
+import dice_chess.Logic.Hybrid.QLearner;
 import static dice_chess.Constant.Constant.EVALUATION_FUNCTION_EXPECTI_MAX;
 
 import java.util.ArrayList;
@@ -38,6 +40,9 @@ public class ExpectiMax{
 
 
         while(!bestMove.getParent().isRoot()) {
+            //sequence of moves create tuples fo rthem
+            Tuple t = new Tuple(bestMove.getMove(), l, bestMove.getMove().getPiece().getColor()) ;//I NEED THE PLAYER!!!!
+            QLearner.storeTuple(t);
             bestMove = bestMove.getParent();
         }
 

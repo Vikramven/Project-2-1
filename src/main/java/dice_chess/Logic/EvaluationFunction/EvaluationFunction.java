@@ -1,14 +1,16 @@
 package dice_chess.Logic.EvaluationFunction;
-
+import dice_chess.Logic.AI.HelpersAI.Node;
 import dice_chess.Board.*;
 import dice_chess.Board.PieceMap;
+import dice_chess.Logic.Hybrid.QLearner;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Pieces.*;
+import dice_chess.Logic.Hybrid.Tuple;
 
-import java.util.ArrayList;
+import java.lang.management.MonitorInfo;
 import java.util.LinkedList;
-
+import java.util.ArrayList;
 public class EvaluationFunction {
 
     private double[][] costDynamic;
@@ -36,6 +38,8 @@ public class EvaluationFunction {
             cost = firstEvaluationApproach(x, y, piece.getNameInt(), black);
         } else if (evalFun == 2){
             cost = secondEvaluationApproach(l.clone(), piece, x, y, moveX, moveY);
+        } else if( evalFun == 3) {
+            cost = assignProb(l, black, x, y, moveX, moveY, piece);
         }
 
         return cost;
@@ -209,5 +213,24 @@ public class EvaluationFunction {
      */
     private int compSideDiff(int iniSideScore, int finSideScore) {
         return (iniSideScore - finSideScore);
+    }
+
+
+//COST OF ONE INDIVIDUAL MOVE
+     public double assignProb(LogicGame l, boolean playerB, int x, int y , int moveX, int moveY, Piece piece) {
+        double cost = secondEvaluationApproach(l.clone(), piece, x, y, moveX, moveY);
+        Move m = new Move(x, y, piece, cost, moveX, moveY);
+        char colour;
+         if ( playerB) {
+             colour = 'B';
+         }
+         else{
+             colour= 'W';
+         }
+        Tuple t = new Tuple(l.toArray(),Tuple.createAction(m, colour), cost  );
+         ArrayList<Move> allLegalMoves = piece.allLegalMoves(l, new Spot(x, y, piece), 0);
+         double probability = QLearner.lookUpProb(t, allLegalMoves.size());
+
+        return probability;
     }
 }
