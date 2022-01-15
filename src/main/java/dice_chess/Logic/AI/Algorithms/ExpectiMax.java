@@ -10,6 +10,7 @@ import dice_chess.Pieces.Piece;
 import dice_chess.Logic.Hybrid.Tuple;
 import dice_chess.Logic.Hybrid.QLearner;
 import static dice_chess.Constant.Constant.EVALUATION_FUNCTION_EXPECTI_MAX;
+import static dice_chess.Constant.Constant.Q_LEARNER;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -39,10 +40,13 @@ public class ExpectiMax{
             return null;
 
 
+
         while(!bestMove.getParent().isRoot()) {
             //sequence of moves create tuples fo rthem
-            Tuple t = new Tuple(bestMove.getMove(), l, bestMove.getMove().getPiece().getColor()) ;//I NEED THE PLAYER!!!!
-            QLearner.storeTuple(t);
+            if (Q_LEARNER) {
+                Tuple t = new Tuple(bestMove.getMove(), l, bestMove.getMove().getPiece().getColor());//I NEED THE PLAYER!!!!
+                QLearner.storeTuple(t);
+            }
             bestMove = bestMove.getParent();
         }
 
