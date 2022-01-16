@@ -229,7 +229,8 @@ public class EvaluationFunction {
          }
         Tuple t = new Tuple(l.toArray(),Tuple.createAction(m, colour), cost  );
          ArrayList<Move> allLegalMoves = piece.allLegalMoves(l, new Spot(x, y, piece), 0);
-         double probability = QLearner.lookUpProb(t, allLegalMoves.size());
+
+         double probability = new QLearner(0.9).lookUpProb(t, allLegalMoves.size());
 
         return probability;
     }

@@ -36,7 +36,7 @@ public class ChangePlayer {
                 if(DQN_SIMULATION) return;
 
                 if(Q_LEARNER){
-                    QLearner.updateProbs();
+                    new QLearner(GAMMA).updateProbs();
                 }
 
                 if(l.GUI) {
@@ -84,7 +84,7 @@ public class ChangePlayer {
                 if(DQN_SIMULATION) return;
 
                 if(Q_LEARNER){
-                    QLearner.updateProbs();
+                    new QLearner(GAMMA).updateProbs();
                 }
 
                 if(l.GUI) {
@@ -138,6 +138,9 @@ public class ChangePlayer {
             case 4 : {
                 AImove = l.expectiMinimax.calculateBestMoves(l.clone(), DEPTH_WHITE);
                 break;
+            }
+            case 5 :{
+                AImove = l.expectimax.calculateBestMoves(l.clone(), DEPTH_WHITE);
             }
         }
         return AImove;

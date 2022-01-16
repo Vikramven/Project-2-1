@@ -25,11 +25,13 @@ public class RunWithoutGUI {
     1 Expecti max
     2 Minimax
     4 Expecti minimax
+    5 QLearner
 
     Evaluation Function:
     0 - no evaluation at all
     1 - first old evaluation
     2 - Shannon evaluation
+    3 - Probabilities
      */
     private static void setUpSettings(){
         AI_SIMULATIONS = true;
@@ -38,17 +40,18 @@ public class RunWithoutGUI {
 
         PLAYER_WHITE = new AI(false);
         DEPTH_WHITE = 3;
-        AI_WHITE = 1;
+        AI_WHITE = 4;
 
 
         PLAYER_BLACK = new AI(true);
         DEPTH_BLACK = 3;
-        AI_BLACK = 2;
+        //black qlearn
+        AI_BLACK = 5;
 
 
         EVALUATION_FUNCTION_MINIMAX = 1;
 
-        EVALUATION_FUNCTION_EXPECTI_MAX = 2;
+        EVALUATION_FUNCTION_EXPECTI_MAX = 3;
 
         EVALUATION_FUNCTION_EXPECTI_MINIMAX = 2;
     }

@@ -35,6 +35,15 @@ public class Tuple {
 
     }
 
+    public String sToString(){
+        String string= "";
+
+        for( int i = 0; i< this.state.length; i ++ ){
+            string.concat(String.valueOf(this.state[i]));
+        }
+        return string;
+    }
+
 
 
 

@@ -1,6 +1,8 @@
 package dice_chess.Logic.Hybrid;
 
 import dice_chess.Logic.AI.HelpersAI.Node;
+import dice_chess.Logic.LogicGame;
+import dice_chess.Logic.MoveLogic.Move;
 
 import java.util.LinkedList;
 
@@ -18,13 +20,13 @@ public class QLearner{
     Loooking/storing orob
     Updating them
      */
-
+    static HashMapDB hm = new HashMapDB();
     //gamma param; learning discounted rate
-    public static int gamma;
+    public static double gamma;
 
-    public static LinkedList<Tuple> sequence;
+    public static LinkedList<Tuple> sequence = new LinkedList<Tuple>();
 
-    public QLearner( int gamma ){
+    public QLearner( double gamma ){
 
         this.gamma = gamma;
     }
@@ -33,48 +35,58 @@ public class QLearner{
         sequence.add(tuple);
     }
 
+
 // when backpropagating the error,
     //get the probs of all moves done
-    public static double[] lookUpProbs(LinkedList<Tuple> futureNodes){
+    public double[] lookUpProbs(LinkedList<Tuple> futureNodes){
         double [] probs = new double[futureNodes.size()];
         for (int i = 0; i <futureNodes.size(); i++ ){
-            //Create tuples for each future Node
-
+            probs[i] = hm.getprobability(futureNodes.get(i).sToString(), futureNodes.get(i).action);
             //for every futureNodes.get(i) look up in DB
             //probs[i]
         }
         return probs;
     }
+
+
     // look up prob of a unique (s,a)
-    public static double lookUpProb(Tuple t, int f){
-        //Look up in DB if prob is in DB
-        double prob = 0.0;
-       /* if (prob == null){
+    public double lookUpProb(Tuple t, int f){
+        double prob ;
+
+        if ( !hm.checkForSAPair(t.sToString(), t.action)){
+            //apply uniform dist with #legal moves
             prob = 1/f;
-            //save the tuple in DB
+            hm.updateMap(t.sToString(), t.action, prob);
+        } else {
+            prob = hm.getprobability(t.sToString(), t.action);
         }
 
-        */
         return prob;
     }
 
-    public static void updateProbs (){
+    public void updateProbs (){
         //get sequence of tuples
         //one by one check them in DB and get reward and prob
         double [] loss = new double[sequence.size()];
         double [] probs = lookUpProbs(sequence);
-        for (int i = sequence.size(); i > 0; i--){
+        for (int i = sequence.size() -1; i > 0; i--){
             //its a weighted sum of discount rewards
             //start at the end of sequence
-            loss[i] = - java.lang.Math.log(probs[i]) * (gamma^i ) * sequence.get(i).reward;
-            applyUpdate(loss[i]);
+            //TODO TEsting if good results to the power of only with int??
+            loss[i] = - java.lang.Math.log(probs[i]) * ((int)gamma ^i ) * sequence.get(i).reward;
+            applyUpdate(loss[i], sequence.get(i));
         }
 
     }
 
-    public static void applyUpdate(double loss){
+    public static void applyUpdate(double loss, Tuple t){
         //retrive the old prob + loss and store new prob in DB
+            double prob = hm.getprobability(t.sToString(), t.action);
+            double newP = prob + loss;
             // this is the new prob. Change it to DB.
+
+        //is it updtaeMap and updateTExt?
+            hm.updateMap(t.sToString(), t.action, newP);
 
     }
 

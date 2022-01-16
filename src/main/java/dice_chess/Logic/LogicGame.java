@@ -7,6 +7,7 @@ import dice_chess.GUI.IntroScene;
 import dice_chess.Logic.AI.Algorithms.ExpectiMax;
 import dice_chess.Logic.AI.Algorithms.ExpectiMinimax;
 import dice_chess.Logic.DQN.ActionSpace;
+import dice_chess.Logic.Hybrid.QLearner;
 import dice_chess.Logic.MoveLogic.ExecuteMovesAI;
 import dice_chess.Logic.AI.Algorithms.MiniMax;
 import dice_chess.Logic.GameLogic.ChangePlayer;
@@ -78,6 +79,7 @@ public class LogicGame extends GUIMain implements Encodable {
     public final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
     public final ExpectiMax expectimax = new ExpectiMax();
     public final ExpectiMinimax expectiMinimax = new ExpectiMinimax();
+    public final QLearner qLearner = new QLearner( 0.9);
     public final RandomAgent randomAgent = new RandomAgent();
 
     private void checkGameSettings(){
@@ -96,6 +98,7 @@ public class LogicGame extends GUIMain implements Encodable {
         System.out.println("EXPECTI_MAX = " + EVALUATION_FUNCTION_EXPECTI_MAX + "\n");
         System.out.println("EXPECTI_MINIMAX = " + EVALUATION_FUNCTION_EXPECTI_MINIMAX + "\n");
         System.out.println("MINIMAX = " + EVALUATION_FUNCTION_MINIMAX + "\n");
+
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~" + "\n");
     }
 
@@ -235,10 +238,16 @@ public class LogicGame extends GUIMain implements Encodable {
                     AImove = miniMax.calculateBestMoves(clone(), DEPTH_WHITE);
                     break;
                 }
+
                 case 4 : {
                     AImove = expectiMinimax.calculateBestMoves(clone(), DEPTH_WHITE);
                     break;
                 }
+                case 5 :{
+                    AImove = expectimax.calculateBestMoves(clone(), DEPTH_WHITE);
+                    break;
+                }
+
             }
 
             if(AImove != null) {
