@@ -4,6 +4,7 @@ import dice_chess.GUI.GameScene;
 import dice_chess.Logic.Hybrid.QLearner;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
+import dice_chess.TestSimulations.ExcelWriter;
 import dice_chess.TestSimulations.GameInfo;
 import javafx.stage.Stage;
 
@@ -170,12 +171,10 @@ public class ChangePlayer {
             mainStage.setScene(gameSc.getGameScene());
             mainStage.setFullScreen(true);
             mainStage.setResizable(false);
-        } else {
-            new LogicGame(new Board(), true);
         }
     }
 
-    private void showGameResult(boolean blackWins){
+    private void showGameResult(boolean blackWins) {
         GAME_COUNTER++;
         BLACK_WINS = blackWins;
         System.out.println("~~~~~~~~~~~~~~~~~~~ GAME NUMBER# " + GAME_COUNTER + "~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -187,6 +186,7 @@ public class ChangePlayer {
             TOTAL_WIN_WHITE++;
         }
 
+
         System.out.println("WHITE steps in the game: " + TOTAL_STEP_WHITE_IN_THE_GAME);
 
         System.out.println("BLACK steps in the game: " + TOTAL_STEP_BLACK_IN_THE_GAME);
@@ -195,7 +195,16 @@ public class ChangePlayer {
 
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-        if(AI_SIMULATIONS) LIST_GAMES.add(new GameInfo(TOTAL_STEP_WHITE_IN_THE_GAME, TOTAL_STEP_BLACK_IN_THE_GAME, BLACK_WINS));
+        if(AI_SIMULATIONS) LIST_GAMES.add(new GameInfo(GAME_COUNTER, TOTAL_STEP_WHITE_IN_THE_GAME, TOTAL_STEP_BLACK_IN_THE_GAME, BLACK_WINS));
+
+        if(GAME_COUNTER == 1000 && AI_SIMULATIONS) {
+            try {
+                new ExcelWriter().writeExcel();
+                System.exit(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         TOTAL_STEP_BLACK_IN_THE_GAME = 0;
 

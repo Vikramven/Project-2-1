@@ -1,6 +1,7 @@
 package dice_chess.Logic.DQN;
 
 import dice_chess.Board.Board;
+import dice_chess.Board.Coordinate;
 import dice_chess.Logic.AI.Algorithms.ExpectiMax;
 import dice_chess.Logic.AI.HelpersAI.Node;
 import dice_chess.Logic.LogicGame;
@@ -14,6 +15,7 @@ import org.deeplearning4j.rl4j.space.ObservationSpace;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> {
 
@@ -25,13 +27,15 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     private ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
     private ActionSpace as = new ActionSpace();
     private int gameCount = 0;
+    private int[][] arrayCoordinate;
 
     private final int MULTIPLIER = 100;
 
 
-    public DiceChessGameMdp(LogicGame logicGame, boolean blackSide) {
+    public DiceChessGameMdp(LogicGame logicGame, boolean blackSide, int[][] arrayCoordinate) {
         this.logicGame = logicGame;
         this.blackSide = blackSide;
+        this.arrayCoordinate = arrayCoordinate;
         gameArrayObservationSpace = new ArrayObservationSpace<>(new int[]{65});
     }
 
@@ -65,38 +69,64 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
     @Override
     public StepReply<LogicGame> step(Integer action) {
 
-        if(action == 63 && actionSpace.size() == 0){
-            logicGame.dl.rollDice(logicGame);
-            logicGame.cp.changePlayer(logicGame);
+        int x = arrayCoordinate[action][0];
+        int y = arrayCoordinate[action][1];
 
-            if(isDone()) {
-                logicGame.board.print();
-                return new StepReply<>(logicGame, -500 * MULTIPLIER, isDone(), "Skip");
+
+
+        if(actionSpace.size() == 0) {
+            LinkedList<Coordinate> coordinatesPiece = logicGame.board.pieceMap.getAllPieces(logicGame.dicePiece, blackSide);
+
+            if (coordinatesPiece.size() == 0) {
+                logicGame.dl.rollDice(logicGame);
+                logicGame.cp.changePlayer(logicGame);
+
+                if(isDone()){
+                    logicGame.board.print();
+                    return new StepReply<>(logicGame, 0, isDone(), "Skip");
+                }
+
+                return new StepReply<>(logicGame, 0, isDone(), "Skip");
             }
 
-
-            return new StepReply<>(logicGame, -0.1 * MULTIPLIER, isDone(), "Skip");
+            for (int i = 0; i < coordinatesPiece.size(); i++) {
+                Coordinate pieceCord = coordinatesPiece.get(i);
+                if(pieceCord.x == x && pieceCord.y == y) {
+                    logicGame.dl.rollDice(logicGame);
+                    logicGame.cp.changePlayer(logicGame);
+                    if(isDone()){
+                        logicGame.board.print();
+                        return new StepReply<>(logicGame, 0, isDone(), "Skip");
+                    }
+                    return new StepReply<>(logicGame, 0, isDone(), "Skip");
+                }
+            }
         }
 
-        if(actionSpace.size() <= action){
-            return new StepReply<>(logicGame, -1 * MULTIPLIER, isDone(), "Illegal");
+        Move executiveMove = null;
+        for (int i = 0; i < actionSpace.size(); i++) {
+            Move move = actionSpace.get(i);
+            if(move.getX() == x && move.getY() == y) {
+                executiveMove = move;
+                break;
+            }
         }
 
+        if(executiveMove == null){
+            return new StepReply<>(logicGame, -2, isDone(), "Illegal");
+        }
 
-//        logicGame.board.print();
+        double reward = executeAction(executiveMove);
 
-
-        double reward = executeAction(action);
 
         if(isDone() && logicGame.board.pieceMap.getAllPieces(2, !blackSide).size() == 0) {
             logicGame.board.print();
         } else if(logicGame.board.pieceMap.getAllPieces(2, blackSide).size() == 0 && isDone()) {
             logicGame.board.print();
-            reward += -500;
         }
 
 
-        return new StepReply<>(logicGame, reward * MULTIPLIER, isDone(), "Move");
+        return new StepReply<>(logicGame, reward, isDone(), "Move");
     }
 
     @Override
@@ -106,13 +136,12 @@ public class DiceChessGameMdp implements MDP<LogicGame, Integer, DiscreteSpace> 
 
     @Override
     public MDP<LogicGame, Integer, DiscreteSpace> newInstance() {
-        return new DiceChessGameMdp(new LogicGame(new Board(), true), blackSide);
+        return new DiceChessGameMdp(new LogicGame(new Board(), true), blackSide, arrayCoordinate);
     }
 
     private ExpectiMax em = new ExpectiMax();
 
-    private double executeAction(Integer action){
-        Move move = actionSpace.get(action);
+    private double executeAction(Move move){
 
         Node node = new Node();
 

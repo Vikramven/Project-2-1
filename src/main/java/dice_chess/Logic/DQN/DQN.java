@@ -29,8 +29,8 @@ public class DQN {
 
         QLearningConfiguration qConfig = QLearningConfiguration.builder()
                 .seed(123L)
-                .maxEpochStep(200)
-                .maxStep(300000)
+                .maxEpochStep(10000)
+                .maxStep(1000000)
                 .batchSize(32)
                 .targetDqnUpdateFreq(100)
                 .updateStart(10)
@@ -43,10 +43,12 @@ public class DQN {
                 .build();
 
 
+
+
         DQNDenseNetworkConfiguration conf = DQNDenseNetworkConfiguration.builder()
                 .updater(new Adam(0.7))
-                .numHiddenNodes(65)
-                .numLayers(3)
+                .numHiddenNodes(120)
+                .numLayers(4)
                 .build();
 
 
@@ -54,7 +56,9 @@ public class DQN {
 
         LogicGame logicGame = new LogicGame(board, true);
 
-        DiceChessGameMdp mdp = new DiceChessGameMdp(logicGame, true);
+        int[][] arrayCoordinate = createArrayCoordinates();
+
+        DiceChessGameMdp mdp = new DiceChessGameMdp(logicGame, true, arrayCoordinate);
 
         IDataManager dataManager = new DataManager(true);
 
@@ -72,5 +76,17 @@ public class DQN {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private int[][] createArrayCoordinates(){
+        int[][] array = new int[64][2];
+        int point = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                array[point][0] = i;
+                array[point++][1] = j;
+            }
+        }
+        return array;
     }
 }

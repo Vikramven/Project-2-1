@@ -26,11 +26,11 @@ public class Constant {
 
     public static int EVALUATION_FUNCTION_MINIMAX = 1;
 
-    public static int EVALUATION_FUNCTION_EXPECTI_MAX = 3;
+    public static int EVALUATION_FUNCTION_EXPECTI_MAX = 2;
 
     public static int EVALUATION_FUNCTION_EXPECTI_MINIMAX = 3;
 
-    public static boolean GAME_TRACKER = false;
+    public static boolean GAME_TRACKER = true;
 
     public static int TOTAL_STEP_WHITE_IN_THE_GAME = 0;
 
@@ -48,7 +48,7 @@ public class Constant {
 
     public static LinkedList<GameInfo> LIST_GAMES = new LinkedList<>();
 
-    public static boolean Q_LEARNER = true ;
+    public static boolean Q_LEARNER = false;
 
     public static double GAMMA = 0.9;
 
