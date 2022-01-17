@@ -18,25 +18,16 @@ If 'pawn' is the roll result, the player has the freedom to choose whichever pie
 ## Run Procedures
 
 #### Run from Terminal/Command Line
-    [Previous Gradle Build]
     (If you have a Gradle distribution installed in your PC/VM)
     - Assure the 'gradle-[version]' bin directory is added to path
     - Navigate to 'Project_2_1', where 'build.gradle' is located
     - Type 'gradle run' as a command
-
-    [Current Maven Build]
-    (If you have Apache Maven installed in your PC/VM)
-    - Navigate to 'Project_2_1', where 'pom.xml' is located
-    - Type 'mvn install' as a command
-    - Ready to run (use the javafx:run functionality)
-    NOTE: Might be useful to 'mvn clean install' in between runs.
     
 #### Run JAR file
     - Open the console
     - Run the command java -jar Project-Game.jar
 
 #### Run from IntelliJ IDE
-    [Previous Gradle Build]
     - Select 'Edit Configurations' next to the 'run' green arrow
     - Select 'Add New Configuration', using the '+' symbol.
     - Select 'Gradle'
@@ -46,12 +37,3 @@ If 'pawn' is the roll result, the player has the freedom to choose whichever pie
     - 'Apply' followed by 'OK'
     - Ready to run
 
-    [Current Maven Build]
-    - Trust project and load Maven modules
-    - Select the Maven actions section -> top right 
-    (if it isn't showing, close and reopen your IntelliJ IDE)
-    - Under Project_2_1\Lifecycle, click on '(mvn) install'
-    - Ready to run
-    - To run: Under Project_2_1\Plugins\javafx, click on 'javafx:run'
-    NOTE 1: The program will take a few seconds to be built and should be ready afterwards.
-    NOTE 2: Might be useful to 'mvn clean install' in between runs.
