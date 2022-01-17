@@ -50,7 +50,7 @@ public class ExpectiMax{
                         System.out.println("best move is null ");
                     }else {
                         Tuple t = new Tuple(bestMove.getMove(), l, bestMove.getMove().getPiece().getColor());//I NEED THE PLAYER!!!!
-                        new QLearner(GAMMA).storeTuple(t);
+                        ql.storeTuple(t);
                     }
 
                 }

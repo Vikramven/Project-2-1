@@ -1,5 +1,6 @@
 package dice_chess.Constant;
 
+import dice_chess.Logic.Hybrid.QLearner;
 import dice_chess.Players.Human;
 import dice_chess.Players.Player;
 import dice_chess.TestSimulations.GameInfo;
@@ -50,5 +51,9 @@ public class Constant {
     public static boolean Q_LEARNER = true ;
 
     public static double GAMMA = 0.9;
+
+    public static QLearner ql = new QLearner(GAMMA);
+
+    public static boolean QDEBUG = false;
 
 }

@@ -1,15 +1,19 @@
 package dice_chess.Logic.EvaluationFunction;
 import dice_chess.Logic.AI.HelpersAI.Node;
+
+import static dice_chess.Constant.Constant.*;
 import dice_chess.Board.*;
 import dice_chess.Board.PieceMap;
-import dice_chess.Logic.Hybrid.QLearner;
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Pieces.*;
 import dice_chess.Logic.Hybrid.Tuple;
 
+
 import java.lang.management.MonitorInfo;
+import java.lang.reflect.Array;
 import java.util.LinkedList;
+
 import java.util.ArrayList;
 public class EvaluationFunction {
 
@@ -228,9 +232,14 @@ public class EvaluationFunction {
              colour= 'W';
          }
         Tuple t = new Tuple(l.toArray(),Tuple.createAction(m, colour), cost  );
-         ArrayList<Move> allLegalMoves = piece.allLegalMoves(l, new Spot(x, y, piece), 0);
 
-         double probability = new QLearner(0.9).lookUpProb(t, allLegalMoves.size());
+         ArrayList<Move> moves = new ArrayList<Move>();
+         LinkedList<Coordinate> listCoordinate = l.board.pieceMap.getAllPieces(piece.getNameInt(), piece.getColor());
+         for (int i = 0; i < listCoordinate.size(); i++) {
+             Coordinate coorPiece = listCoordinate.get(i);
+             moves.addAll(piece.allLegalMoves(l, new Spot(coorPiece.x, coorPiece.y, piece), 0));
+         }
+         double probability = ql.lookUpProb(t, moves.size());
 
         return probability;
     }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Knight extends Piece {
 
-    //TODO improve this in the PHASE 3
+
     private final int[][] blackCost = {{0, 0, 0, 15, 15, 0, 0, 0},
                                  {0, 15, 15, 0, 0, 15, 15, 0},
                             {0, 0, 10, 10, 10, 10, 0, 0},

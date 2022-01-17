@@ -1,12 +1,13 @@
 package dice_chess.Logic.Hybrid;
 
 import com.sun.jna.platform.win32.OaIdl;
-
+import dice_chess.Constant.Constant;
 import java.util.LinkedList;
 
 import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.Pieces.Piece;
+import org.nd4j.shade.protobuf.StringValue;
 
 public class Tuple {
 
@@ -36,12 +37,20 @@ public class Tuple {
     }
 
     public String sToString(){
-        String string= "";
-
+        //String string= "";
+        StringBuilder s = new StringBuilder(this.state.length);
+        boolean firstIter = true;
         for( int i = 0; i< this.state.length; i ++ ){
-            string.concat(String.valueOf(this.state[i]));
+            if (firstIter){
+                s.append("[");
+                firstIter= false;
+            } else {
+                s.append(",");
+            }
+            s.append(this.state[i]);
         }
-        return string;
+        s.append("]");
+        return s.toString();
     }
 
 
@@ -50,14 +59,28 @@ public class Tuple {
     public static String createAction(Move move, char colour){
         //action representation
         Piece piece = move.getPiece();
-        char name = piece.getName().charAt(0);
+        String name = piece.getName().substring(0, 2);
+
+       /*
+       if (Constant.QDEBUG){
+            System.out.println("name of piece :" + name );
+        }
+
+        */
         int xCoor = move.getPieceSpotX();
         int yCoor = move.getPieceSpotY();
         int xFuture = move.getX();
         int yFuture = move.getY();
-        String action = String.valueOf(colour + name);
+        String action = colour + name;
 
         action = action + xCoor + yCoor + xFuture + yFuture;
+
+        /*
+        if (Constant.QDEBUG){
+            System.out.println("name of action :" + action);
+        }
+
+         */
         return action;
     }
 

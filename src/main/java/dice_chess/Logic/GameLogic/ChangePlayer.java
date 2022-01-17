@@ -6,6 +6,9 @@ import dice_chess.Logic.LogicGame;
 import dice_chess.Logic.MoveLogic.Move;
 import dice_chess.TestSimulations.GameInfo;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+
 import static dice_chess.Constant.Constant.*;
 
 public class ChangePlayer {
@@ -36,7 +39,13 @@ public class ChangePlayer {
                 if(DQN_SIMULATION) return;
 
                 if(Q_LEARNER){
-                    new QLearner(GAMMA).updateProbs();
+                    ql.updateProbs();
+                    try {
+                        ql.hm.updateTxt();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    ql = new QLearner(GAMMA);
                 }
 
                 if(l.GUI) {
@@ -84,7 +93,14 @@ public class ChangePlayer {
                 if(DQN_SIMULATION) return;
 
                 if(Q_LEARNER){
-                    new QLearner(GAMMA).updateProbs();
+                    ql.updateProbs();
+                    try {
+                        ql.hm.updateTxt();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //creating a new agent
+                    ql = new QLearner(GAMMA);
                 }
 
                 if(l.GUI) {

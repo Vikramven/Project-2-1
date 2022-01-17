@@ -79,7 +79,6 @@ public class LogicGame extends GUIMain implements Encodable {
     public final ExecuteMovesAI executeMovesAI = new ExecuteMovesAI();
     public final ExpectiMax expectimax = new ExpectiMax();
     public final ExpectiMinimax expectiMinimax = new ExpectiMinimax();
-    public final QLearner qLearner = new QLearner( 0.9);
     public final RandomAgent randomAgent = new RandomAgent();
 
     private void checkGameSettings(){
